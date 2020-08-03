@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\LegalCenter;
 use Illuminate\Http\Request;
 
@@ -10,19 +10,18 @@ use Illuminate\Http\Request;
  * Class LegalCenterController
  * @package App\Http\Controllers
  */
-class LegalCenterController extends Controller
-{
+class LegalCenterController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $legalCenters = LegalCenter::paginate();
 
         return view('legal-center.index', compact('legalCenters'))
-            ->with('i', (request()->input('page', 1) - 1) * $legalCenters->perPage());
+                        ->with('i', (request()->input('page', 1) - 1) * $legalCenters->perPage());
     }
 
     /**
@@ -30,8 +29,7 @@ class LegalCenterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $legalCenter = new LegalCenter();
         return view('legal-center.create', compact('legalCenter'));
     }
@@ -42,14 +40,13 @@ class LegalCenterController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         request()->validate(LegalCenter::$rules);
 
         $legalCenter = LegalCenter::create($request->all());
 
         return redirect()->route('legal-centers.index')
-            ->with('success', 'LegalCenter created successfully.');
+                        ->with('success', 'LegalCenter created successfully.');
     }
 
     /**
@@ -58,8 +55,7 @@ class LegalCenterController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $legalCenter = LegalCenter::find($id);
 
         return view('legal-center.show', compact('legalCenter'));
@@ -71,8 +67,7 @@ class LegalCenterController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $legalCenter = LegalCenter::find($id);
 
         return view('legal-center.edit', compact('legalCenter'));
@@ -85,14 +80,14 @@ class LegalCenterController extends Controller
      * @param  LegalCenter $legalCenter
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LegalCenter $legalCenter)
-    {
+    public function update(Request $request, LegalCenter $legalCenter, $id) {
+        $legalCenter = LegalCenter::find($id);
         request()->validate(LegalCenter::$rules);
 
         $legalCenter->update($request->all());
 
         return redirect()->route('legal-centers.index')
-            ->with('success', 'LegalCenter updated successfully');
+                        ->with('success', 'LegalCenter updated successfully');
     }
 
     /**
@@ -100,11 +95,11 @@ class LegalCenterController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $legalCenter = LegalCenter::find($id)->delete();
 
         return redirect()->route('legal-centers.index')
-            ->with('success', 'LegalCenter deleted successfully');
+                        ->with('success', 'LegalCenter deleted successfully');
     }
+
 }

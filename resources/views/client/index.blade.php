@@ -38,6 +38,8 @@ Client
                                     <th>Area</th>
                                     <th>Account Name</th>
                                     <th>Phone No</th>
+                                    <th>National Id</th>
+                                    <th>KRA PIN</th>
                                     <th>Account Open Date</th>
                                     <th>Meter Number</th>
                                     <th>Plot Number</th>
@@ -46,8 +48,8 @@ Client
                                     <th>Vaccation Date</th>
                                     <th>Meter Reading Date</th>
                                     <th>Avatar</th>
-                                    <th>National Id</th>
-
+                                    <th>Arreas(Ksh.)</th>
+                                    <th>Acc. Bal.(Ksh.)</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -59,6 +61,8 @@ Client
                                     <td>{{ $client->area_name }}</td>                                    
                                     <td>{{ $client->account_name }}</td>
                                     <td>{{ $client->phone_no }}</td>
+                                    <td>{{ $client->national_id }}</td>
+                                    <td>{{ $client->kra_pin }}</td>
                                     <td>{{ $client->account_open_date }}</td>
                                     <td>{{ $client->meter_number }}</td>
                                     <td>{{ $client->plot_number }}</td>
@@ -67,15 +71,18 @@ Client
                                     <td>{{ $client->vaccation_date }}</td>
                                     <td>{{ $client->meter_reading_date }}</td>
                                     <td>{{ $client->avatar }}</td>
-                                    <td>{{ $client->national_id }}</td>
+                                    <td></td>
+                                    <td></td>
+
+
 
                                     <td>
                                         <form action="{{ route('client.destroy',$client->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('client.show',$client->id) }}"><i class="fa fa-fw fa-eye" title="Show"></i></a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('client.edit',$client->id) }}"><i class="fa fa-fw fa-edit" title="Edit"></i></a>
+                                            <a class="btn btn-sm btn-primary " href="{{ route('client.show',$client->id) }}"><i class="fa fa-fw fa-eye" title="Show"></i> View</a>
+                                            <a class="btn btn-sm btn-success" href="{{ route('client.edit',$client->id) }}"><i class="fa fa-fw fa-edit" title="Edit"></i> Edit</a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash titleDelete"></i></button>
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash titleDelete"></i> Delete</button>
                                         </form>
                                     </td>
                                 </tr>

@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\Models\Area;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 /**
  * Class AreaController
  * @package App\Http\Controllers
  */
-class AreaController extends Controller
-{
+class AreaController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $areas = Area::paginate();
 
         return view('area.index', compact('areas'))
-            ->with('i', (request()->input('page', 1) - 1) * $areas->perPage());
+                        ->with('i', (request()->input('page', 1) - 1) * $areas->perPage());
     }
 
     /**
@@ -30,8 +29,7 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $area = new Area();
         return view('area.create', compact('area'));
     }
@@ -42,14 +40,13 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         request()->validate(Area::$rules);
 
         $area = Area::create($request->all());
 
         return redirect()->route('areas.index')
-            ->with('success', 'Area created successfully.');
+                        ->with('success', 'Area created successfully.');
     }
 
     /**
@@ -58,8 +55,7 @@ class AreaController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $area = Area::find($id);
 
         return view('area.show', compact('area'));
@@ -71,8 +67,7 @@ class AreaController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $area = Area::find($id);
 
         return view('area.edit', compact('area'));
@@ -85,14 +80,13 @@ class AreaController extends Controller
      * @param  Area $area
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
-    {
+    public function update(Request $request, Area $area, $id) {
+        $area = Area::find($id);
         request()->validate(Area::$rules);
-
-        $area->update($request->all());
+        $area->fill($request->all())->save();
 
         return redirect()->route('areas.index')
-            ->with('success', 'Area updated successfully');
+                        ->with('success', 'Area updated successfully');
     }
 
     /**
@@ -100,11 +94,11 @@ class AreaController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $area = Area::find($id)->delete();
 
         return redirect()->route('areas.index')
-            ->with('success', 'Area deleted successfully');
+                        ->with('success', 'Area deleted successfully');
     }
+
 }

@@ -15,7 +15,7 @@ Update Client
                 <div class="card-header">
                     <span class="card-title"><h4><strong>Update Client &#187 {{$client[0]->account_name}} &#187  Account No.: {{$client[0]->id}}</strong></h4></span>
                 </div>
-                <div class="card-body">
+                <div class="card-body"  style="background: #E3F2FD">
                     <form method="POST" action="{{ route('client.update', $client[0]->id) }}"  role="form" enctype="multipart/form-data">
                         {{ method_field('PATCH') }}
                         @csrf
@@ -60,6 +60,10 @@ Update Client
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">ID Number</label>
                                             <input type="number" value="{{$client[0]->national_id}}"  class="form-control" id="national_id" name="national_id" placeholder="ID Number">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">KRA PIN</label>
+                                            <input type="text" class="form-control" id="kra_pin" value="{{$client[0]->kra_pin}}"  required  name="kra_pin" data-date-format="DD MMMM YYYY" placeholder="KRA PIN">
                                         </div>
                                     </div>
                                     <div class="col-6">

@@ -121,6 +121,48 @@
                             Meter Readings
                         </a>
                     </li>
+                    @endcan   
+                    @can('billing_access')
+                    <li class="nav-item">
+                        <a href="{{ route("billing.index") }}" class="nav-link {{ request()->is('billing') || request()->is('billing/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            Bills
+                        </a>
+                    </li>
+                    @endcan  
+                     @can('payment_access')
+                    <li class="nav-item">
+                        <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            Payments
+                        </a>
+                    </li>
+                    @endcan  
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link  nav-dropdown-toggle" href="#">
+                    <i class="fas fa-cog fa-fw nav-icon">
+
+                    </i>
+                    Set-up
+                </a>
+                <ul class="nav-dropdown-items">
+                    @can('settings_access')
+                    <li class="nav-item">
+                        <a href="{{ route("settings_nbrd.index") }}" class="nav-link {{ request()->is('settings_nbrd') || request()->is('settings_nbrd/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+
+                            Company Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route("settings_dpm.index") }}" class="nav-link {{ request()->is('settings_dpm') || request()->is('settings_dpm/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+
+                            Billing Settings
+                        </a>
+                    </li>
                     @endcan                   
                 </ul>
             </li>

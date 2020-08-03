@@ -27,6 +27,11 @@
             body{
                 background: -webkit-linear-gradient(left, #3931af, #00c6ff);
             }
+
+            .btn-sm{
+                margin: 1px;
+            }
+
         </style>
 
     </head>
@@ -212,9 +217,14 @@ $.fn.dataTable.ext.classes.sPageButton = '';
             "autoWidth": false
             });
             $(".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+            $('#area').select2();
+            const $btnPrint = document.querySelector("#btnPrint");
+            $btnPrint.addEventListener("click", () => {
+            window.print();
+            });
             });
             $(".monthPicker").datepicker({
-                
+
             dateFormat: 'yy-mm-23',
                     changeMonth: true,
                     changeYear: true,
@@ -225,7 +235,7 @@ $.fn.dataTable.ext.classes.sPageButton = '';
                     $(this).val($.datepicker.formatDate('yy-mm-23', new Date(year, month, 1)));
                     }
             });
-       
+
         </script>
     </body>
 

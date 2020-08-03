@@ -38,6 +38,9 @@
                             {{ trans('cruds.expense.fields.description') }}
                         </th>
                         <th>
+                            {{ trans('cruds.expense.fields.description_no') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -62,6 +65,9 @@
                             </td>
                             <td>
                                 {{ $expense->description ?? '' }}
+                            </td>
+                            <td>
+                                {{ $expense->account_number ?? '' }}
                             </td>
                             <td>
                                 @can('expense_show')

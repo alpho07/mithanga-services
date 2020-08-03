@@ -5,8 +5,9 @@
 @endsection
 
 @section('content')
+<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
 <style>
- 
+
     .emp-profile{
         padding: 3%;
         margin-top: 3%;
@@ -166,15 +167,15 @@
                                 <label>Readings</label>
                             </div>
                             <div class="col-md-6">
-                                <p>xxxx</p>
+                                <p style="font-family: 'Orbitron', sans-serif;">{{$balance[0]->current_reading}}</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>Current Balance</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>xxx</p>
+                            <div class="col-md-6 pull-right">
+                                <p style="font-family: 'Orbitron', sans-serif;">{{number_format($balance[0]->water_charges,2)}}</p>
                             </div>
                         </div>
 

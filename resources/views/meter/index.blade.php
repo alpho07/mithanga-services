@@ -7,9 +7,7 @@ Meter Reading
 @section('content')
 <style>
     .number{text-align: right;}
-    .ui-datepicker table{
-        display: none;
-    }
+
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -23,7 +21,7 @@ Meter Reading
                         </span>
 
                         <div class="float-right">
-                            <a href="#meter-reading" class="btn btn-primary btn-sm float-right"  data-placement="left" data-toggle="modal" data-target="#myModal">
+                            <a href="{{route('meter.reading.m',['id'=>$fc[0]->id,'aid'=>3])}}" class="btn btn-primary btn-sm float-right" >
                                 Add New Meter Reading
                             </a>
                         </div>
@@ -43,7 +41,7 @@ Meter Reading
                                 <input type="text" class="form-control monthPicker" required id="selection_date"  name="selection_date" value="{{$criteria}}">
                             </div>
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Submit</button> 
+                                <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-fw fa-arrow-circle-right"></i> Submit Period</button> 
                             </div>
                         </div>
                         @csrf
@@ -85,14 +83,16 @@ Meter Reading
                                     <td class="number"><strong><b>{{ number_format($r->water_charges,2) }}</b></strong></td>
 
                                     <td>
+                                        @can('update_readings')
                                         <form action="{{ route('legal-centers.destroy',$r->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('legal-centers.show',$r->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('legal-centers.edit',$r->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                            <a class="btn btn-sm btn-warning" href="{{ url('sendNotification',$r->id) }}"><i class="fa fa-fw fa-edit"></i> Notify</a>
+<!--                                            <a class="btn btn-sm btn-primary " href="{{ route('legal-centers.show',$r->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>-->
+                                            <a class="btn btn-sm btn-success EDITS" data-toggle="modal" data-target="#myModalE" data-id="{{$r->id}}" data-account="{{$r->client_id}}" data-account-name="{{$r->account_name}}" data-area="{{$r->area_name}}" data-date="{{$r->reading_date}}" data-units="{{$r->current_reading}}" href="#edit"><i class="fa fa-fw fa-edit"></i> Adjust Reading</a>
+                                            <a class="btn btn-sm btn-warning" href="{{ url('sendNotification',$r->id) }}"><i class="fa fa-fw fa-edit"></i> Send SMS & Print</a>
                                             @csrf
                                             @method('DELETE')
     <!--                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>-->
                                         </form>
+                                        @endcan
                                     </td>
                                 </tr>
                                 @endforeach
@@ -165,10 +165,42 @@ Meter Reading
     </div>
 </div>
 
+
+<div id="myModalE" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong><span class="modal-title" id="EDITTITLE" style="float:left;">Modal Header</span></strong>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="hidden" class="form-control datepicker11" id="id_">
+                    <label class="sr-only" for="email">Reading Date</label>
+                    <input type="text" class="form-control datepicker11" id="reading_date1">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="pwd">Reading(Units)</label>
+                    <input type="text" class="form-control" id="current_reading1">
+                </div>
+                @can('update_readings')
+                <button type="submit" id="UpdateData" class="btn btn-primary">Submit</button>
+                @endcan
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 @endsection
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(function () {
+    $(".datepicker11").datepicker({dateFormat: 'yy-mm-dd'});
     $('#area_sel').change(function () {
         val = $(this).val();
         $.getJSON("{{url('api/v1/client')}}/" + val, function (resp) {
@@ -177,7 +209,34 @@ $(function () {
             $.each(resp, function (i, d) {
                 $('#account_').append('<option value="' + d.id + '">' + d.account_name + '</option>');
             })
+            //  $('#account_').select2();
+        });
+    });
 
+    //$('#area_sel').select2();
+
+    $(document).on('click', '.EDITS', function () {
+        id = $(this).attr('data-id');
+        account = $(this).attr('data-account');
+        account_name = $(this).attr('data-account-name');
+        area = $(this).attr('data-area');
+        date = $(this).attr('data-date');
+        units = $(this).attr('data-units');
+        $('#EDITTITLE').text("AREA > " + area + " | ACCOUNT No. > " + account + " | ACC.NAME > " + account_name);
+        $('#reading_date1').val(date);
+        $('#current_reading1').val(units);
+        $('#id_').val(id);
+    });
+
+    $('#UpdateData').click(function () {
+        data = {
+            id_: $('#id_').val(),
+            reading_date: $('#reading_date1').val(),
+            current_reading: $('#current_reading1').val(),
+            _token: "{{csrf_token()}}"
+        }
+        $.post("{{url('updateReadings')}}/", data, function () {
+            window.location.href = ""
         });
     });
 })

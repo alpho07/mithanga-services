@@ -84,8 +84,9 @@ class CostCenterController extends Controller
      * @param  CostCenter $costCenter
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CostCenter $costCenter)
+    public function update(Request $request, CostCenter $costCenter, $id)
     {
+        $costCenter = CostCenter::find($id);
         request()->validate(CostCenter::$rules);
 
         $costCenter->update($request->all());

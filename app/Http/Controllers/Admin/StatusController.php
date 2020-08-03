@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -10,19 +10,18 @@ use Illuminate\Http\Request;
  * Class StatusController
  * @package App\Http\Controllers
  */
-class StatusController extends Controller
-{
+class StatusController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $statuses = Status::paginate();
 
         return view('status.index', compact('statuses'))
-            ->with('i', (request()->input('page', 1) - 1) * $statuses->perPage());
+                        ->with('i', (request()->input('page', 1) - 1) * $statuses->perPage());
     }
 
     /**
@@ -30,8 +29,7 @@ class StatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $status = new Status();
         return view('status.create', compact('status'));
     }
@@ -42,14 +40,13 @@ class StatusController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         request()->validate(Status::$rules);
 
         $status = Status::create($request->all());
 
         return redirect()->route('status.index')
-            ->with('success', 'Status created successfully.');
+                        ->with('success', 'Status created successfully.');
     }
 
     /**
@@ -58,8 +55,7 @@ class StatusController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $status = Status::find($id);
 
         return view('status.show', compact('status'));
@@ -71,8 +67,7 @@ class StatusController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $status = Status::find($id);
 
         return view('status.edit', compact('status'));
@@ -85,14 +80,14 @@ class StatusController extends Controller
      * @param  Status $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
-    {
+    public function update(Request $request, Status $status, $id) {
+        $status = Status::find($id);
         request()->validate(Status::$rules);
 
         $status->update($request->all());
 
         return redirect()->route('status.index')
-            ->with('success', 'Status updated successfully');
+                        ->with('success', 'Status updated successfully');
     }
 
     /**
@@ -100,11 +95,11 @@ class StatusController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $status = Status::find($id)->delete();
 
         return redirect()->route('status.index')
-            ->with('success', 'Status deleted successfully');
+                        ->with('success', 'Status deleted successfully');
     }
+
 }

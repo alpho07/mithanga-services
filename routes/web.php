@@ -101,14 +101,60 @@ Route::patch('status/update/{id}', 'Admin\StatusController@update')->name('statu
 Route::get('sendText', 'Admin\ClientController@sendSampleText')->name('text.send');
 Route::post('meter_reading', 'Admin\MeterController@meter_reading');
 Route::get('sendNotification/{id}', 'Admin\MeterController@sendNotification');
+Route::post('updateReadings', 'Admin\MeterController@updateReadings');
 
 Route::get('meter/', 'Admin\MeterController@index')->name('meter.index');
+Route::get('meter_reading_/{id}/{aid}', 'Admin\MeterController@register')->name('meter.reading.m');
+Route::post('save_reading/{cid}/{id}/{aid}', 'Admin\MeterController@save_reading')->name('save.meter.reading');
 Route::post('meter/store', 'Admin\MeterController@store')->name('meter.store');
 Route::get('meter/create', 'Admin\MeterController@create')->name('meter.create');
 Route::get('meter/edit/{id}', 'Admin\MeterController@edit')->name('meter.edit');
 Route::get('meter/show/{id}', 'Admin\MeterController@show')->name('meter.show');
 Route::delete('meter/delete/{id}', 'Admin\MeterController@destroy')->name('meter.destroy');
 Route::patch('meter/update/{id}', 'Admin\MeterController@update')->name('meter.update');
+
+
+Route::get('settings-nbrd/', 'Admin\SettingsNbrdController@index')->name('settings_nbrd.index');
+Route::post('settings-nbrd/store', 'Admin\SettingsNbrdController@store')->name('settings_nbrd.store');
+Route::get('settings-nbrd/create', 'Admin\SettingsNbrdController@create')->name('settings_nbrd.create');
+Route::get('settings-nbrd/edit/{id}', 'Admin\SettingsNbrdController@edit')->name('settings_nbrd.edit');
+Route::get('settings-nbrd/show/{id}', 'Admin\SettingsNbrdController@show')->name('settings_nbrd.show');
+Route::delete('settings-nbrd/delete/{id}', 'Admin\SettingsNbrdController@destroy')->name('settings_nbrd.destroy');
+Route::patch('settings-nbrd/update/{id}', 'Admin\SettingsNbrdController@update')->name('settings_nbrd.update');
+
+Route::get('settings-dpm/', 'Admin\SettingsDpmController@index')->name('settings_dpm.index');
+Route::post('settings-dpm/store', 'Admin\SettingsDpmController@store')->name('settings_dpm.store');
+Route::get('settings-dpm/create', 'Admin\SettingsDpmController@create')->name('settings_dpm.create');
+Route::get('settings-dpm/edit/{id}', 'Admin\SettingsDpmController@edit')->name('settings_dpm.edit');
+Route::get('settings-dpm/show/{id}', 'Admin\SettingsDpmController@show')->name('settings_dpm.show');
+Route::delete('settings-dpm/delete/{id}', 'Admin\SettingsDpmController@destroy')->name('settings_dpm.destroy');
+Route::patch('settings-dpm/update/{id}', 'Admin\SettingsDpmController@update')->name('settings_dpm.update');
+
+Route::get('billing/', 'Admin\TransactionController@index')->name('billing.index');
+Route::get('billing/{id}/{aid}', 'Admin\TransactionController@register')->name('bill.reading');
+Route::post('billing/{cid}/{id}/{aid}', 'Admin\TransactionController@save_reading')->name('save.bill.reading');
+Route::post('billing/store', 'Admin\TransactionController@store')->name('bill.store');
+Route::get('billing/create', 'Admin\TransactionController@create')->name('bill.create');
+Route::get('billing/edit/{id}', 'Admin\TransactionController@edit')->name('bill.edit');
+Route::get('billing/show/{id}', 'Admin\TransactionController@show')->name('bill.show');
+Route::delete('billing/delete/{id}', 'Admin\TransactionController@destroy')->name('bill.destroy');
+Route::patch('billing/update/{id}', 'Admin\TransactionController@update')->name('bill.update');
+
+
+Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index');
+Route::get('payment/{id}/{aid}', 'Admin\PaymentController@register')->name('payment.reading');
+Route::post('payment/{cid}/{id}/{aid}', 'Admin\PaymentController@save_reading')->name('save.payment.reading');
+Route::post('payment/store', 'Admin\PaymentController@store')->name('payment.store');
+Route::get('payment/create', 'Admin\PaymentController@create')->name('payment.create');
+Route::get('payment/edit/{id}', 'Admin\PaymentController@edit')->name('payment.edit');
+Route::get('payment/show/{id}', 'Admin\PaymentController@show')->name('payment.show');
+Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('payment.destroy');
+Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
+
+Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.index');
+Route::get('run-bill', 'Admin\MeterController@runBill')->name('run.bill');
+
+
 
 Route::group(['prefix' => 'api/v1'], function () {
     Route::get('client/{area}', 'Admin\MeterController@loadClient');

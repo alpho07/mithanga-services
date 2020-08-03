@@ -27,6 +27,7 @@ class Expense extends Model
         'updated_at',
         'deleted_at',
         'description',
+        'account_number',
         'created_by_id',
         'expense_category_id',
     ];
