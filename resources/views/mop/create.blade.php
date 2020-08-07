@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Create Transaction
+    Create New Mode of Payment
 @endsection
 
 @section('content')
@@ -13,13 +13,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Make New Payment</span>
+                        <span class="card-title">Create Mop</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('payment.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('mops.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('payment.form')
+                            @include('mop.form')
 
                         </form>
                     </div>

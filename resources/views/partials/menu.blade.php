@@ -63,6 +63,14 @@
                         </a>
                     </li>
                     @endcan
+                    @can('client_access')
+                    <li class="nav-item">
+                        <a href="{{ route("client.index") }}" class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            Clients
+                        </a>
+                    </li>
+                    @endcan
                     @can('cost_center_access')
                     <li class="nav-item">
                         <a href="{{ route("cost-centers.index") }}" class="nav-link {{ request()->is('cost-centers') || request()->is('cost-centers/*') ? 'active' : '' }}">
@@ -87,14 +95,23 @@
                         </a>
                     </li>
                     @endcan
-                    @can('client_access')
+                    @can('bank_access')
                     <li class="nav-item">
-                        <a href="{{ route("client.index") }}" class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
+                        <a href="{{ route("bank.index") }}" class="nav-link {{ request()->is('bank') || request()->is('bank/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Clients
+                            Banks
                         </a>
                     </li>
                     @endcan
+                    @can('mop_access')
+                    <li class="nav-item">
+                        <a href="{{ route("mops.index") }}" class="nav-link {{ request()->is('mops') || request()->is('mops/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            Modes of Payments
+                        </a>
+                    </li>
+                    @endcan
+
                     @can('status_access')
                     <li class="nav-item">
                         <a href="{{ route("status.index") }}" class="nav-link {{ request()->is('status') || request()->is('status/*') ? 'active' : '' }}">
@@ -130,7 +147,7 @@
                         </a>
                     </li>
                     @endcan  
-                     @can('payment_access')
+                    @can('payment_access')
                     <li class="nav-item">
                         <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>

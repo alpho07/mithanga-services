@@ -151,8 +151,57 @@ Route::get('payment/show/{id}', 'Admin\PaymentController@show')->name('payment.s
 Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('payment.destroy');
 Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
 
+
+Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index');
+Route::get('payment/{id}/{aid}', 'Admin\PaymentController@register')->name('payment.reading');
+Route::post('payment/{cid}/{id}/{aid}', 'Admin\PaymentController@save_reading')->name('save.payment.reading');
+Route::post('payment/store', 'Admin\PaymentController@store')->name('payment.store');
+Route::get('payment/create', 'Admin\PaymentController@create')->name('payment.create');
+Route::get('payment/edit/{id}', 'Admin\PaymentController@edit')->name('payment.edit');
+Route::get('payment/show/{id}', 'Admin\PaymentController@show')->name('payment.show');
+Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('payment.destroy');
+Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
+
+
+Route::get('bank/', 'Admin\BankController@index')->name('bank.index');
+//Route::get('bank/{id}/{aid}', 'Admin\BankController@register')->name('bank.reading');
+Route::post('bank/{cid}/{id}/{aid}', 'Admin\BankController@save_reading')->name('save.bank.reading');
+Route::post('bank/store', 'Admin\BankController@store')->name('bank.store');
+Route::get('bank/create', 'Admin\BankController@create')->name('bank.create');
+Route::get('bank/edit/{id}', 'Admin\BankController@edit')->name('bank.edit');
+Route::get('bank/show/{id}', 'Admin\BankController@show')->name('bank.show');
+Route::delete('bank/delete/{id}', 'Admin\BankController@destroy')->name('bank.destroy');
+Route::patch('bank/update/{id}', 'Admin\BankController@update')->name('bank.update');
+
+
+
+Route::get('branch/', 'Admin\BranchController@index')->name('branch.index');
+Route::get('branch/{bank}/{name}', 'Admin\BranchController@index')->name('bank.branch');
+//Route::post('branch/{cid}/{id}/{aid}', 'Admin\BranchController@save_reading')->name('save.branch.reading');
+Route::post('branch/store/{bank}/{name}', 'Admin\BranchController@store')->name('branch.store');
+Route::get('branch/create/{bank}/{name}', 'Admin\BranchController@create')->name('branch.create');
+Route::get('branch/edit/{id}/{bank}/{name}', 'Admin\BranchController@edit')->name('branch.edit');
+Route::get('branch/show/{id}', 'Admin\BranchController@show')->name('branch.show');
+Route::delete('branch/delete/{id}/{bank}/{name}', 'Admin\BranchController@destroy')->name('branch.destroy');
+Route::patch('branch/update/{id}/{bank}/{name}', 'Admin\BranchController@update')->name('branch.update');
+
+
+Route::get('mops/', 'Admin\MopController@index')->name('mops.index');
+Route::post('mops/store', 'Admin\mopController@store')->name('mops.store');
+Route::get('mops/create', 'Admin\mopController@create')->name('mops.create');
+Route::get('mops/edit/{id}', 'Admin\MopController@edit')->name('mops.edit');
+Route::get('mops/show/{id}', 'Admin\MopController@show')->name('mops.show');
+Route::delete('mops/delete/{id}', 'Admin\mopController@destroy')->name('mops.destroy');
+Route::patch('mops/update/{id}', 'Admin\MopController@update')->name('mops.update');
+
+
+
 Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.index');
 Route::get('run-bill', 'Admin\MeterController@runBill')->name('run.bill');
+Route::get('bank-branches/{bank}', 'Admin\PaymentController@loadBranches')->name('bank.branches');
+Route::get('client-info/{pid}/{client_id}', 'Admin\PaymentController@loadClientInformation')->name('client.info');
+
+Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.index');
 
 
 

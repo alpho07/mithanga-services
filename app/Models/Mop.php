@@ -5,25 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Payment
+ * Class Mop
  *
  * @property $id
- * @property $client_id
- * @property $description
- * @property $date
- * @property $type
- * @property $amount
- * @property $units
+ * @property $name
  * @property $created_at
  * @property $updated_at
  *
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Payment extends Model
+class Mop extends Model
 {
     
     static $rules = [
+		'name' => 'required',
     ];
 
     protected $perPage = 20;
@@ -33,7 +29,7 @@ class Payment extends Model
      *
      * @var array
      */
-    protected $fillable = ['client_id','description','date','type','amount','units','more_details','bank','branch','reference'];
+    protected $fillable = ['name'];
 
 
 

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Area;
+use App\Models\Mop;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 /**
- * Class AreaController
+ * Class MopController
  * @package App\Http\Controllers
  */
-class AreaController extends Controller {
+class MopController extends Controller {
 
     /**
      * Display a listing of the resource.
@@ -18,8 +18,10 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $areas =  Area::all();    
-        return view('area.index', compact('areas')) ->with('i');
+        $mops = Mop::paginate();
+
+        return view('mop.index', compact('mops'))
+                        ->with('i', (request()->input('page', 1) - 1) * $mops->perPage());
     }
 
     /**
@@ -28,8 +30,8 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $area = new Area();
-        return view('area.create', compact('area'));
+        $mop = new Mop();
+        return view('mop.create', compact('mop'));
     }
 
     /**
@@ -39,12 +41,12 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        request()->validate(Area::$rules);
+        request()->validate(Mop::$rules);
 
-        $area = Area::create($request->all());
+        $mop = Mop::create($request->all());
 
-        return redirect()->route('areas.index')
-                        ->with('success', 'Area created successfully.');
+        return redirect()->route('mops.index')
+                        ->with('success', 'Mode of Payment created successfully.');
     }
 
     /**
@@ -54,9 +56,9 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $area = Area::find($id);
+        $mop = Mop::find($id);
 
-        return view('area.show', compact('area'));
+        return view('mop.show', compact('mop'));
     }
 
     /**
@@ -66,25 +68,25 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $area = Area::find($id);
+        $mop = Mop::find($id);
 
-        return view('area.edit', compact('area'));
+        return view('mop.edit', compact('mop'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  Area $area
+     * @param  Mop $mop
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area, $id) {
-        $area = Area::find($id);
-        request()->validate(Area::$rules);
-        $area->fill($request->all())->save();
+    public function update(Request $request, Mop $mop, $id) {
+        $mop = Mop::find($id);
+        request()->validate(Mop::$rules);
+        $mop->update($request->all());
 
-        return redirect()->route('areas.index')
-                        ->with('success', 'Area updated successfully');
+        return redirect()->route('mops.index')
+                        ->with('success', 'Mode of payment updated successfully');
     }
 
     /**
@@ -93,10 +95,10 @@ class AreaController extends Controller {
      * @throws \Exception
      */
     public function destroy($id) {
-        $area = Area::find($id)->delete();
+        $mop = Mop::find($id)->delete();
 
-        return redirect()->route('areas.index')
-                        ->with('success', 'Area deleted successfully');
+        return redirect()->route('mops.index')
+                        ->with('success', 'Mode of payment deleted successfully');
     }
 
 }

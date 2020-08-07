@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use App\Models\Transaction;
+use App\Models\Mop;
 use Illuminate\Http\Request;
 use DB;
 
@@ -20,9 +21,9 @@ class PaymentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $payments = DB::select(DB::raw("SELECT * From vw_payments"));
+        $transactions = DB::select(DB::raw("SELECT * From vw_payments order by id desc"));
         $i = 1;
-        return view('payment.index', compact('payments', 'i'));
+        return view('payment.index', compact('transactions', 'i'));
     }
 
     /**
@@ -31,9 +32,11 @@ class PaymentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $transaction = new Transaction();
+        $transaction = new Payment();
+        $mop = Mop::all();
+        $banks = \App\Models\Bank::all();
         $clients = DB::select("SELECT * FROM vw_clients");
-        return view('payment.create', compact('clients','transaction'));
+        return view('payment.create', compact('clients', 'transaction', 'mop', 'banks'));
     }
 
     /**
@@ -43,12 +46,13 @@ class PaymentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+
         request()->validate(Transaction::$rules);
 
         $transaction = Transaction::create($request->all());
 
-        return redirect()->route('billing.index')
-                        ->with('success', 'Transaction created successfully.');
+        return redirect()->route('payment.index')
+                        ->with('success', 'Payment Successfully Saved');
     }
 
     /**
@@ -61,6 +65,12 @@ class PaymentController extends Controller {
         $transaction = Transaction::find($id);
 
         return view('transaction.show', compact('transaction'));
+    }
+
+    function loadClientInformation($pid, $clent_id) {
+        $transaction = DB::table('vw_payments')->where('client_id', $clent_id)->where('id',$pid)->get();
+        $due = DB::table('vw_balances')->where('client_id', $clent_id)->get();
+        return ['transactions' => $transaction, 'due' => $due];
     }
 
     /**
@@ -101,6 +111,10 @@ class PaymentController extends Controller {
 
         return redirect()->route('bill.index')
                         ->with('success', 'Transaction deleted successfully');
+    }
+
+    function loadBranches($bank) {
+        return \App\Models\Branch::where('bank_id', $bank)->get();
     }
 
     function receipt() {

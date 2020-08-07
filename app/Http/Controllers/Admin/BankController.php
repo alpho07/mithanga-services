@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Area;
+use App\Models\Bank;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 /**
- * Class AreaController
+ * Class BankController
  * @package App\Http\Controllers
  */
-class AreaController extends Controller {
+class BankController extends Controller {
 
     /**
      * Display a listing of the resource.
@@ -18,8 +18,10 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $areas =  Area::all();    
-        return view('area.index', compact('areas')) ->with('i');
+        $banks = Bank::paginate();
+
+        return view('bank.index', compact('banks'))
+                        ->with('i', (request()->input('page', 1) - 1) * $banks->perPage());
     }
 
     /**
@@ -28,8 +30,8 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $area = new Area();
-        return view('area.create', compact('area'));
+        $bank = new Bank();
+        return view('bank.create', compact('bank'));
     }
 
     /**
@@ -39,12 +41,12 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        request()->validate(Area::$rules);
+        request()->validate(Bank::$rules);
 
-        $area = Area::create($request->all());
+        $bank = Bank::create($request->all());
 
-        return redirect()->route('areas.index')
-                        ->with('success', 'Area created successfully.');
+        return redirect()->route('bank.index')
+                        ->with('success', 'Bank created successfully.');
     }
 
     /**
@@ -54,9 +56,9 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $area = Area::find($id);
+        $bank = Bank::find($id);
 
-        return view('area.show', compact('area'));
+        return view('bank.show', compact('bank'));
     }
 
     /**
@@ -66,25 +68,26 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $area = Area::find($id);
+        $bank = Bank::find($id);
 
-        return view('area.edit', compact('area'));
+        return view('bank.edit', compact('bank'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  Area $area
+     * @param  Bank $bank
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area, $id) {
-        $area = Area::find($id);
-        request()->validate(Area::$rules);
-        $area->fill($request->all())->save();
+    public function update(Request $request, Bank $bank, $id) {
+        $bank = Bank::find($id);
+        request()->validate(Bank::$rules);
 
-        return redirect()->route('areas.index')
-                        ->with('success', 'Area updated successfully');
+        $bank->update($request->all());
+
+        return redirect()->route('bank.index')
+                        ->with('success', 'Bank updated successfully');
     }
 
     /**
@@ -93,10 +96,10 @@ class AreaController extends Controller {
      * @throws \Exception
      */
     public function destroy($id) {
-        $area = Area::find($id)->delete();
+        $bank = Bank::find($id)->delete();
 
-        return redirect()->route('areas.index')
-                        ->with('success', 'Area deleted successfully');
+        return redirect()->route('bank.index')
+                        ->with('success', 'Bank deleted successfully');
     }
 
 }

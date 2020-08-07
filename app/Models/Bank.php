@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Client;
+use App\Models\Branch;
 /**
- * Class Area
+ * Class Bank
  *
  * @property $id
  * @property $name
- * @property $rate
  *
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Area extends Model
+class Bank extends Model
 {
     
     static $rules = [
 		'name' => 'required',
-		'rate' => 'required',
     ];
 
     protected $perPage = 20;
@@ -30,13 +27,11 @@ class Area extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','rate'];
+    protected $fillable = ['name'];
     
-    function client(){
-        return $this->hasMany(Client::class,'area');
+    function branch(){
+       return  $this->hasMany(Branch::class,'bank_id');
     }
-    
-    
 
 
 

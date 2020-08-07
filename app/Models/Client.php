@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Area;
 
 /**
  * Class Client
@@ -25,16 +26,14 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Client extends Model
-{
-    
-    static $rules = [
-		'area' => 'required',
-		'account_name' => 'required',
-		'phone_no' => 'required',
-		'status' => 'required',
-    ];
+class Client extends Model {
 
+    static $rules = [
+        'area' => 'required',
+        'account_name' => 'required',
+        'phone_no' => 'required',
+        'status' => 'required',
+    ];
     protected $perPage = 20;
 
     /**
@@ -42,21 +41,17 @@ class Client extends Model
      *
      * @var array
      */
-    protected $fillable = ['area','account_name','phone_no','account_open_date','meter_number','plot_number','status','connection_date','vaccation_date','meter_reading_date','avatar','national_id','kra_pin'];
-
+    protected $fillable = ['area', 'account_name', 'phone_no', 'account_open_date', 'meter_number', 'plot_number', 'status', 'connection_date', 'vaccation_date', 'meter_reading_date', 'avatar', 'national_id', 'kra_pin'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function area()
-    {
-        return $this->hasOne('App\Models\Area', 'id', 'area');
+    public function area() {
+        return $this->belongsTo(Area::class);
     }
-    
-      public function status()
-    {
+
+    public function status() {
         return $this->hasOne('App\Models\Status', 'id', 'status');
     }
-    
 
 }

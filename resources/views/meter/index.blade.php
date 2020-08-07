@@ -21,7 +21,7 @@ Meter Reading
                         </span>
 
                         <div class="float-right">
-                            <a href="{{route('meter.reading.m',['id'=>$fc[0]->id,'aid'=>3])}}" class="btn btn-primary btn-sm float-right" >
+                            <a href="{{route('meter.reading.m',['id'=>$fc[0]->id,'aid'=>$aid])}}" class="btn btn-primary btn-sm float-right" >
                                 Add New Meter Reading
                             </a>
                         </div>

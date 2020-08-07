@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Create Transaction
+    Create Branch
 @endsection
 
 @section('content')
@@ -13,13 +13,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Make New Payment</span>
+                        <span class="card-title" style="font-weight: bold;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Branch - {{$name}}</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('payment.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('branch.store',['bank'=>$bank,'name'=>$name]) }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('payment.form')
+                            @include('branch.form')
 
                         </form>
                     </div>

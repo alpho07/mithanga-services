@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Client;
 
 /**
  * Class Status
@@ -13,13 +14,11 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Status extends Model
-{
-    
-    static $rules = [
-		'status' => 'required',
-    ];
+class Status extends Model {
 
+    static $rules = [
+        'status' => 'required',
+    ];
     protected $perPage = 20;
 
     /**
@@ -29,6 +28,8 @@ class Status extends Model
      */
     protected $fillable = ['status'];
 
-
+    function client() {
+        return $this->belongsTo(Client::class, 'status');
+    }
 
 }

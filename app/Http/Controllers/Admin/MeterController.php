@@ -16,6 +16,12 @@ use AfricasTalking\SDK\AfricasTalking;
  */
 class MeterController extends Controller {
 
+    private $ref = '';
+
+    public function __construct() {
+        $this->ref = date('YmdHis');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,8 +36,10 @@ class MeterController extends Controller {
             $criteria = date('Y-m');
         }
         $first_client = DB::select(DB::raw("SELECT MIN(id) id FROM clients"));
+        $ccid = $first_client[0]->id;
+        $area_id = DB::select(DB::raw("SELECT area FROM clients WHERE id='$ccid'"))[0]->area;
         $readings = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE reading_date like '%$criteria%'"));
-        return view('meter.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'criteria' => $criteria, 'fc' => $first_client]);
+        return view('meter.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'criteria' => $criteria, 'fc' => $first_client, 'aid' => $area_id]);
     }
 
     public function register($id, $aid) {
@@ -87,8 +95,9 @@ class MeterController extends Controller {
             $cid = $q->client_id;
             $date = $q->reading_date;
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
+            $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $total_cost = ($q->water_charges) ? $q->water_charges : 0;
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units) VALUES ('$cid','Water Charges','$date','debit','$total_cost','$consumed')");
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,ref) VALUES ('$cid','Water Charges','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
             DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
         endforeach;
         $this->addStandingCharges();
@@ -101,9 +110,10 @@ class MeterController extends Controller {
             $id = $q->id;
             $cid = $q->client_id;
             $date = date('Y-d-m H:i:s');
+            $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $total_cost = '100';
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units) VALUES ('$cid','Standing Charge','$date','debit','$total_cost','$consumed')");
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,'ref') VALUES ('$cid','Standing Charge','$date','debit','$total_cost','$consumed',$current_reading,'$this->ref')");
             DB::update("UPDATE meter_readings SET standing_charge='1' WHERE id = '$id';");
         endforeach;
     }

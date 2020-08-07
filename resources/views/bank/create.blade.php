@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Create Transaction
+    Create Bank
 @endsection
 
 @section('content')
@@ -13,13 +13,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Make New Payment</span>
+                        <span class="card-title">Create Bank</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('payment.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('bank.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('payment.form')
+                            @include('bank.form')
 
                         </form>
                     </div>
