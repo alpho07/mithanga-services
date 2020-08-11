@@ -32,7 +32,31 @@ class TransactionController extends Controller {
     public function create() {
         $transaction = new Transaction();
         $clients = DB::select("SELECT * FROM vw_clients");
-        return view('transaction.create', compact('clients','transaction'));
+        return view('transaction.create', compact('clients', 'transaction'));
+    }
+
+    public function statement() {
+        $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
+        return view('statement.index', compact('clients'));
+    }
+
+    function get(Request $r) {
+        $client_id = $r->client_id;
+        $from = $r->from;
+        $to = $r->to;
+        $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
+        $debit_amount = '';
+        $credit_amount = '';
+        $account_balance = '';
+        $account_balance_ = [];
+        $opening_balance_ = DB::select(DB::raw("SELECT SUM(IF(type='debit',-amount,amount)) balance,client_id FROM transactions WHERE date < '$from' AND client_id='$client_id' GROUP BY client_id"));
+        if (isset($opening_balance_[0]->balance)) {
+            $opening_balance = $opening_balance_[0]->balance;
+        } else {
+            $opening_balance = 0;
+        }
+        $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY date asc");
+        return view('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id'));
     }
 
     /**

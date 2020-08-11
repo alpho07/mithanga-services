@@ -122,90 +122,67 @@
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{{ asset('js/main.js') }}"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <script>
 $(function() {
-    
-    
-    $('#BANK').change(function(){
-          $.getJSON("{{url('bank-branches')}}/"+$(this).val(),function(data){
-              $('#BRANCH').empty();
-               $('#BRANCH').append('<option value="">--Select Branch--</option>');
-              $.each(data,function(i,d){          
-                
-                $('#BRANCH').append('<option value="'+d.id+'">'+d.name+'</option>');  
-              });
-              
-          })
-    });
-    
-    $(document).on('click','#TRANSRCEIPT',function(){
-        pid = $(this).attr('data-pid');
-        client_id = $(this).attr('data-client-id');
-         $.getJSON("{{url('client-info')}}/"+pid+'/'+client_id,function(data){
-             $('#pdate').text(data.transactions[0].date)
-             $('#pref').text(data.transactions[0].reference)
-             $('#paccount').text(data.transactions.client_id)
-             $('#paname').text(data.due[0].account_name)
-             $('#pitem').text(data.transactions[0].description)
-             $('#price_').text(data.transactions[0].amount)
-             $('#price_due').text(data.transactions[0].balance)
-             $('#mode').text(data.transactions[0].mode)
-             $('#served').text(data.transactions[0].staff)
-             if(data.due[0].balance=='' || data.due[0].balance > 0 ){
-                 balance = '0.00';
-             }else{
-                 balance =data.due[0].balance 
-             }
-             $('#price_due').text(balance)
-           
-              
-          })
-    });
-    
-    $('#meterselection').change(function(){
-        value = $(this).val();
-        id='';
-        name = $('#meterselection option:selected').text();
-       $.get("{{url('find_id')}}/"+value,function(resp){
-           
-           if(resp==''){
-               Swal.fire(
-                    name+ ' has no registered clients',
-                     ' ',
-                      'error'
-                )
-           }else{               
-               window.location.href="{{url('meter_reading_')}}/"+resp+'/'+value
-               
-           }
-           
-       })
-    });
-    
-    
-    $('#SUBMITTER').click(function(){
-        prev = parseInt($('#prev_reading').val());
-        curr = parseInt($('#current_reading').val());
-        
-        if(prev > curr){
-             Swal.fire(
-                    'Invalid Entry',
-                     'Previous reading cannot be greater tha current reading!',
-                      'error'
-                )
-            return false;
-        }
-    });
-    
-    
 
-    
-    
-    
-    
-   
-let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
+
+$('#BANK').change(function(){
+$.getJSON("{{url('bank-branches')}}/" + $(this).val(), function(data){
+$('#BRANCH').empty();
+$('#BRANCH').append('<option value="">--Select Branch--</option>');
+$.each(data, function(i, d){
+
+$('#BRANCH').append('<option value="' + d.id + '">' + d.name + '</option>');
+});
+})
+});
+$(document).on('click', '#TRANSRCEIPT', function(){
+pid = $(this).attr('data-pid');
+client_id = $(this).attr('data-client-id');
+$.getJSON("{{url('client-info')}}/" + pid + '/' + client_id, function(data){
+$('#pdate').text(data.transactions[0].date)
+        $('#pref').text(data.transactions[0].reference)
+        $('#paccount').text(data.transactions.client_id)
+        $('#paname').text(data.due[0].account_name)
+        $('#pitem').text(data.transactions[0].description)
+        $('#price_').text(data.transactions[0].amount)
+        $('#price_due').text(data.transactions[0].balance)
+        $('#mode').text(data.transactions[0].mode)
+        $('#served').text(data.transactions[0].staff)
+        if (data.due[0].balance == '' || data.due[0].balance > 0){
+balance = '0.00';
+} else{
+balance = data.due[0].balance
+}
+$('#price_due').text(balance)
+
+
+})
+});
+$('#meterselection').change(function(){
+value = $(this).val();
+name = $('#meterselection option:selected').text();
+$.get("{{url('find_id')}}/" + value, function(resp){
+
+if (resp == ''){
+Swal.fire(
+        'No Clients',
+        name + ' has no clients',
+        'success'
+        )
+} else{
+
+}
+
+})
+})
+
+
+
+
+
+
+        let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
         let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
         let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
         let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
@@ -288,7 +265,7 @@ $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
                 }
                 ]
         });
-$.fn.dataTable.ext.classes.sPageButton = '';
+        $.fn.dataTable.ext.classes.sPageButton = '';
 });
         </script>
         @yield('scripts')
@@ -300,8 +277,6 @@ $.fn.dataTable.ext.classes.sPageButton = '';
             });
             $(".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
             $('#area').select2();
-        
-      
             });
             $(".monthPicker").datepicker({
 
@@ -315,18 +290,15 @@ $.fn.dataTable.ext.classes.sPageButton = '';
                     $(this).val($.datepicker.formatDate('yy-mm-23', new Date(year, month, 1)));
                     }
             });
-            
-                
-    function ptr_(){
-	//change the font-size
-    $("#Receipt").css({fontSize: '12px'});
-    $("#Receipt").css('margin-left', '0');
-    $("#Receipt").css('padding', '0');
-	
-    window.print();//trigger the print dialog
-	
-    $("#Receipt").modal('hide');//dismiss modal
-}
+            function ptr_(){
+            //change the font-size
+            $("#Receipt").css({fontSize: '12px'});
+            $("#Receipt").css('margin-left', '0');
+            $("#Receipt").css('padding', '0');
+            window.print(); //trigger the print dialog
+
+            $("#Receipt").modal('hide'); //dismiss modal
+            }
 
         </script>
     </body>

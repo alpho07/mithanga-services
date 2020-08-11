@@ -51,7 +51,7 @@ Area
 
                                     <td>
                                         <form action="{{ route('areas.destroy',$area->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('areas.show',$area->id) }}"><i class="fa fa-fw fa-eye"></i> View Clients ({{$area->client->count()}})</a>
+                                            <a class="btn btn-sm btn-primary " href="{{ route('reading.sheet',$area->id) }}"><i class="fa fa-fw fa-eye"></i> View Clients ({{$area->client->count()}})</a>
                                             <a class="btn btn-sm btn-success" href="{{ route('areas.edit',$area->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
                                             @csrf
                                             @method('DELETE')

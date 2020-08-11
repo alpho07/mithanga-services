@@ -152,7 +152,7 @@ Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('p
 Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
 
 
-Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index');
+/*Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index');
 Route::get('payment/{id}/{aid}', 'Admin\PaymentController@register')->name('payment.reading');
 Route::post('payment/{cid}/{id}/{aid}', 'Admin\PaymentController@save_reading')->name('save.payment.reading');
 Route::post('payment/store', 'Admin\PaymentController@store')->name('payment.store');
@@ -160,7 +160,7 @@ Route::get('payment/create', 'Admin\PaymentController@create')->name('payment.cr
 Route::get('payment/edit/{id}', 'Admin\PaymentController@edit')->name('payment.edit');
 Route::get('payment/show/{id}', 'Admin\PaymentController@show')->name('payment.show');
 Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('payment.destroy');
-Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
+Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');*/
 
 
 Route::get('bank/', 'Admin\BankController@index')->name('bank.index');
@@ -202,6 +202,14 @@ Route::get('bank-branches/{bank}', 'Admin\PaymentController@loadBranches')->name
 Route::get('client-info/{pid}/{client_id}', 'Admin\PaymentController@loadClientInformation')->name('client.info');
 
 Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.index');
+
+Route::get('find_id/{id}', 'Admin\MeterController@getFid')->name('find.id');
+
+Route::get('reading_sheet/{area_id}', 'Admin\MeterController@load_sheet')->name('reading.sheet');
+
+
+Route::get('statement', 'Admin\TransactionController@statement')->name('statement.index');
+Route::post('get-statement', 'Admin\TransactionController@get')->name('statement.get');
 
 
 

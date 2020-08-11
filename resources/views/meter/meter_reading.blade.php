@@ -11,82 +11,127 @@ Meter Reading
 </style>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="row col-sm-12">    
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
 
-                        <span id="card_title">
-                            METER READING
-                        </span>
+                            <span id="card_title">
+                                <strong>METER READING ENTRY</strong>
+                            </span>
+                            <!--span class="badge badge-info pull-right" style="font-weight: bold; font-size: 17px;">{{$i.'/'.$total}}</span-->
 
-
+                        </div>
                     </div>
-                </div>
-                @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <p>{{ $message }}</p>
-                </div>
-                @endif
-                 
-                @if ($message = Session::get('error'))
-                <div class="alert alert-error">
-                    <p>{{ $message }}</p>
-                </div>
-                @endif
+                    @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                    @endif
 
-                <div class="card-body">
-                    <form class="form-horizontal" method="post" action="{{route('save.meter.reading',['cid'=>$client[0]->id,'id'=>$n,'aid'=>$aid])}}">
-                        @csrf
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="email">Area:</label>
-                            <div class="col-sm-12">
-                                <select class="form-control" required id='area_sel' name=''>
-                                    <option value="{{$client[0]->area_id}}">{{$client[0]->area_name}}</option>
-                                    @foreach($area as $a)
-                                    <option value="{{$a->id}}">{{$a->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="pwd">Account Name</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control"  id="" value="{{$client[0]->account_name}}" readonly placeholder="Account Name" >
+                    @if ($message = Session::get('error'))
+                    <div class="alert alert-error">
+                        <p>{{ $message }}</p>
+                    </div>
+                    @endif
 
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" action="{{route('save.meter.reading',['cid'=>$client[0]->id,'id'=>$n,'aid'=>$aid])}}">
+                            @csrf
+                            <div class="form-group">
+                                <label class="control-label col-sm-6" for="email">Area:</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" required id='meterselection' name=''>
+                                        <option value="{{$client[0]->area_id}}">{{$client[0]->area_name}}</option>
+                                        @foreach($area as $a)
+                                        <option value="{{$a->id}}">{{$a->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-6" for="pwd">Account Name</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control"  id="" value="{{$client[0]->account_name}}" readonly placeholder="Account Name" >
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="pwd">Reading Date</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control datepicker" required  id="reading_date" value="{{date('Y-m-d')}}" name="reading_date" placeholder="Reading Date" >
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="pwd">Reading(Units)</label>
-                            <div class="col-sm-12">
-                                <input type="number" class="form-control" value="" required id="current_reading"  name="current_reading" placeholder="Reading(Units)" >
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-
+                            <div class="form-group">
+                                <label class="control-label col-sm-6" for="pwd">Reading Date</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control datepicker" required  id="reading_date" value="{{date('Y-m-d')}}" name="reading_date" placeholder="Reading Date" >
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Submit</button>
-                                <a href="{{route('meter.reading.m',['id'=>$p,'aid'=>$aid])}}" class="btn btn-primary" {{$pvs}}>Previous</a>
-                                <a href="{{route('meter.reading.m',['id'=>$n,'aid'=>$aid])}}" class="btn btn-primary" {{$nts}}>Next</a>
+                            <div class="form-group">
+                                <label class="control-label col-sm-6" for="pwd">Reading(Units)</label>
+                                <div class="col-sm-12">
+                                    <input type="number" class="form-control" value="" required id="current_reading"  name="current_reading" placeholder="Reading(Units)" >
+                                </div>
                             </div>
-                        </div>
-                    </form>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" id="SUBMITTER" class="btn btn-danger">Submit</button>
+                                    <a href="{{route('meter.reading.m',['id'=>$p,'aid'=>$aid])}}" class="btn btn-primary" {{$pvs}}>Previous</a>
+                                    <a href="{{route('meter.reading.m',['id'=>$n,'aid'=>$aid])}}" class="btn btn-primary" {{$nts}}>Next</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+
+                            <span id="card_title">
+                                <strong>MORE DETAILS</strong>
+                            </span>
+                            <!--span class="badge badge-info pull-right" style="font-weight: bold; font-size: 17px;">{{$i.'/'.$total}}</span-->
+
+                        </div>
+                    </div>
+          
+                    <div class="card-body">
+                       
+                 
+                            <div class="form-group">
+                                <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Previous Meter Reading (Units)</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control"  id="prev_reading" value="{{@$prevr}}" readonly  >
+
+                                </div>
+                            </div>
+
+                  
+                            <div class="form-group">
+                                <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Account Balance (Ksh.)</label>
+                                <div class="col-sm-12">
+                                    <input type="number" readonly class="form-control" value="{{$bal}}" required   name="current_reading" placeholder="Reading(Units)" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+
+                                </div>
+                            </div>
+
+                     
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -100,6 +145,7 @@ Meter Reading
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title float-left" style="float: left;">Meter Reading</h4>
+
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="post" action="{{url('meter_reading')}}">

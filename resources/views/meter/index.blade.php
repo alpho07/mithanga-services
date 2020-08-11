@@ -75,7 +75,7 @@ Meter Reading
                                     <td>{{ $r->reading_date }}</td>
                                     <td>{{ $r->client_id }}</td>
                                     <td>{{ $r->account_name }}</td>
-                                    <td></td>
+                                    <td style="text-align: right;">{{number_format($r->balance,2)}}</td>
                                     <td class="number">{{ $r->current_reading }}</td>
                                     <td class="number">{{ $r->previous_reading }}</td>
                                     <td class="number">{{ $r->consumed_units }}</td>

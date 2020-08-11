@@ -157,6 +157,41 @@
                     @endcan  
                 </ul>
             </li>
+            @can('report_access')
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link  nav-dropdown-toggle" href="#">
+                    <i class="fa-fw fas fa-file nav-icon">
+
+                    </i>
+                    Reports
+                </a>
+                <ul class="nav-dropdown-items">
+
+                    <li class="nav-item">
+                        <a href="{{ route("statement.index") }}" class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+
+                            Account Statement
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route("billing.index") }}" class="nav-link {{ request()->is('billing') || request()->is('billing/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            Area Report
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
+                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            Reading Sheets
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            @endcan
             <li class="nav-item nav-dropdown">
                 <a class="nav-link  nav-dropdown-toggle" href="#">
                     <i class="fas fa-cog fa-fw nav-icon">

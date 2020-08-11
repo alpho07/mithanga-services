@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Africa/Nairobi");
 /**
  * Laravel - A PHP Framework For Web Artisans
  *

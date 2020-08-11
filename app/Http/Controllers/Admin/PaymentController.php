@@ -35,7 +35,7 @@ class PaymentController extends Controller {
         $transaction = new Payment();
         $mop = Mop::all();
         $banks = \App\Models\Bank::all();
-        $clients = DB::select("SELECT * FROM vw_clients");
+        $clients = DB::select("SELECT * FROM vw_clients order by id asc");
         return view('payment.create', compact('clients', 'transaction', 'mop', 'banks'));
     }
 

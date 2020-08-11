@@ -61,7 +61,7 @@
             </div>
             <div class="form-group">
                 {{ Form::label('date') }}
-                {{ Form::text('date', date('Y-m-d H:i:s'), ['class' => 'form-control' . ($errors->has('date') ? ' is-invalid' : ''), 'placeholder' => 'Date','readonly'=>'readonly']) }}
+                {{ Form::text('date', date('Y-m-d H:i:s'), ['class' => 'form-control' . ($errors->has('date') ? ' is-invalid' : ''), 'placeholder' => 'Date']) }}
                 {!! $errors->first('date', '<div class="invalid-feedback">:message</p>') !!}
                 </div>
                 <div class="form-group"  style="display:none;">

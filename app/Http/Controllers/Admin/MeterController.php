@@ -41,24 +41,41 @@ class MeterController extends Controller {
         $readings = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE reading_date like '%$criteria%'"));
         return view('meter.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'criteria' => $criteria, 'fc' => $first_client, 'aid' => $area_id]);
     }
+    
+    
+    
 
     public function register($id, $aid) {
         $pv_status = '';
         $nt_status = '';
+        $total = DB::select(DB::raw("SELECT COUNT(id) total FROM vw_clients WHERE area_id='$aid'"))[0]->total;
+        $pbal = DB::select(DB::raw("SELECT balance  FROM vw_balances  WHERE id='$id'"))[0]->balance;
+        $pmrr = DB::select(DB::raw("SELECT current_reading  FROM meter_readings  WHERE client_id='$id' ORDER BY id DESC LIMIT 1"));
+        if (count($pmrr) > 0) {
+            $pmr = $pmrr[0]->current_reading;
+        } else {
+            $pmr = '';
+        }
+        $i = 1;
         $previous = DB::select(DB::raw("SELECT id FROM vw_clients WHERE id < $id AND area_id='$aid' ORDER BY id  DESC LIMIT 1"));
         if (empty($previous)) {
             $pv = $id;
             $pv_status = "disabled=disabled " . "style=display:none;";
+            $alert = '';
+            $i = 1;
         } else {
             $pv = $previous[0]->id;
+            $i = $i - 1;
         }
 
         $next = DB::select(DB::raw("SELECT id FROM vw_clients WHERE id > $id AND area_id='$aid' ORDER BY id ASC LIMIT 1"));
         if (empty($next)) {
             $nt = $id;
             $nt_status = "disabled=disabled " . "style=display:none;";
+            $i = $id;
         } else {
             $nt = $next[0]->id;
+            $i = $i + 1;
         }
         $client = DB::select(DB::raw("SELECT * FROM vw_clients WHERE id='$id' AND area_id='$aid'"));
         $area = Area::all();
@@ -69,15 +86,43 @@ class MeterController extends Controller {
             'n' => $nt,
             'nts' => $nt_status,
             'pvs' => $pv_status,
-            'aid' => $aid
+            'aid' => $aid,
+            'i' => $i,
+            'total' => $total,
+            'bal' => $pbal ? $pbal : '0.00',
+            'prevr' => $pmr
         ]);
     }
 
+    function getFid($id) {
+        echo DB::select(DB::raw("SELECT MIN(id) id FROM clients WHERE area ='$id'"))[0]->id;
+    }
+    
+    function load_sheet($area_id){
+        $area = Area::find($area_id);
+        $i=0;
+        $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
+        return view('meter.load_sheet', compact('clients','i','area'));
+    }
+    
+     function load_staement($client_id){
+        $area = Area::find($area_id);
+        $i=0;
+        $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
+        return view('meter.load_sheet', compact('clients','i','area'));
+    }
+
+
     function save_reading(Request $r, $cid, $id, $aid) {
         $previous_reading = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$cid' ORDER BY id DESC LIMIT 1");
+        if (count($previous_reading) <= 0) {
+            $pr = $previous_reading = 0;
+        } else {
+            $pr = $previous_reading[0]->current_reading;
+        }
         $rate = Area::find($aid)['rate'];
         $current_reading = $r->current_reading;
-        $consumed = $current_reading - $previous_reading[0]->current_reading;
+        $consumed = $current_reading - $pr;
         $total_cost = $consumed * $rate;
         $date = date('Y-m-d');
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$r->reading_date','$r->current_reading')");
@@ -97,7 +142,7 @@ class MeterController extends Controller {
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $total_cost = ($q->water_charges) ? $q->water_charges : 0;
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,ref) VALUES ('$cid','Water Charges','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','Water Charges','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
             DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
         endforeach;
         $this->addStandingCharges();

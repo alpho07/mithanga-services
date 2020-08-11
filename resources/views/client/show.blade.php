@@ -166,8 +166,8 @@
                             <div class="col-md-6">
                                 <label>Readings</label>
                             </div>
-                            <div class="col-md-6">
-                                <p style="font-family: 'Orbitron', sans-serif;">{{$balance[0]->current_reading}}</p>
+                            <div class="col-md-6 pull-right" >
+                                <p style="font-family: 'Times New Roman', sans-serif; text-align: right; font-size: 17px;font-weight: bold; ">{{$reading}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -175,7 +175,7 @@
                                 <label>Current Balance</label>
                             </div>
                             <div class="col-md-6 pull-right">
-                                <p style="font-family: 'Orbitron', sans-serif;">{{number_format($balance[0]->water_charges,2)}}</p>
+                                <p style="font-family: 'Times New Roman', sans-serif; text-align: right; font-size: 17px;font-weight: bold; ">{{number_format($balance,2)}}</p>
                             </div>
                         </div>
 
