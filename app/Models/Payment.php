@@ -33,7 +33,7 @@ class Payment extends Model
      *
      * @var array
      */
-    protected $fillable = ['client_id','description','date','type','amount','units','more_details','bank','branch','reference'];
+    protected $fillable = ['client_id','description','date','type','amount','units','more_details','bank','branch','reference','amount_received'];
 
 
 

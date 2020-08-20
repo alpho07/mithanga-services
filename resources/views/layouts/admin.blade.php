@@ -23,6 +23,31 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
         @yield('styles')
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="//unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>
+        <script src="/cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
+        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script src="//cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+        <script src="//cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="{{ asset('js/main.js') }}"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <style>
             body{
                 background: -webkit-linear-gradient(left, #3931af, #00c6ff);
@@ -95,34 +120,11 @@
 
 
             </main>
-            <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
+            <form id="logoutform" action="{{ route('logout') }}" method="GET" style="display: none;">
                 {{ csrf_field() }}
             </form>
         </div>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="//unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
-        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-        <script src="//cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
-        <script src="//cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
-        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    
         <script>
 $(function() {
     
@@ -295,9 +297,9 @@ $.fn.dataTable.ext.classes.sPageButton = '';
 
         <script>
             $(function(){
-            $('.areas,.costcener,.legal,.supplies,.supplies,.status,.client').DataTable({
-            "autoWidth": false
-            });
+           // $('.areas,.costcener,.legal,.supplies,.supplies,.status,.client').DataTable({
+            //"autoWidth": false
+           // });
             $(".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
             $('#area').select2();
         

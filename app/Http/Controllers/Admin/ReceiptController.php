@@ -16,25 +16,61 @@ use Response;
  * Class ClientController
  * @package App\Http\Controllers
  */
-class ClientController extends Controller {
+class ReceiptController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        //   $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id"));
-        //return $clients;
-        return view('client.index');
+    public function index($pid, $clent_id) {
+        $transaction = DB::table('vw_payments')->where('client_id', $clent_id)->where('id', $pid)->get();
+        $words = $this->convertNumberToWord($transaction[0]->amount);
+        $due = DB::table('vw_balances')->where('client_id', $clent_id)->get();
+        return view('receipt.index', ['transactions' => $transaction, 'due' => $due, 'words' => $words]);
     }
 
-    function loadClients() {
-        $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id"));
-        return Datatables::of($clients)
-                      
-                        ->smart(true)
-                        ->make(true);
+    function convertNumberToWord($num = false) {
+        $num = str_replace(array(',', ' '), '', trim($num));
+        if (!$num) {
+            return false;
+        }
+        $num = (int) $num;
+        $words = array();
+        $list1 = array('', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven',
+            'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+        );
+        $list2 = array('', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety', 'hundred');
+        $list3 = array('', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion',
+            'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion',
+            'quindecillion', 'sexdecillion', 'septendecillion', 'octodecillion', 'novemdecillion', 'vigintillion'
+        );
+        $num_length = strlen($num);
+        $levels = (int) (($num_length + 2) / 3);
+        $max_length = $levels * 3;
+        $num = substr('00' . $num, -$max_length);
+        $num_levels = str_split($num, 3);
+        for ($i = 0; $i < count($num_levels); $i++) {
+            $levels--;
+            $hundreds = (int) ($num_levels[$i] / 100);
+            $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' hundred' . ' ' : '');
+            $tens = (int) ($num_levels[$i] % 100);
+            $singles = '';
+            if ($tens < 20) {
+                $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+            } else {
+                $tens = (int) ($tens / 10);
+                $tens = ' ' . $list2[$tens] . ' ';
+                $singles = (int) ($num_levels[$i] % 10);
+                $singles = ' ' . $list1[$singles] . ' ';
+            }
+            $words[] = $hundreds . $tens . $singles . ( ( $levels && (int) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+        } //end for loop
+        $commas = count($words);
+        if ($commas > 1) {
+            $commas = $commas - 1;
+        }
+        return implode(' ', $words);
     }
 
     /**
@@ -49,7 +85,7 @@ class ClientController extends Controller {
     }
 
     public function avatar($fileId) {
-        $path =storage_path('app/public/'.$fileId);
+        $path = storage_path('app/public/' . $fileId);
         $headers = ['Content-Type:application/image'];
         return Response::download($path, $fileId, $headers);
     }

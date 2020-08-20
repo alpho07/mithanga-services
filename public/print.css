@@ -1,0 +1,109 @@
+
+
+#SamTITLE{
+    background: #000; color:white;font-weight:bold; border-radius: 2px; padding: 1px;
+}
+@media print {
+    .page-break { display: block; page-break-before: always; }
+}
+
+@media print {
+    #invoice-POS{
+        display: none;
+    }
+    #invoice-POS {
+        display: block;
+    }
+}
+#invoice-POS {
+    padding: 1mm;
+    margin: 0 auto;
+    width: 80mm;
+    background: #FFF;
+}
+#invoice-POS ::selection {
+    background: #f31544;
+    color: #FFF;
+}
+#invoice-POS ::moz-selection {
+    background: #f31544;
+    color: #FFF;
+}
+#invoice-POS h1 {
+    font-size: 13px;
+    color: #222;
+}
+#invoice-POS h2 {
+    font-size: 15px;
+}
+#invoice-POS h3 {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 2em;
+}
+#invoice-POS p {
+    font-size: 13px;
+    color: #666;
+
+}
+#invoice-POS #top, #invoice-POS #mid, #invoice-POS #bot {
+    /* Targets all id with 'col-' */
+    border-bottom: 1px solid #EEE;
+}
+#invoice-POS #top {
+    min-height: 100px;
+}
+#invoice-POS #mid {
+    min-height: 80px;
+}
+#invoice-POS #bot {
+    min-height: 50px;
+}
+#invoice-POS #top .logo {
+    height: 60px;
+    width: 60px;
+    background: url(http://michaeltruong.ca/images/logo1.png) no-repeat;
+    background-size: 60px 60px;
+}
+#invoice-POS .clientlogo {
+    float: left;
+    height: 60px;
+    width: 60px;
+    background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
+    background-size: 60px 60px;
+    border-radius: 50px;
+}
+#invoice-POS .info {
+    display: block;
+    margin-left: 0;
+}
+#invoice-POS .title {
+    float: right;
+}
+#invoice-POS .title p {
+    text-align: right;
+}
+#invoice-POS table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#invoice-POS .tabletitle {
+    font-size: 13px;
+    background: #EEE;
+}
+#invoice-POS .service {
+}
+#invoice-POS .item {
+    width: 24mm;
+}
+#invoice-POS .itemtext {
+    font-size: 13px;
+}
+#invoice-POS #legalcopy {
+    margin-top: 5mm;
+}
+
+body{
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif; 
+   
+}

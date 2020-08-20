@@ -41,9 +41,22 @@ class MeterController extends Controller {
         $readings = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE reading_date like '%$criteria%'"));
         return view('meter.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'criteria' => $criteria, 'fc' => $first_client, 'aid' => $area_id]);
     }
-    
-    
-    
+
+    function loadlast($id) {
+        return DB::select(DB::raw("select * from vm_meter_readings where client_id='$id' ORDER by id desc limit 1;"));
+    }
+
+    public function notification_center($id, $date) {
+
+        $area = Area::all();
+        //$new_date = substr($date, 0, -3);
+
+        $first_client = DB::select(DB::raw("SELECT MIN(id) id FROM clients"));
+        $ccid = $first_client[0]->id;
+        $area_id = DB::select(DB::raw("SELECT area FROM clients WHERE id='$ccid'"))[0]->area;
+        $readings = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE reading_date like '%$date%' and area_id='$id' group by area_id"));
+        return view('notification.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'area_' => $id,'date'=>$date, 'fc' => $first_client, 'aid' => $area_id]);
+    }
 
     public function register($id, $aid) {
         $pv_status = '';
@@ -97,21 +110,20 @@ class MeterController extends Controller {
     function getFid($id) {
         echo DB::select(DB::raw("SELECT MIN(id) id FROM clients WHERE area ='$id'"))[0]->id;
     }
-    
-    function load_sheet($area_id){
+
+    function load_sheet($area_id) {
         $area = Area::find($area_id);
-        $i=0;
+        $i = 0;
         $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
-        return view('meter.load_sheet', compact('clients','i','area'));
-    }
-    
-     function load_staement($client_id){
-        $area = Area::find($area_id);
-        $i=0;
-        $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
-        return view('meter.load_sheet', compact('clients','i','area'));
+        return view('meter.load_sheet', compact('clients', 'i', 'area'));
     }
 
+    function load_staement($client_id) {
+        $area = Area::find($area_id);
+        $i = 0;
+        $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
+        return view('meter.load_sheet', compact('clients', 'i', 'area'));
+    }
 
     function save_reading(Request $r, $cid, $id, $aid) {
         $previous_reading = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$cid' ORDER BY id DESC LIMIT 1");
@@ -129,6 +141,30 @@ class MeterController extends Controller {
         //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,'bill_run') VALUES ('$cid','Water Bill','$date','debit','$total_cost','$consumed','1')");
 
         return redirect()->route('meter.reading.m', ['id' => $id, 'aid' => $aid])->with('success', 'Meter Reading Registered Successfully for account ' . $cid);
+    }
+
+    function disconnect(Request $r) {
+        $date = date('Y-m-d');
+        $query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$r->cid','$date','$r->current_reading')");
+        DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','Disconnection Fee','$date','debit','1155')");
+        DB::table('clients')->where('id', "$r->cid")->update(['status' => 2]);
+        if ($query) {
+            return ['status' => 'true'];
+        } else {
+            return ['status' => 'false'];
+        }
+    }
+
+    function reconnect(Request $r) {
+        $date = date('Y-m-d');
+        //$query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$r->cid','$date','$r->current_reading')");
+        $query = DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','Reconnection Fee','$date','credit','$r->amount')");
+        DB::table('clients')->where('id', "$r->cid")->update(['status' => 1]);
+        if ($query) {
+            return ['status' => 'true'];
+        } else {
+            return ['status' => 'false'];
+        }
     }
 
     function runBill() {

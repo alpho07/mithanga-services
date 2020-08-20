@@ -40,6 +40,9 @@
                         <th>
                             {{ trans('cruds.expense.fields.description_no') }}
                         </th>
+                         <th>
+                           Phone Number
+                        </th>
                         <th>
                             &nbsp;
                         </th>
@@ -68,6 +71,9 @@
                             </td>
                             <td>
                                 {{ $expense->account_number ?? '' }}
+                            </td>
+                            <td>
+                                {{ $expense->phone_number ?? '' }}
                             </td>
                             <td>
                                 @can('expense_show')

@@ -42,6 +42,7 @@ Transaction
                                     <th>Client</th>
                                     <th>Description</th>
                                     <th>Date</th>
+                                 
                                     <th>Amount</th>
                                     <th>Units</th>
 
@@ -56,6 +57,7 @@ Transaction
                                     <td>{{ $transaction->account_name }}</td>
                                     <td>{{ $transaction->description }}</td>
                                     <td>{{ $transaction->date }}</td>
+                                  
                                     <td>{{ $transaction->amount }}</td>
                                     <td>{{ $transaction->units }}</td>
 

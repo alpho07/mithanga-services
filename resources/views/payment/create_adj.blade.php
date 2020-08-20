@@ -13,13 +13,13 @@ Create Transaction
 
             <div class="card card-default">
                 <div class="card-header">
-                    <span class="card-title">Make New Payment</span>
+                    <span class="card-title">Make New Payment Adjustments</span>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('payment.store') }}"  role="form" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('payment.save.adjustment') }}"  role="form" enctype="multipart/form-data">
                         @csrf
 
-                        @include('payment.form')
+                        @include('payment.form_adj')
 
                     </form>
                 </div>

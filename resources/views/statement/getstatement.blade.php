@@ -40,17 +40,18 @@ Transaction
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr>
 
                                     <td>
                                         <select name="client_id" id='SCLIENTID' class="form-control select2" >
-                                            
+
                                             @foreach($clients as $id => $client)
                                             <option {{$client_id=='$client->id' ?'selected':''}} value="{{ $client->id }}">{{'ACCOUNT No. '.$client->id. ' | '.$client->account_name.' | '.$client->area_name  }}</option>
                                             @endforeach
                                         </select>
                                     </td>
-                                  
+
                                     <td>
                                         <input type="text" name="from" value="{{$from}}" placeholder="From" class="form-control datepicker"/>
                                     </td>
@@ -77,10 +78,7 @@ Transaction
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead">
-                            <tr>
-                                <td colspan="5" style="font-weight: bold;">OPENING BALANCE</td>                              
-                                <td style="text-align: right;"><b>{{number_format($opening_balance,2)}}</b></td>
-                            </tr>
+
                             <tr>
                                 <th>DATE</th>
                                 <th>DESCRIPTION</th>
@@ -89,8 +87,13 @@ Transaction
                                 <th style="text-align: right;">CREDIT</th>
                                 <th style="text-align: right;">BALANCE</th>
                             </tr>
+                            <tr>
+                                <td colspan="5" style="font-weight: bold;">{{$opening_balance >= 0 ? 'OPENING BALANCE' : 'ARREARS'}}</td>                              
+                                <td style="text-align: right;"><b>{{number_format($opening_balance,2)}}</b></td>
+                            </tr>
                         </thead>
                         <tbody>
+
                             @php 
                             $account_balance = $opening_balance; 
                             @endphp
@@ -132,5 +135,9 @@ Transaction
 </div>
 
 </div>
-
+<script>
+    $(function () {
+        $('#SCLIENTID').val("{{$client_id}}").trigger('change')
+    })
+</script>
 @endsection

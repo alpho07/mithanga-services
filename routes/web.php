@@ -81,6 +81,7 @@ Route::get('legal-centers/show/{id}', 'Admin\LegalCenterController@show')->name(
 Route::delete('legal-centers/delete/{id}', 'Admin\LegalCenterController@destroy')->name('legal-centers.destroy');
 Route::patch('legal-centers/update/{id}', 'Admin\LegalCenterController@update')->name('legal-centers.update');
 
+Route::get('clients/get', 'Admin\ClientController@loadClients')->name('get.clients');
 Route::get('client/', 'Admin\ClientController@index')->name('client.index');
 Route::post('client/store', 'Admin\ClientController@store')->name('client.store');
 Route::get('client/create', 'Admin\ClientController@create')->name('client.create');
@@ -152,15 +153,19 @@ Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('p
 Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
 
 
-/*Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index');
-Route::get('payment/{id}/{aid}', 'Admin\PaymentController@register')->name('payment.reading');
-Route::post('payment/{cid}/{id}/{aid}', 'Admin\PaymentController@save_reading')->name('save.payment.reading');
-Route::post('payment/store', 'Admin\PaymentController@store')->name('payment.store');
-Route::get('payment/create', 'Admin\PaymentController@create')->name('payment.create');
-Route::get('payment/edit/{id}', 'Admin\PaymentController@edit')->name('payment.edit');
-Route::get('payment/show/{id}', 'Admin\PaymentController@show')->name('payment.show');
-Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('payment.destroy');
-Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');*/
+Route::get('payment/adjustment', 'Admin\PaymentController@adjust')->name('payment.adjust');
+Route::post('payment/store/adjustment', 'Admin\PaymentController@saveAdjustments')->name('payment.save.adjustment');
+
+
+/* Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index');
+  Route::get('payment/{id}/{aid}', 'Admin\PaymentController@register')->name('payment.reading');
+  Route::post('payment/{cid}/{id}/{aid}', 'Admin\PaymentController@save_reading')->name('save.payment.reading');
+  Route::post('payment/store', 'Admin\PaymentController@store')->name('payment.store');
+  Route::get('payment/create', 'Admin\PaymentController@create')->name('payment.create');
+  Route::get('payment/edit/{id}', 'Admin\PaymentController@edit')->name('payment.edit');
+  Route::get('payment/show/{id}', 'Admin\PaymentController@show')->name('payment.show');
+  Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('payment.destroy');
+  Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update'); */
 
 
 Route::get('bank/', 'Admin\BankController@index')->name('bank.index');
@@ -200,6 +205,7 @@ Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.inde
 Route::get('run-bill', 'Admin\MeterController@runBill')->name('run.bill');
 Route::get('bank-branches/{bank}', 'Admin\PaymentController@loadBranches')->name('bank.branches');
 Route::get('client-info/{pid}/{client_id}', 'Admin\PaymentController@loadClientInformation')->name('client.info');
+Route::get('client-info-receipt/{pid}/{client_id}', 'Admin\ReceiptController@index')->name('client.receipt');
 
 Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.index');
 
@@ -210,6 +216,23 @@ Route::get('reading_sheet/{area_id}', 'Admin\MeterController@load_sheet')->name(
 
 Route::get('statement', 'Admin\TransactionController@statement')->name('statement.index');
 Route::post('get-statement', 'Admin\TransactionController@get')->name('statement.get');
+
+Route::get('ut', 'UsersController@index');
+
+Route::post('disconnect_client', 'Admin\MeterController@disconnect')->name('client.disconnect');
+Route::post('reconnect_client', 'Admin\MeterController@reconnect')->name('client.reconnect');
+
+Route::get('avatar/{id}', 'Admin\ClientController@avatar')->name('client.avatar');
+Route::get('receipt/{id}', 'Admin\ReceiptController@index')->name('receipt');
+
+Route::get('client-last-info/{id}', 'Admin\MeterController@loadlast')->name('client.latest');
+
+Route::get('notification/{id}/{date}', 'Admin\MeterController@notification_center')->name('notification.index');
+
+Route::get('/logout-user', function() {
+    Auth::logout();
+    return Redirect::to('login');
+});
 
 
 

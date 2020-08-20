@@ -17,14 +17,10 @@ Meter Reading
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            <strong>METER READINGS</strong>
+                            NOTIFICATION CENTER
                         </span>
 
-                        <div class="float-right">
-                            <a href="{{route('meter.reading.m',['id'=>$fc[0]->id,'aid'=>$aid])}}" class="btn btn-primary btn-sm float-right" >
-                                Add New Meter Reading
-                            </a>
-                        </div>
+
                     </div>
                 </div>
                 @if ($message = Session::get('success'))
@@ -39,7 +35,7 @@ Meter Reading
                             <form action="{{ url('meter') }}" method="GET">
                                 <div class="row">
 
-                                    <input type="text" class="form-control monthPicker" required id="selection_date"  name="selection_date" value="{{$criteria}}">
+                                    <input type="text" class="form-control monthPicker" required value="{{$date}}" id="selection_date"  name="selection_date" >
                                     <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-fw fa-arrow-circle-right"></i> Submit</button> 
 
                                 </div>
@@ -71,11 +67,16 @@ Meter Reading
                             </form>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-sm btn-primary" id="SetScheduler">SET SCHEDULER</button>
+
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table table-striped table-hover legal">
                             <thead class="thead">
                                 <tr>
+                                    <th>Select All <input type="checkbox" id="notSELECTALL" checked="checked"/></th>
                                     <th>No</th>
                                     <th>Water Service Area</th>
                                     <th>Reading Date</th>
@@ -87,13 +88,14 @@ Meter Reading
                                     <th>Consumed Units(cm<sup><small>3</small></sup>)</th>
                                     <th>Billing Rate(Ksh.)</th>
                                     <th>Water Charges(Ksh.)</th>
-                                    <th></th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($readings  as $r)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td><input type="checkbox" value="{{$r->area_id}}" class="selected" checked="checked"/></td>
+                                    <td>{{ ++$i }} </td>
                                     <td>{{ $r->area_name }}</td>
                                     <td>{{ $r->reading_date }}</td>
                                     <td>{{ $r->client_id }}</td>
@@ -106,16 +108,7 @@ Meter Reading
                                     <td class="number"><strong><b>{{ number_format($r->water_charges,2) }}</b></strong></td>
 
                                     <td>
-                                        @can('update_readings')
-                                        <form action="{{ route('legal-centers.destroy',$r->id) }}" method="POST">
-<!--                                            <a class="btn btn-sm btn-primary " href="{{ route('legal-centers.show',$r->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>-->
-                                            <a class="btn btn-sm btn-success EDITS" data-toggle="modal" data-target="#myModalE" data-id="{{$r->id}}" data-account="{{$r->client_id}}" data-account-name="{{$r->account_name}}" data-area="{{$r->area_name}}" data-date="{{$r->reading_date}}" data-units="{{$r->current_reading}}" href="#edit"><i class="fa fa-fw fa-edit"></i> Adjust Reading</a>
-                                            <a class="btn btn-sm btn-warning" href="{{ url('sendNotification',$r->id) }}"><i class="fa fa-fw fa-edit"></i> Send SMS & Print</a>
-                                            @csrf
-                                            @method('DELETE')
-    <!--                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>-->
-                                        </form>
-                                        @endcan
+                                        <span class="alert alert-danger"><small>ND</small></span>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -137,7 +130,7 @@ Meter Reading
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title float-left" style="float: left;">Meter Reading</h4>
+                <h4 class="modal-title float-left" style="float: left;"><strong>NOIFICATION CENTER</strong></h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="post" action="{{url('meter_reading')}}">
@@ -223,6 +216,7 @@ Meter Reading
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(function () {
+    $('#area_id_id').val("{{$area_}}");
     $(".datepicker11").datepicker({dateFormat: 'yy-mm-dd'});
     $('#area_sel').change(function () {
         val = $(this).val();
@@ -237,9 +231,18 @@ $(function () {
     });
 
     $('.SCHEDULER').click(function () {
-        window.location.href = "{{url('notification')}}/" + $('#area_id_id').val()+'/'+$('#selection_date').val();
+        window.location.href = "{{url('notification')}}/" + $('#area_id_id').val() + '/' + $('#selection_date').val();
 
     });
+
+    $('#SetScheduler').click(function () {
+        Swal.fire({
+            title: 'Notification Scheduler set',
+            text: 'Notification to customers has been set for this area. Please ensure their contact phone numbers and email addresses are correctly set. Dispatch set to start 6AM tomorrow morning ',
+            icon: 'success',
+            confirmButtonText: 'Okay'
+        })
+    })
 
     //$('#area_sel').select2();
 

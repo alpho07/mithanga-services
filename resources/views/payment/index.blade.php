@@ -18,9 +18,13 @@ Transaction
                         </span>
 
                         <div class="float-right">
+                            <a href="{{ route('payment.adjust') }}" class="btn btn-warning btn-sm float-right"  data-placement="left">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Tansaction Adjustments
+                            </a>
                             <a href="{{ route('payment.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Make New Payment
                             </a>
+
                         </div>
                     </div>
                 </div>
@@ -43,6 +47,7 @@ Transaction
                                     <th>Client</th>
                                     <th>Description</th>
                                     <th>Date</th>
+                                    <th>Amount Received</th>
                                     <th>Amount</th>
                                     <th>Reference</th>
                                     <th>Served By</th>
@@ -60,7 +65,8 @@ Transaction
                                     <td>{{ $transaction->account_name }}</td>
                                     <td>{{ $transaction->description }}</td>
                                     <td>{{ $transaction->date }}</td>
-                                    <td>{{ $transaction->amount }}</td>
+                                    <td style="text-align: right;">{{ number_format($transaction->amount_received,2) }}</td>
+                                    <td style="text-align: right;">{{ number_format($transaction->amount,2) }}</td>
                                     <td>{{ $transaction->reference }}</td>
                                     <td>{{ $transaction->staff }}</td>
                                     <td>{{ $transaction->bank.' - ' .$transaction->branch}}</td>
@@ -68,7 +74,7 @@ Transaction
                                     <td>
                                         <form action="{{ route('bill.destroy',$transaction->id) }}" method="POST">
                                             @can('billing_access')
-                                            <a class="btn btn-sm btn-success" data-pid="{{$transaction->id}}" data-client-id="{{$transaction->client_id}}" href="#" data-toggle="modal" data-target="#Receipt" id="TRANSRCEIPT"><i class="fa fa-print" aria-hidden="true"></i> View & Print</a>
+                                            <a class="btn btn-sm btn-success" data-pid="{{$transaction->id}}" data-client-id="{{$transaction->client_id}}" href="{{url('client-info-receipt').'/'.$transaction->id.'/'.$transaction->client_id}}"  id="TRANSRCEIPT"><i class="fa fa-print" aria-hidden="true"></i> View & Print</a>
                                             @endcan
                                             @csrf
                                             @method('DELETE')
@@ -222,17 +228,17 @@ Transaction
                     section, footer {
                         font-size: 12px;
                     }
-                    
+
                     @media print {
-    .modal {
-        position: absolute;
-        left: 0;
-        top: 0;
-        margin: 0;
-        padding: 0;
-        overflow: visible!important;
-    }
-}
+                        .modal {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            margin: 0;
+                            padding: 0;
+                            overflow: visible!important;
+                        }
+                    }
                 </style>
                 </head>
 

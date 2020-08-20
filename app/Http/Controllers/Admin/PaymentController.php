@@ -39,6 +39,22 @@ class PaymentController extends Controller {
         return view('payment.create', compact('clients', 'transaction', 'mop', 'banks'));
     }
 
+    public function adjust() {
+        $transaction = new Payment();
+        $mop = Mop::all();
+        $banks = \App\Models\Bank::all();
+        $clients = DB::select("SELECT * FROM vw_clients order by id asc");
+        return view('payment.create_adj', compact('clients', 'transaction', 'mop', 'banks'));
+    }
+
+    function saveAdjustments(Request $r) {
+        $reason = $r->adjustment_type == 'debit' ? 'Account Debited' : 'Account Cedited';
+        $ref = date('YmdHis').'-'.$r->adjustment_type;
+        $tadate = date('Y-m-d H:i:s');
+        DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,reference,comments) VALUES ('$r->client_id','$reason','$tadate','$r->adjustment_type','$r->amount','$ref','$r->comment')");
+        return redirect()->route('payment.index')->with('success', 'Payment Successfully Adjustent On Account Successful');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -68,7 +84,7 @@ class PaymentController extends Controller {
     }
 
     function loadClientInformation($pid, $clent_id) {
-        $transaction = DB::table('vw_payments')->where('client_id', $clent_id)->where('id',$pid)->get();
+        $transaction = DB::table('vw_payments')->where('client_id', $clent_id)->where('id', $pid)->get();
         $due = DB::table('vw_balances')->where('client_id', $clent_id)->get();
         return ['transactions' => $transaction, 'due' => $due];
     }

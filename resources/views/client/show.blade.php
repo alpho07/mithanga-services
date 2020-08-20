@@ -100,18 +100,19 @@
         font-weight: 600;
         color: #0062cc;
     }
+    .btn-lg{
+        margin:3px;
+    }
 </style>
-
+<div class="row">
+    <a class="btn btn-md btn-primary" href="{{url('client')}}"><i class="fa fa-back-arrow"></i>< Back</a>
+</div>
 <div class="container emp-profile">
     <form method="post">
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
-                    <div class="file btn btn-lg btn-primary">
-                        Change Photo
-                        <input type="file" name="file"/>
-                    </div>
+                    <img src="{{route('client.avatar',$client[0]->avatar ? $client[0]->avatar : '0.jpg')}}" alt="No Image" width='100px' height="100px"/>                 
                 </div>
             </div>
             <div class="col-md-6">
@@ -145,7 +146,12 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <a href="{{ route('client.edit',$client[0]->id) }}" class="btn btn-sm btn-danger" name="btnAddMore">Edit Profile</a>
+                @if($client[0]->status=='1')
+                <a href="#Disconnect-{{ $client[0]->id }}" class="btn btn-lg btn-danger " id='DISCONNECT' name="btnAddMore">DISCONNECT</a>
+                @else
+                <a href="#Reconnect-{{$client[0]->id }}" class="btn btn-lg btn-warning" id='RECONNECT' name="btnAddMore">RE-CONNECT</a>
+                @endif
+                <a href="{{ route('client.edit',$client[0]->id) }}" class="btn btn-lg btn-primary" name="btnAddMore">Edit Profile</a>
             </div>
         </div>
         <div class="row">
@@ -220,4 +226,132 @@
         </div>
     </form>           
 </div>
+<script>
+    $(function () {
+        $('#DISCONNECT').click(function () {
+            previous = parseInt("{{$reading}}")
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to disconnect {{$client[0]->account_name.'('.$client[0]->id.')'}}, Do you want to continue?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Disconnect'
+            }).then((result) => {
+                if (result.value) {
+
+                    Swal.fire({
+                        title: 'Enter meter reading',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Submit',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (para) => {
+
+                            if (parseInt(para) < previous) {
+                                Swal.showValidationMessage(`Request failed: Current reading less than previous`)
+                            } else if (isNaN(para)) {
+                                Swal.showValidationMessage(`Request failed: Invalid mete reading`)
+                            } else if (para.length <= 0) {
+                                Swal.showValidationMessage(`Request failed: No reading found`)
+                            } else {
+
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            data = {_token: "{{csrf_token()}}", cid: "{{$client[0]->id}}", current_reading: result.value};
+                            $.post("{{route('client.disconnect')}}", data, function (resp) {
+                                if (resp.status == 'true') {
+                                    Swal.fire({
+                                        title: 'Disconnected!',
+                                        icon: 'success',
+                                        text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Disconnected Successfully!"
+                                    })
+                                    window.location.href = "";
+                                } else {
+                                    Swal.fire({
+                                        title: 'Not Disconnected!',
+                                        icon: 'error',
+                                        text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Could not be disconnected!"
+                                    })
+                                }
+                            });
+
+
+                        }
+                    })
+
+                }
+            })
+        })
+
+
+        $('#RECONNECT').click(function () {
+            previous = parseInt("{{$reading}}")
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to reconnect {{$client[0]->account_name.'('.$client[0]->id.')'}}, Do you want to continue?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Reconnect'
+            }).then((result) => {
+                if (result.value) {
+
+                    Swal.fire({
+                        title: 'Enter amount paid',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Submit',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (para) => {
+
+                            if (isNaN(para)) {
+                                Swal.showValidationMessage(`Request failed: The amount enteredis invalid`)
+                            } else if (para.length <= 0) {
+                                Swal.showValidationMessage(`Request failed: No paid amount found`)
+                            } else {
+
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            data = {_token: "{{csrf_token()}}", cid: "{{$client[0]->id}}", amount: result.value};
+                            $.post("{{route('client.reconnect')}}", data, function (resp) {
+                                if (resp.status == 'true') {
+                                    Swal.fire({
+                                        title: 'Reconnected!',
+                                        icon: 'success',
+                                        text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Reconnected Successfully!"
+                                    })
+                                    window.location.href = "";
+                                } else {
+                                    Swal.fire({
+                                        title: 'Not econnected!',
+                                        icon: 'error',
+                                        text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Could not be reconnected!"
+                                    })
+                                }
+                            });
+
+
+                        }
+                    })
+
+                }
+            })
+        })
+    })
+</script>
 @endsection

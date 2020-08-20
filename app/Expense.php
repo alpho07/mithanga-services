@@ -30,6 +30,7 @@ class Expense extends Model
         'account_number',
         'created_by_id',
         'expense_category_id',
+        'phone_number'
     ];
 
     public function expense_category()

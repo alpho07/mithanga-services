@@ -31,7 +31,7 @@ class Transaction extends Model
      *
      * @var array
      */
-       protected $fillable = ['client_id','description','date','type','amount','units','mop','bank','branch','reference','staff'];
+       protected $fillable = ['client_id','description','date','type','amount','units','mop','bank','branch','reference','staff','amount_received'];
 
 
 

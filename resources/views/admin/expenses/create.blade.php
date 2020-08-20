@@ -57,6 +57,18 @@
                     {{ trans('cruds.expense.fields.description_helper') }}
                 </p>
             </div>
+            <div class="form-group {{ $errors->has('phone_number') ? 'has-error' : '' }}">
+                <label for="phone_number">Phone Number</label>
+                <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ old('phone_number', isset($expense) ? $expense->phone_number : '') }}">
+                @if($errors->has('phone_number'))
+                <em class="invalid-feedback">
+                    {{ $errors->first('phone_number') }}
+                </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('cruds.expense.fields.description_helper') }}
+                </p>
+            </div>
             <div class="form-group {{ $errors->has('amount') ? 'has-error' : '' }}">
                 <label for="amount">{{ trans('cruds.expense.fields.amount') }}*</label>
                 <input type="number" id="amount" name="amount" class="form-control" value="{{ old('amount', isset($expense) ? $expense->amount : '') }}" step="0.01" required>

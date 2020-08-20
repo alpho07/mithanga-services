@@ -31,10 +31,10 @@ Client
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover client">
+                        <table class="table table-bordered table-hover client" id="clientsTable">
                             <thead class="thead">
                                 <tr>
-                                    <th>No</th>
+                                    <th>Account No.</th>
                                     <th>Area</th>
                                     <th>Account Name</th>
                                     <th>Phone No</th>
@@ -48,47 +48,30 @@ Client
                                     <th>Vaccation Date</th>
                                     <th>Meter Reading Date</th>
                                     <th>Avatar</th>
-                                    <th>Arreas(Ksh.)</th>
+<!--                                    <th>Action</th>-->
+<!--                                    <th>Arreas(Ksh.)</th>
                                     <th>Acc. Bal.(Ksh.)</th>
-                                    <th></th>
+                                    <th></th>-->
                                 </tr>
                             </thead>
-                            <tbody>
-                                @php ($i=1)
-                                @foreach ($clients as $client)
-                                <tr>
-                                    <td>{{$i}}</td>                                
-                                    <td>{{ $client->area_name }}</td>                                    
-                                    <td>{{ $client->account_name }}</td>
-                                    <td>{{ $client->phone_no }}</td>
-                                    <td>{{ $client->national_id }}</td>
-                                    <td>{{ $client->kra_pin }}</td>
-                                    <td>{{ $client->account_open_date }}</td>
-                                    <td>{{ $client->meter_number }}</td>
-                                    <td>{{ $client->plot_number }}</td>
-                                    <td>{{ $client->status_name }}</td>
-                                    <td>{{ $client->connection_date }}</td>
-                                    <td>{{ $client->vaccation_date }}</td>
-                                    <td>{{ $client->meter_reading_date }}</td>
-                                    <td>{{ $client->avatar }}</td>
-                                    <td></td>
-                                    <td></td>
+                            <tfoot>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
 
+                            </tfoot>
+                            <tbody></tbody>
 
-
-                                    <td>
-                                        <form action="{{ route('client.destroy',$client->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('client.show',$client->id) }}"><i class="fa fa-fw fa-eye" title="Show"></i> View</a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('client.edit',$client->id) }}"><i class="fa fa-fw fa-edit" title="Edit"></i> Edit</a>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash titleDelete"></i> Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @php ($i++)
-                                @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -97,4 +80,50 @@ Client
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+
+
+        $('#clientsTable').DataTable({
+            processing: true,
+            serverSide: true,
+            select: true,
+            ajax: '{!! route('get.clients') !!}',
+            columns: [
+                {data: 'id', name: 'id', mRender: function (data, type, row) {
+                        return "<a class='btn btn-sm btn-primary' href={{url('client/show')}}/" + row.id + ">View Account No (" + row.id + ")</a>"
+                    }},
+                {data: 'area_name', name: 'area_name'},
+                {data: 'account_name', name: 'account_name'},
+                {data: 'phone_no', name: 'phone_no'},
+                {data: 'national_id', name: 'national_id'},
+                {data: 'kra_pin', name: 'kra_pin'},
+                {data: 'account_open_date', name: 'account_open_date'},
+                {data: 'meter_number', name: 'meter_number'},
+                {data: 'plot_number', name: 'plot_number'},
+                {data: 'status_name', name: 'status_name'},
+                {data: 'connection_date', name: 'connection_date'},
+                {data: 'vaccation_date', name: 'vaccation_date'},
+                {data: 'meter_reading_date', name: 'meter_reading_date'},
+                {data: 'avatar', name: 'avatar', "mRender": function (data, type, row) {
+
+                        return "<img width=50px height=50px alt='No Image' src={{url('avatar')}}/" + row.avatar + "/>";
+                    }},
+            ],
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var input = document.createElement("input");
+                    $(input).appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                column.search($(this).val(), false, false, true).draw();
+                            });
+                });
+            }
+        });
+
+    });
+</script>
+
 @endsection
+
