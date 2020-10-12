@@ -37,6 +37,7 @@ Legal Center
                                     <th>No</th>
 
                                     <th>Center</th>
+                                    <th>Amount</th>
 
                                     <th></th>
                                 </tr>
@@ -47,6 +48,7 @@ Legal Center
                                     <td>{{ ++$i }}</td>
 
                                     <td>{{ $legalCenter->center }}</td>
+                                    <td>{{ $legalCenter->amount }}</td>
 
                                     <td>
                                         <form action="{{ route('legal-centers.destroy',$legalCenter->id) }}" method="POST">

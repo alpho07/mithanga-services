@@ -81,6 +81,15 @@ Route::get('legal-centers/show/{id}', 'Admin\LegalCenterController@show')->name(
 Route::delete('legal-centers/delete/{id}', 'Admin\LegalCenterController@destroy')->name('legal-centers.destroy');
 Route::patch('legal-centers/update/{id}', 'Admin\LegalCenterController@update')->name('legal-centers.update');
 
+
+
+Route::get('legal/create', 'Admin\LegalCenterController@legal')->name('legal.index');
+Route::get('legal/new', 'Admin\LegalCenterController@new')->name('legal.new');
+Route::post('legal/save', 'Admin\LegalCenterController@saveLegalCost')->name('legal.save');
+Route::get('legal/delete/{id}', 'Admin\LegalCenterController@legalDelete')->name('legal.delete');
+
+
+
 Route::get('clients/get', 'Admin\ClientController@loadClients')->name('get.clients');
 Route::get('client/', 'Admin\ClientController@index')->name('client.index');
 Route::post('client/store', 'Admin\ClientController@store')->name('client.store');
@@ -153,6 +162,9 @@ Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('p
 Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
 
 
+
+
+
 Route::get('payment/adjustment', 'Admin\PaymentController@adjust')->name('payment.adjust');
 Route::post('payment/store/adjustment', 'Admin\PaymentController@saveAdjustments')->name('payment.save.adjustment');
 
@@ -200,6 +212,22 @@ Route::delete('mops/delete/{id}', 'Admin\mopController@destroy')->name('mops.des
 Route::patch('mops/update/{id}', 'Admin\MopController@update')->name('mops.update');
 
 
+Route::get('invoice/', 'Admin\PaymentController@invoice')->name('invoicing.index');
+Route::get('invoice/create', 'Admin\PaymentController@create_invoice')->name('invoicing.create');
+Route::post('invoice/store', 'Admin\PaymentController@saveInvoice')->name('invoicing.store');
+Route::get('invoice/show/{cid}/{ref}', 'Admin\PaymentController@showInvoice')->name('invoicing.show');
+Route::get('invoice/delete/{ref}', 'Admin\PaymentController@deleteInvoice')->name('invoicing.delete');
+Route::get('invoice/edit/{cid}/{ref}', 'Admin\PaymentController@editInvoice')->name('invoicing.edit');
+Route::post('invoice/storeedit/{cid}/{ref}', 'Admin\PaymentController@saveInvoiceEdit')->name('invoicing.store_edit');
+Route::post('invoice/savepayment', 'Admin\PaymentController@saveInvoicePayment')->name('invoicing.pay');
+Route::post('invoice/savepayment', 'Admin\PaymentController@saveInvoicePayment')->name('invoicing.pay');
+Route::get('invoice/deletepay/{id}/{ref}', 'Admin\PaymentController@deleteInvoiceMicro')->name('invoicing.delete_pay');
+Route::get('invoice/loaddetails/{ref}', 'Admin\PaymentController@loadPaymentDetails')->name('invoicing.details');
+
+
+Route::get('clients/print/{ref}', 'Admin\ClientController@createPDF')->name('clients.print');
+
+
 
 Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.index');
 Route::get('run-bill', 'Admin\MeterController@runBill')->name('run.bill');
@@ -212,10 +240,12 @@ Route::get('receipt', 'Admin\TransactionController@receipt')->name('receipt.inde
 Route::get('find_id/{id}', 'Admin\MeterController@getFid')->name('find.id');
 
 Route::get('reading_sheet/{area_id}', 'Admin\MeterController@load_sheet')->name('reading.sheet');
+Route::get('download_sheet/{area_id}', 'Admin\MeterController@download_sheet')->name('download.sheet');
 
 
 Route::get('statement', 'Admin\TransactionController@statement')->name('statement.index');
 Route::post('get-statement', 'Admin\TransactionController@get')->name('statement.get');
+Route::get('statement/print', 'Admin\TransactionController@createPDF');
 
 Route::get('ut', 'UsersController@index');
 
@@ -225,9 +255,15 @@ Route::post('reconnect_client', 'Admin\MeterController@reconnect')->name('client
 Route::get('avatar/{id}', 'Admin\ClientController@avatar')->name('client.avatar');
 Route::get('receipt/{id}', 'Admin\ReceiptController@index')->name('receipt');
 
+Route::get('receipt/create/new', 'Admin\ReceiptController@create')->name('receipt-create');
+
 Route::get('client-last-info/{id}', 'Admin\MeterController@loadlast')->name('client.latest');
 
 Route::get('notification/{id}/{date}', 'Admin\MeterController@notification_center')->name('notification.index');
+
+Route::get('areas/report/{period}', 'Admin\AreaController@area_report')->name('area.report');
+
+Route::get('point', 'Admin\AreaController@generateReferral')->name('point');
 
 Route::get('/logout-user', function() {
     Auth::logout();

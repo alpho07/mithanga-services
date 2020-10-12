@@ -20,6 +20,7 @@ class LegalCenter extends Model
     
     static $rules = [
 		'center' => 'required',
+		'amount' => 'required',
     ];
 
     protected $perPage = 20;
@@ -29,7 +30,7 @@ class LegalCenter extends Model
      *
      * @var array
      */
-    protected $fillable = ['center'];
+    protected $fillable = ['center','amount'];
 
 
 

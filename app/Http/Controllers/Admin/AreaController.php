@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Area;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use DB;
 
 /**
  * Class AreaController
@@ -18,8 +19,17 @@ class AreaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $areas =  Area::all();    
-        return view('area.index', compact('areas')) ->with('i');
+        $areas = Area::all();
+        return view('area.index', compact('areas'))->with('i');
+    }
+
+    function generateReferral() {
+        $user_id = '1';
+        $ref_2 =  '/join/' . sha1(date('Y-d-m'));
+
+        DB::insert(DB::raw("INSERT INTO ref_links (client_id,ref_link) VALUE('$user_id','$ref_2')"));
+
+        echo 'Inserted';
     }
 
     /**
@@ -97,6 +107,21 @@ class AreaController extends Controller {
 
         return redirect()->route('areas.index')
                         ->with('success', 'Area deleted successfully');
+    }
+
+    function area_report($period) {
+        $date = date_create($period);
+        $period1 = strtoupper(date_format($date, "F-Y"));
+
+        $result = DB::select(DB::raw("SELECT a.id,a.name,COUNT(c.id) clients, SUM(mr.consumed_units) units_consumed, (a.rate * SUM(mr.consumed_units)) + (COUNT(mr.consumed_units='0') * 100) invoiced,COUNT(mr.consumed_units='0')  flat_rate
+                                        FROM areas a
+                                        INNER JOIN clients c ON c.area = a.id
+                                        LEFT JOIN vm_meter_readings mr ON a.id = mr.area_id
+                                        WHERE mr.reading_date >= DATE_FORMAT( '$period' - INTERVAL 1 MONTH, '%Y-%m-23' ) 
+                                        AND  mr.reading_date <= DATE_FORMAT('$period', '%Y-%m-23' )
+                                        GROUP BY a.id"));
+        //dd($result);
+        return view('area.report', compact('period1', 'result', 'period'));
     }
 
 }

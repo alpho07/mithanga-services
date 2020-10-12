@@ -11,6 +11,7 @@ use DB;
 use AfricasTalking\SDK\AfricasTalking;
 use Yajra\Datatables\Datatables;
 use Response;
+use PDF;
 
 /**
  * Class ClientController
@@ -26,13 +27,13 @@ class ClientController extends Controller {
     public function index() {
         //   $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id"));
         //return $clients;
-        return view('client.index');
+
+        return view('client.index',);
     }
 
     function loadClients() {
         $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id"));
         return Datatables::of($clients)
-                      
                         ->smart(true)
                         ->make(true);
     }
@@ -42,14 +43,23 @@ class ClientController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    public function createPDF($id) {
+        $area = Area::find($id)->name;
+        $i = 0;
+        $clients = DB::select("SELECT * FROM vw_clients  WHERE area_id='$id' order by id ASC");
+        $pdf = PDF::loadView('area.client_report', compact('area', 'clients', 'i'));
+        return $pdf->download($area . '_clients.pdf');
+    }
+
     public function create() {
         $area = Area::all();
         $status = Status::all();
-        return view('client.create', ['area' => $area, 'status' => $status]);
+        $account = DB::select(DB::raw("SELECT MAX(id) id FROM clients"))[0]->id + 1;
+        return view('client.create', ['area' => $area, 'status' => $status, 'account' => $account]);
     }
 
     public function avatar($fileId) {
-        $path =storage_path('app/public/'.$fileId);
+        $path = storage_path('app/public/' . $fileId);
         $headers = ['Content-Type:application/image'];
         return Response::download($path, $fileId, $headers);
     }
@@ -102,7 +112,7 @@ class ClientController extends Controller {
         DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units) VALUES ('$cid','Application Fee','$date','debit','1155','0')");
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','0')");
         $message = "Dear " . strtoupper($request->account_name) . " Your A/C is " . $id[0]->id . "  We are pleased to welcome you as a new client. We feel honored that you have chosen us to fill your water service needs, and we are eager to be of service. WE MAKE IT SAFE BECAUSE WATER IS LIFE. THANK YOU AND WELCOME!";
-        $this->sendSampleText($message, $request->phone_no);
+        // $this->sendSampleText($message, $request->phone_no);
         return redirect()->route('client.index')
                         ->with('success', 'Client created successfully.');
     }

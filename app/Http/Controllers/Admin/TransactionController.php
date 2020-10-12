@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use DB;
+use PDF;
+use Session;
 
 /**
  * Class TransactionController
@@ -44,7 +46,12 @@ class TransactionController extends Controller {
         $client_id = $r->client_id;
         $from = $r->from;
         $to = $r->to;
+        Session::put('pdf_client_id', $client_id);
+        Session::put('pdf_from', $from);
+        Session::put('pdf_to', $to);
+
         $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
+        $clients_narrowed = DB::select("SELECT * FROM vw_clients where id='$client_id'");
         $debit_amount = '';
         $credit_amount = '';
         $account_balance = '';
@@ -55,8 +62,38 @@ class TransactionController extends Controller {
         } else {
             $opening_balance = 0;
         }
-        $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY id asc");
-        return view('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id'));
+        $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM vw_transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY id asc");
+        return view('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
+    }
+
+    // Generate PDF
+    public function createPDF() {
+        // retreive all records from db
+        $client_id = Session::get('pdf_client_id');
+        $from = Session::get('pdf_from');
+        $to = Session::get('pdf_to');
+        $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
+        $clients_narrowed = DB::select("SELECT * FROM vw_clients where id='$client_id'");
+        $debit_amount = '';
+        $credit_amount = '';
+        $account_balance = '';
+        $account_balance_ = [];
+        $opening_balance_ = DB::select(DB::raw("SELECT SUM(IF(type='debit',-amount,amount)) balance,client_id FROM transactions WHERE date < '$from' AND client_id='$client_id' GROUP BY client_id"));
+        if (isset($opening_balance_[0]->balance)) {
+            $opening_balance = $opening_balance_[0]->balance;
+        } else {
+            $opening_balance = 0;
+        }
+        $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM vw_transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY id asc");
+        //return view('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
+
+        // share data to view
+        //view()->share('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
+        $pdf = PDF::loadView('statement.printstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
+
+        // download PDF file with download method
+        return $pdf->download('pdf_file.pdf');
+       // dd($pdf);
     }
 
     /**

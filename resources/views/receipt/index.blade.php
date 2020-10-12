@@ -11,7 +11,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="{{url('print.js')}}"></script>
 
-
+        <title>Samdamte | Receipt</title>
 
     </head>
 
@@ -53,24 +53,40 @@
                             <td class=""><p class="itemtext">Receipt Time :- {{explode(' ', $transactions[0]->date)[1]}}</p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Total Received : {{number_format($transactions[0]->amount_received,2)}}</p></td>
+                            <td class=""><p class="itemtext">Total Received : {{number_format($transactions[0]->amount,2)}}</p></td>
                         </tr>
 
 
                         <tr class="">
-                            <td class=""><p class="itemtext">Account Number:     {{$transactions[0]->id}}</p></td>
+                            <td class=""><p class="itemtext">Account Number:     {{$transactions[0]->client_id}}</p></td>
                         </tr>
                         <tr class="">
                             <td class=""><p class="itemtext">Account Name:       {{$transactions[0]->account_name}}</p></td>
                         </tr>
+                        @php
+                        $allsum=0;
+                        @endphp
+                        @if(count($arrears) > 0)
+                        <td class=""><p class="itemtext">Arrears:      Kshs {{number_format($arrears[0]->balance,2)}}</p></td>
+
+                        @endif
+
+                        @if(count($bills) <= 0)
                         <tr class="">
                             <td class=""><p class="itemtext">{{$transactions[0]->description}}:      Kshs {{number_format($transactions[0]->amount,2)}}</p></td>
                         </tr>
+                        @foreach ($bills as $b)
                         <tr class="">
-                            <td class=""><p class="itemtext">Amount Due:         Kshs {{str_replace('-','',number_format($due[0]->balance == '' || $due[0]->balance > 0 ? '0' : $due[0]->balance,2))}}</p></td>
+                            <td class=""><p class="itemtext">{{$b->description}}:      Kshs {{number_format($b->amount,2)}}</p></td>
+                        </tr>
+                        @endforeach
+                        @endif
+
+                        <tr class="">
+                            <td class=""><p class="itemtext">Amount Due:         Kshs {{@number_format($arrears[0]->balance,2)}}</p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Paymanet Mode:      {{$transactions[0]->mode}}</p></td>
+                            <td class=""><p class="itemtext">Payment Mode:      {{$transactions[0]->mode}}</p></td>
                         </tr>
 
 
@@ -78,19 +94,19 @@
                             <td class=""><p class="itemtext">{{strtoupper($words).' SHILLINGS ONLY'}}</p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">You can pay your bills through Paybill No. 823495</p></td>
+                            <td class=""><p class="itemtext">You can pay your bills through Paybill No.:- 823496</p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Disconnection of payment is 10TH of every month</p></td>
+                            <td class=""><p class="itemtext">Disconnection for non-payment is 10<sup>th</sup> of every month</p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Reconnection Charges are Kshs. 1155.00</p></td>
+                            <td class=""><p class="itemtext">Reconnection Charges are Kshs. 1,155.00</p></td>
                         </tr>
                         <tr class="">
                             <td class=""><p class="itemtext">We thank you for giving us an opportunity to serve you.</p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">You were served by {{strtoupper($transactions[0]->staff)}}</p></td>
+                            <td class=""><p class="itemtext">You were served by:- {{strtoupper($transactions[0]->staff)}}</p></td>
                         </tr>
                     </table>
                     <p class="" style="margin-top:320px;">Official Stamp..........................................</p>

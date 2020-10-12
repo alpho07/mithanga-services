@@ -176,18 +176,18 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route("billing.index") }}" class="nav-link {{ request()->is('billing') || request()->is('billing/*') ? 'active' : '' }}">
+                        <a href="{{ route("area.report",['period'=>date('Y-m-d')]) }}" class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                             Area Report
                         </a>
                     </li>
 
-                    <li class="nav-item">
+<!--                    <li class="nav-item">
                         <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                             Reading Sheets
                         </a>
-                    </li>
+                    </li>-->
 
                 </ul>
             </li>
@@ -268,6 +268,22 @@
 
                     </i>
                     {{ trans('cruds.expenseReport.title') }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route("invoicing.index") }}" class="nav-link {{ request()->is('invoicing') || request()->is('invoicing/*') ? 'active' : '' }}">
+                    <i class="fa-fw fas fa-chart-line nav-icon">
+
+                    </i>
+                    Invoicing
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route("legal.index") }}" class="nav-link {{ request()->is('legal') || request()->is('legal/*') ? 'active' : '' }}">
+                    <i class="fa-fw fas fa-chart-line nav-icon">
+
+                    </i>
+                    Legal Center
                 </a>
             </li>
             @endcan

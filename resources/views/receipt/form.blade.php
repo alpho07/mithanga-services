@@ -61,7 +61,7 @@
             </div>            <div class="col-6">              
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Meter Number</label>
-                    <input type="text" class="form-control" id="meter_number" readonly name="meter_number" value="{{$account ?? Request::old('meter_number')}}" placeholder="Meter Number">
+                    <input type="text" class="form-control" id="meter_number" name="meter_number" value="{{Request::old('meter_number')}}" placehRequest::older="Meter Number">
                 </div>
             </div>
         </div>

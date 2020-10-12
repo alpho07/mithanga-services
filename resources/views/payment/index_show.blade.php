@@ -5,7 +5,44 @@ Transaction
 @endsection
 
 @section('content')
+<style>
+    body {
+        background-color: #000
+    }
 
+    .padding {
+        padding: 2rem !important
+    }
+
+    .card {
+        margin-bottom: 30px;
+        border: none;
+        -webkit-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+        -moz-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+        box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22)
+    }
+
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e6e6f2
+    }
+
+    h3 {
+        font-size: 20px
+    }
+
+    h5 {
+        font-size: 15px;
+        line-height: 26px;
+        color: #3d405c;
+        margin: 0px 0px 15px 0px;
+        font-family: 'Circular Std Medium'
+    }
+
+    .text-dark {
+        color: #3d405c !important
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -14,17 +51,16 @@ Transaction
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            <strong>Payments</strong>
+                            <strong>INVOICE #{{$ref}}</strong>
                         </span>
 
                         <div class="float-right">
-                            <a href="{{ route('payment.adjust') }}" class="btn btn-warning btn-sm float-right"  data-placement="left">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Tansaction Adjustments
-                            </a>
                             <a href="{{ route('payment.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Make New Payment
+                                <i class="fa fa-print" aria-hidden="true"></i> Print
                             </a>
-
+                            <a href="{{ route('payment.adjust') }}" class="btn btn-warning btn-sm float-right"  data-placement="left">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -35,56 +71,85 @@ Transaction
                 @endif
 
                 <div class="card-body">
-                    <!--                    <a href="{{ route('run.bill') }}" class="btn btn-warning btn-lg float-left"  data-placement="left">
-                                            Run Bills <i class="fa fa-rocket" aria-hidden="true"></i>
-                                        </a>-->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="thead">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Account No.</th>
-                                    <th>Client</th>
-                                    <th>Description</th>
-                                    <th>Date</th>
-<!--                                    <th>Amount Received</th>-->
-                                    <th>Amount Paid</th>
-                                    <th>Reference</th>
-                                    <th>Served By</th>
-                                    <th>bank</th>
-                                    <th>Mode</th>
+                    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+                        <div class="card">
+                            <div class="card-header p-4">
+                                <a class="pt-2 d-inline-block" href="index.html" data-abc="true">SAMDAMTE WATER SERVICES</a>
+                                <div class="float-right">
+                                    <h3 class="mb-0">Invoice #{{$ref}}</h3>
+                                    Date: {{$invoice[0]->date}}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-sm-6">
+                                        <h5 class="mb-3">From:</h5>
+                                        <h3 class="text-dark mb-1">SAMDAMTE WATER SERVICES</h3>
+                                        <div>P.O. Box 24732 00100, NAIROBI GPO</div>
+                                        <div>Joska, Machakos</div>
+                                        <div>Email: samdamtewaterservices@yahoo.com</div>
+                                        <div>Phone: +254-704-107-724 / +254-788-484-737</div>
+                                    </div>
+                                    <div class="col-sm-6 ">
+                                        <h5 class="mb-3">To:</h5>
+                                        <h3 class="text-dark mb-1">{{$supplier[0]->name}}</h3>                                      
+                                        <div>Email: </div>
+                                        <div>Phone: {{$supplier[0]->phone}}</div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive-sm">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">#</th>
+                                                <th>Item</th>
+                                                <th></th>
+                                                <th class="right"></th>
+                                                <th class="center"></th>
+                                                <th class="right">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($transactions as $transaction)
-                                <tr>
-                                    <td>{{ ++$i}}</td>
-                                    <td>{{ $transaction->client_id }}</td>
-                                    <td>{{ $transaction->account_name }}</td>
-                                    <td>{{ $transaction->description }}</td>
-                                    <td>{{ $transaction->date }}</td>
-<!--                                    <td style="text-align: right;">{{ number_format($transaction->amount_received,2) }}</td>-->
-                                    <td style="text-align: right;">{{ number_format($transaction->amount,2) }}</td>
-                                    <td>{{ $transaction->reference }}</td>
-                                    <td>{{ $transaction->staff }}</td>
-                                    <td>{{ $transaction->bank.' - ' .$transaction->branch}}</td>
-                                    <td>{{ $transaction->mode }}</td>
-                                    <td>
-                                        <form action="{{ route('bill.destroy',$transaction->id) }}" method="POST">
-                                            @can('billing_access')
-                                            <a class="btn btn-sm btn-success" data-pid="{{$transaction->id}}" data-client-id="{{$transaction->client_id}}" href="{{url('client-info-receipt').'/'.$transaction->id.'/'.$transaction->client_id}}"  id="TRANSRCEIPT"><i class="fa fa-print" aria-hidden="true"></i> View & Print</a>
-                                            @endcan
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                            @foreach($details as $d)
+                                            <tr>
+                                                <td class="center">{{++$i}}</td>
+                                                <td class="left strong">{{$d->center}}</td>
+                                                <td class="left"></td>
+                                                <td class="right"></td>
+                                                <td class="center"></td>
+                                                <td style="text-align: right;">{{number_format($d->amount,2)}}</td>
+                                            </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-5">
+                                    </div>
+                                    <div class="col-lg-4 col-sm-5 ml-auto">
+                                        <table class="table table-clear">
+                                            <tbody>
+
+                                                <tr>
+                                                    <td class="left">
+                                                        <strong class="text-dark">Total</strong> </td>
+                                                    <td class="right">
+                                                        <strong class="text-dark">{{number_format($invoice[0]->amount_invoiced,2)}}</strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white">
+                                <p class="mb-0">SAMDAMTE WATER SERVICES, 2020</p>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
 

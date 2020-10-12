@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\LegalCenter;
+use App\Models\Mop;
+use App\Models\Bank;
 use Illuminate\Http\Request;
+use DB;
 
 /**
  * Class LegalCenterController
@@ -22,6 +25,31 @@ class LegalCenterController extends Controller {
 
         return view('legal-center.index', compact('legalCenters'))
                         ->with('i', (request()->input('page', 1) - 1) * $legalCenters->perPage());
+    }
+
+    function legal() {
+        $transactions = DB::select(DB::raw("SELECT * From vw_legalcenter order by id desc"));
+        $i = 1;
+        return view('legal-center.legal', compact('transactions', 'i'));
+    }
+
+    public function new() {
+        $transaction = [];
+        $legal = LegalCenter::all();
+        $banks = \App\Models\Bank::all();
+        $clients = DB::select("SELECT * FROM vw_clients order by id asc");
+        return view('legal-center.createlegal', compact('clients', 'legal', 'transaction', 'banks'));
+    }
+
+    function saveLegalCost(Request $r) {
+        $tadate = date('Y-m-d H:i:s');
+        DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,reference,comments,lc) VALUES ('$r->client_id','$r->description','$tadate','debit','$r->amount','$tadate','$r->legal_remarks','1')");
+        return redirect()->route('legal.index')->with('success', 'Legal Cost Added');
+    }
+
+    function legalDelete($id) {
+        DB::delete("DELETE FROM transactions WHERE id='$id'");
+        return redirect()->route('legal.index')->with('success', 'Legal Cost Removed');
     }
 
     /**

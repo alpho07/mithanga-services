@@ -9,6 +9,7 @@ use App\Models\Status;
 use Illuminate\Http\Request;
 use DB;
 use AfricasTalking\SDK\AfricasTalking;
+use PDF;
 
 /**
  * Class ClientController
@@ -55,7 +56,7 @@ class MeterController extends Controller {
         $ccid = $first_client[0]->id;
         $area_id = DB::select(DB::raw("SELECT area FROM clients WHERE id='$ccid'"))[0]->area;
         $readings = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE reading_date like '%$date%' and area_id='$id' group by area_id"));
-        return view('notification.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'area_' => $id,'date'=>$date, 'fc' => $first_client, 'aid' => $area_id]);
+        return view('notification.index', ['area' => $area, 'readings' => $readings, 'i' => 1, 'area_' => $id, 'date' => $date, 'fc' => $first_client, 'aid' => $area_id]);
     }
 
     public function register($id, $aid) {
@@ -115,7 +116,16 @@ class MeterController extends Controller {
         $area = Area::find($area_id);
         $i = 0;
         $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
-        return view('meter.load_sheet', compact('clients', 'i', 'area'));
+        return view('meter.load_sheet', compact('clients', 'i', 'area','area_id'));
+    }
+
+    function download_sheet($area_id) {
+        $area = Area::find($area_id);
+        $i = 0;
+        $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
+        //return view('meter.download_sheet', compact('clients', 'i', 'area'));
+        $pdf = PDF::loadView('meter.download_sheet', compact('clients', 'i', 'area'));
+        return $pdf->download( $area->name.'_READING-SHEET.pdf');
     }
 
     function load_staement($client_id) {
@@ -136,8 +146,8 @@ class MeterController extends Controller {
         $current_reading = $r->current_reading;
         $consumed = $current_reading - $pr;
         $total_cost = $consumed * $rate;
-        $date = date('Y-m-d');
-        DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$r->reading_date','$r->current_reading')");
+        $date = $r->reading_date . ' ' . date('H:i:s');
+        DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','$r->current_reading')");
         //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,'bill_run') VALUES ('$cid','Water Bill','$date','debit','$total_cost','$consumed','1')");
 
         return redirect()->route('meter.reading.m', ['id' => $id, 'aid' => $aid])->with('success', 'Meter Reading Registered Successfully for account ' . $cid);
@@ -175,10 +185,12 @@ class MeterController extends Controller {
             $id = $q->id;
             $cid = $q->client_id;
             $date = $q->reading_date;
+            $date1 = date_create($date);
+            $date2 = date_format($date1, "M-Y");
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $total_cost = ($q->water_charges) ? $q->water_charges : 0;
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','Water Charges','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','Water Charges($date2)','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
             DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
         endforeach;
         $this->addStandingCharges();

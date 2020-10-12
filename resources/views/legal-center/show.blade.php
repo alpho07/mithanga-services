@@ -24,6 +24,10 @@
                             <strong>Center:</strong>
                             {{ $legalCenter->center }}
                         </div>
+                        <div class="form-group">
+                            <strong>Amount:</strong>
+                            {{ $legalCenter->amount }}
+                        </div>
 
                     </div>
                 </div>

@@ -20,6 +20,7 @@ METER READING SHEETS
 
                 <div class="card-body">
                     <div class="table-responsive ">
+                        <a href="{{route('download.sheet',$area_id)}}" class="btn btn-sm btn-secondary pull-right">PRINT SHEET</a>
                         <table class="table table-bordered table-hover">
                             <thead class="thead">
                                 <tr><td colspan="6" style="text-align: center; font-weight: bold;">SAMDAMTE WATER - METER READING SHEET FOR <?php echo strtoupper(date('M Y')) ?></td></tr>
@@ -27,7 +28,7 @@ METER READING SHEETS
                                     <th colspan="2">AREA: {{$area->name}}</th>                                   
                                     <th colspan="2">Meter Reader: ________________________________________</th>                                    
                                     <th colspan="2">Reading Date: ________________________________________</th>
-                                   
+
                                 </tr>
                                 <tr>
                                     <th>No</th>

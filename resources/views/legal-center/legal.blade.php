@@ -14,15 +14,12 @@ Transaction
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            <strong>Payments</strong>
+                            <strong>Legal Center</strong>
                         </span>
 
-                        <div class="float-right">
-                            <a href="{{ route('payment.adjust') }}" class="btn btn-warning btn-sm float-right"  data-placement="left">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Tansaction Adjustments
-                            </a>
-                            <a href="{{ route('payment.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Make New Payment
+                        <div class="float-right">                          
+                            <a href="{{ route('legal.new') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Raise Legal Claim
                             </a>
 
                         </div>
@@ -45,15 +42,9 @@ Transaction
                                     <th>No</th>
                                     <th>Account No.</th>
                                     <th>Client</th>
-                                    <th>Description</th>
                                     <th>Date</th>
-<!--                                    <th>Amount Received</th>-->
-                                    <th>Amount Paid</th>
-                                    <th>Reference</th>
-                                    <th>Served By</th>
-                                    <th>bank</th>
-                                    <th>Mode</th>
-
+                                    <th>Legal Center</th>
+                                    <th>Amount</th>                                    
                                     <th></th>
                                 </tr>
                             </thead>
@@ -63,18 +54,15 @@ Transaction
                                     <td>{{ ++$i}}</td>
                                     <td>{{ $transaction->client_id }}</td>
                                     <td>{{ $transaction->account_name }}</td>
-                                    <td>{{ $transaction->description }}</td>
                                     <td>{{ $transaction->date }}</td>
-<!--                                    <td style="text-align: right;">{{ number_format($transaction->amount_received,2) }}</td>-->
+                                    <td style="">{{ $transaction->description }}</td>
                                     <td style="text-align: right;">{{ number_format($transaction->amount,2) }}</td>
-                                    <td>{{ $transaction->reference }}</td>
-                                    <td>{{ $transaction->staff }}</td>
-                                    <td>{{ $transaction->bank.' - ' .$transaction->branch}}</td>
-                                    <td>{{ $transaction->mode }}</td>
+                                
                                     <td>
                                         <form action="{{ route('bill.destroy',$transaction->id) }}" method="POST">
                                             @can('billing_access')
-                                            <a class="btn btn-sm btn-success" data-pid="{{$transaction->id}}" data-client-id="{{$transaction->client_id}}" href="{{url('client-info-receipt').'/'.$transaction->id.'/'.$transaction->client_id}}"  id="TRANSRCEIPT"><i class="fa fa-print" aria-hidden="true"></i> View & Print</a>
+                                            <a class="btn btn-sm btn-success" data-pid="{{$transaction->id}}" data-client-id="{{$transaction->client_id}}" href="{{url('legal/edit').'/'.$transaction->id}}" > <i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a class="btn btn-sm btn-danger" data-pid="{{$transaction->id}}" data-client-id="{{$transaction->client_id}}" href="{{url('legal/delete').'/'.$transaction->id}}" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                             @endcan
                                             @csrf
                                             @method('DELETE')

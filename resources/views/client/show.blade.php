@@ -303,54 +303,31 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, Reconnect'
             }).then((result) => {
+
                 if (result.value) {
-
-                    Swal.fire({
-                        title: 'Enter amount paid',
-                        input: 'text',
-                        inputAttributes: {
-                            autocapitalize: 'off'
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: 'Submit',
-                        showLoaderOnConfirm: true,
-                        preConfirm: (para) => {
-
-                            if (isNaN(para)) {
-                                Swal.showValidationMessage(`Request failed: The amount enteredis invalid`)
-                            } else if (para.length <= 0) {
-                                Swal.showValidationMessage(`Request failed: No paid amount found`)
-                            } else {
-
-                            }
-                        },
-                        allowOutsideClick: () => !Swal.isLoading()
-                    }).then((result) => {
-                        if (result.value) {
-                            data = {_token: "{{csrf_token()}}", cid: "{{$client[0]->id}}", amount: result.value};
-                            $.post("{{route('client.reconnect')}}", data, function (resp) {
-                                if (resp.status == 'true') {
-                                    Swal.fire({
-                                        title: 'Reconnected!',
-                                        icon: 'success',
-                                        text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Reconnected Successfully!"
-                                    })
-                                    window.location.href = "";
-                                } else {
-                                    Swal.fire({
-                                        title: 'Not econnected!',
-                                        icon: 'error',
-                                        text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Could not be reconnected!"
-                                    })
-                                }
-                            });
-
-
+                    data = {_token: "{{csrf_token()}}", cid: "{{$client[0]->id}}", amount: result.value};
+                    $.post("{{route('client.reconnect')}}", data, function (resp) {
+                        if (resp.status == 'true') {
+                            Swal.fire({
+                                title: 'Reconnected!',
+                                icon: 'success',
+                                text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Reconnected Successfully!"
+                            })
+                            window.location.href = "";
+                        } else {
+                            Swal.fire({
+                                title: 'Not econnected!',
+                                icon: 'error',
+                                text: "{{$client[0]->account_name.'('.$client[0]->id.')'}} Could not be reconnected!"
+                            })
                         }
-                    })
+                    });
+
 
                 }
             })
+
+
         })
     })
 </script>

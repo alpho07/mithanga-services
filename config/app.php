@@ -57,7 +57,7 @@ return [
       | ahead and set this to a sensible default for you out of the box.
       |
      */
-    'timezone' => 'UTC',
+    'timezone' => 'Africa/Nairobi',
     /*
       |--------------------------------------------------------------------------
       | Application Locale Configuration
@@ -140,6 +140,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -204,5 +205,6 @@ return [
         'Flash' => Laracasts\Flash\Flash::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'Input' => Illuminate\Support\Facades\Input::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 ];

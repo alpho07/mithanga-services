@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Create Client
+    Client Receipt
 @endsection
 
-@section('content')aawq
+@section('content')
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
