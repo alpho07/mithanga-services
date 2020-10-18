@@ -53,7 +53,7 @@ Transaction
                                     </td>
 
                                     <td>
-                                        <input type="text" name="from" value="{{$from}}" placeholder="From" class="form-control datepicker"/>
+                                        <input type="text" name="from" value="{{$from}}" placeholder="From" class="form-control "/>
                                     </td>
                                     <td>
                                         <input type="text" name="to" value="{{$to}}" placeholder="To" class="form-control datepicker"/>
@@ -108,14 +108,15 @@ Transaction
                                 <tr>
                                     <th>DATE</th>
                                     <th>DESCRIPTION</th>
+                                    <th>UNITS AND READINGS</th>
                                     <th>REFERENCE</th>
                                     <th style="text-align: right;">DEBIT</th>
                                     <th style="text-align: right;">CREDIT</th>
                                     <th style="text-align: right;">BALANCE</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" style="font-weight: bold;">{{$opening_balance >= 0 ? 'OPENING BALANCE' : 'ARREARS'}}</td>                              
-                                    <td style="text-align: right;"><b>{{number_format($opening_balance,2)}}</b></td>
+                                    <td colspan="6" style="font-weight: bold;">{{$opening_balance >= 0 ? 'OPENING BALANCE' : 'ARREARS'}}</td>                              
+                                    <td style="text-align: right;"><b>{{str_replace('-','',number_format($opening_balance,2))}}</b></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -125,27 +126,41 @@ Transaction
                                 @endphp
                                 @foreach($statement as $s)
                                 @php
-                                $account_balance = ($s->type =='credit') ? $account_balance + $s->amount : $account_balance - $s->amount;
+                                $account_balance = ($s->type =='credit') ? $account_balance - $s->amount : $account_balance + $s->amount;
                                 $credit_amount= ($s->type =='credit') ? $s->amount : '';
                                 $debit_amount= ($s->type =='debit') ? $s->amount : '';                           
 
                                 @endphp
 
                                 <tr>
-                                    <td>{{$s->transaction_date}}</td>
-                                    <td>{{$s->description}}</td>                                
-                                    <td>{{$s->reference}}</td>
+                                    <td>{{$s->transaction_date}}</td>                                                                    
+                                    <td>{{$s->description}}</td>  
+                                    <td>
+                                        @if (strpos(strtolower($s->description), 'water') !== false) 
+                                        {{$s->units.'(C) - '.$s->last_read.'(R)'}}                                        
+                                        @endif
+                                        @if (strpos(strtolower($s->description), 'disconnection') !== false) 
+                                        {{$s->units.'(C) - '.$s->last_read.'(R)'}}                                        
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(\is_null($s->mode))
+                                        {{$s->reference}}
+                                        @else
+                                        {{$s->m_reference}}
+                                        @endif
+                                    </td>
                                     <td style="text-align: right;">{{is_numeric($debit_amount) ? number_format($debit_amount,2) : $debit_amount}}</td>
                                     <td style="text-align: right;">{{is_numeric($credit_amount) ? number_format($credit_amount,2) : $credit_amount}}</td>
-                                    <td style="text-align: right;">{{number_format($account_balance,2)}}</td>
+                                    <td style="text-align: right;">{{str_replace('-','',number_format($account_balance,2))}}</td>
                                 </tr>
                                 @endforeach
 
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" style="font-weight: bold;">CLOSING BALANCE</td>                              
-                                    <td style="text-align: right;"><b>{{number_format($account_balance,2)}}</b></td>
+                                    <td colspan="6" style="font-weight: bold;">CLOSING BALANCE</td>                              
+                                    <td style="text-align: right;"><b>{{($account_balance < 0) ? '('.number_format($account_balance,2).')' : number_format($account_balance,2) }}</b></td>
                                 </tr>
                             </tfoot>
                         </table>

@@ -67,7 +67,7 @@ Transaction
                                     <td>{{ $transaction->date }}</td>
 <!--                                    <td style="text-align: right;">{{ number_format($transaction->amount_received,2) }}</td>-->
                                     <td style="text-align: right;">{{ number_format($transaction->amount,2) }}</td>
-                                    <td>{{ $transaction->reference }}</td>
+                                    <td>{{ $transaction->id }}</td>
                                     <td>{{ $transaction->staff }}</td>
                                     <td>{{ $transaction->bank.' - ' .$transaction->branch}}</td>
                                     <td>{{ $transaction->mode }}</td>

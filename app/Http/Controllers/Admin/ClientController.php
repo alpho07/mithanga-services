@@ -32,7 +32,7 @@ class ClientController extends Controller {
     }
 
     function loadClients() {
-        $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id"));
+        $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c LEFT JOIN areas a ON c.area = a.id LEFT JOIN statuses s ON c.status = s.id"));
         return Datatables::of($clients)
                         ->smart(true)
                         ->make(true);
@@ -112,7 +112,7 @@ class ClientController extends Controller {
         DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units) VALUES ('$cid','Application Fee','$date','debit','1155','0')");
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','0')");
         $message = "Dear " . strtoupper($request->account_name) . " Your A/C is " . $id[0]->id . "  We are pleased to welcome you as a new client. We feel honored that you have chosen us to fill your water service needs, and we are eager to be of service. WE MAKE IT SAFE BECAUSE WATER IS LIFE. THANK YOU AND WELCOME!";
-        // $this->sendSampleText($message, $request->phone_no);
+       // $this->sendSampleText($message, $request->phone_no);
         return redirect()->route('client.index')
                         ->with('success', 'Client created successfully.');
     }

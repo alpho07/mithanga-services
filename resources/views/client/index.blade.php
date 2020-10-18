@@ -34,10 +34,11 @@ Client
                         <table class="table table-bordered table-hover client" id="clientsTable">
                             <thead class="thead">
                                 <tr>
-                                    <th>Account No.</th>
-                                    <th>Area</th>
+                                    <th>Account No.</th>                                    
                                     <th>Account Name</th>
+                                    <th>Area</th>
                                     <th>Phone No</th>
+                                    <th>Comment</th>
                                     <th>National Id</th>
                                     <th>KRA PIN</th>
                                     <th>Account Open Date</th>
@@ -55,6 +56,7 @@ Client
                                 </tr>
                             </thead>
                             <tfoot>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -93,10 +95,12 @@ Client
                 {data: 'id', name: 'id', mRender: function (data, type, row) {
                         return "<a class='btn btn-sm btn-primary' href={{url('client/show')}}/" + row.id + ">View Account No (" + row.id + ")</a>"
                     }},
-                {data: 'area_name', name: 'area_name'},
+
                 {data: 'account_name', name: 'account_name'},
+                {data: 'area_name', name: 'area_name'},
                 {data: 'phone_no', name: 'phone_no'},
-                {data: 'national_id', name: 'national_id'},
+                {data: 'comment', name: 'comment'},
+                {data: 'national_id', name: 'national_id'},                
                 {data: 'kra_pin', name: 'kra_pin'},
                 {data: 'account_open_date', name: 'account_open_date'},
                 {data: 'meter_number', name: 'meter_number'},

@@ -93,9 +93,11 @@ class MeterController extends Controller {
         }
         $client = DB::select(DB::raw("SELECT * FROM vw_clients WHERE id='$id' AND area_id='$aid'"));
         $area = Area::all();
+        $area_name = Area::find($aid)->rate;
         return view('meter.meter_reading', [
             'client' => $client,
             'area' => $area,
+            'area_name' => $area_name,
             'p' => $pv,
             'n' => $nt,
             'nts' => $nt_status,
@@ -116,7 +118,7 @@ class MeterController extends Controller {
         $area = Area::find($area_id);
         $i = 0;
         $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
-        return view('meter.load_sheet', compact('clients', 'i', 'area','area_id'));
+        return view('meter.load_sheet', compact('clients', 'i', 'area', 'area_id'));
     }
 
     function download_sheet($area_id) {
@@ -125,7 +127,7 @@ class MeterController extends Controller {
         $clients = DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$area_id'"));
         //return view('meter.download_sheet', compact('clients', 'i', 'area'));
         $pdf = PDF::loadView('meter.download_sheet', compact('clients', 'i', 'area'));
-        return $pdf->download( $area->name.'_READING-SHEET.pdf');
+        return $pdf->download($area->name . '_READING-SHEET.pdf');
     }
 
     function load_staement($client_id) {
@@ -155,8 +157,8 @@ class MeterController extends Controller {
 
     function disconnect(Request $r) {
         $date = date('Y-m-d');
-        $query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$r->cid','$date','$r->current_reading')");
-        DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','Disconnection Fee','$date','debit','1155')");
+        $query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading,discon) VALUES ('$r->cid','$date','$r->current_reading','d')");
+        //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','DISCONNECTION FEE','$date','debit','1155')");
         DB::table('clients')->where('id', "$r->cid")->update(['status' => 2]);
         if ($query) {
             return ['status' => 'true'];
@@ -179,6 +181,7 @@ class MeterController extends Controller {
 
     function runBill() {
         $query = DB::select(DB::raw("SELECT * FROM vm_meter_readings  WHERE bill_run='0'"));
+      // dd($query);
         $total = count($query);
         $message = $total > 0 ? $total . ' Bill(s) Sucessfully run and generated' : 'No pending bill(s) to process';
         foreach ($query as $q):
@@ -190,7 +193,12 @@ class MeterController extends Controller {
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $total_cost = ($q->water_charges) ? $q->water_charges : 0;
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','Water Charges($date2)','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
+            if ($q->discon == 'd') {
+                $description = 'DISCONNECTION FEE';
+            } else {
+                $description = "WATER CHARGES($date2)";
+            }
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','$description','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
             DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
         endforeach;
         $this->addStandingCharges();

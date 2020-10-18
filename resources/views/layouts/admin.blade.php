@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
         @yield('styles')
-            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="//unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>
@@ -114,99 +114,132 @@
                         </ul>
                     </div>
                     @endif
-                    @yield('content')
+                    <div class="card">
+                        <div class="card-header">Quick Links</div>
+                        <div class="card-body">
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                                    <a class="navbar-brand" href="{{url('client')}}"><i class="fa fa-users"></i> Clients | </a>
+                                    <a class="navbar-brand" href="{{url('statement/'.date('Y-m').'-01/'.date('Y-m-t',strtotime(date('Y-m-d'))))}}"><i class="fa fa-file"></i> Statements | </a>
+                                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="{{url('meter')}}"><i class="fa fa-dashboard"></i> Meter Reading  | </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="{{url('billing')}}"><i class="fa fa-clipboard"></i> Bills  | </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="{{url('payment')}}"><i class="fa fa-money-bill"></i> Payments  | </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="{{url('areas')}}"><i class="fa fa-building"></i> Areas  | </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="{{url('areas/report/'.date('Y-m').'-01')}}"><i class="fa fa-building"></i> Area Report  | </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="{{url('disconnected/bill')}}"><i class="fa fa-power-off"></i> Disconnected Units</a>
+                                        </li>
+
+                                    </ul>
+                                    <form class="form-inline my-2 my-lg-0">
+                                        <input class="form-control mr-sm-2" type="text" id="SEARCH" auautofocus placeholder="Enter Client Account" aria-label="Search">
+                                    </form>
+                                </div>
+                            </nav>
+                        </div>
+                    </div> 
 
                 </div>
+                @yield('content')
 
-
-            </main>
-            <form id="logoutform" action="{{ route('logout') }}" method="GET" style="display: none;">
-                {{ csrf_field() }}
-            </form>
         </div>
-    
-        <script>
+
+
+    </main>
+    <form id="logoutform" action="{{ route('logout') }}" method="GET" style="display: none;">
+        {{ csrf_field() }}
+    </form>
+</div>
+
+<script>
 $(function() {
     
-    
-    $('#BANK').change(function(){
-          $.getJSON("{{url('bank-branches')}}/"+$(this).val(),function(data){
-              $('#BRANCH').empty();
-               $('#BRANCH').append('<option value="">--Select Branch--</option>');
-              $.each(data,function(i,d){          
-                
-                $('#BRANCH').append('<option value="'+d.id+'">'+d.name+'</option>');  
-              });
-              
-          })
-    });
-    
-    $(document).on('click','#TRANSRCEIPT',function(){
-        pid = $(this).attr('data-pid');
-        client_id = $(this).attr('data-client-id');
-         $.getJSON("{{url('client-info')}}/"+pid+'/'+client_id,function(data){
-             $('#pdate').text(data.transactions[0].date)
-             $('#pref').text(data.transactions[0].reference)
-             $('#paccount').text(data.transactions.client_id)
-             $('#paname').text(data.due[0].account_name)
-             $('#pitem').text(data.transactions[0].description)
-             $('#price_').text(data.transactions[0].amount)
-             $('#price_due').text(data.transactions[0].balance)
-             $('#mode').text(data.transactions[0].mode)
-             $('#served').text(data.transactions[0].staff)
-             if(data.due[0].balance=='' || data.due[0].balance > 0 ){
-                 balance = '0.00';
-             }else{
-                 balance =data.due[0].balance 
-             }
-             $('#price_due').text(balance)
-           
-              
-          })
-    });
-    
-    $('#meterselection').change(function(){
-        value = $(this).val();
-        id='';
-        name = $('#meterselection option:selected').text();
-       $.get("{{url('find_id')}}/"+value,function(resp){
-           
-           if(resp==''){
-               Swal.fire(
-                    name+ ' has no registered clients',
-                     ' ',
-                      'error'
-                )
-           }else{               
-               window.location.href="{{url('meter_reading_')}}/"+resp+'/'+value
-               
-           }
-           
-       })
-    });
-    
-    
-    $('#SUBMITTER').click(function(){
-        prev = parseInt($('#prev_reading').val());
-        curr = parseInt($('#current_reading').val());
-        
-        if(prev > curr){
-             Swal.fire(
-                    'Invalid Entry',
-                     'Previous reading cannot be greater tha current reading!',
-                      'error'
-                )
-            return false;
-        }
-    });
-    
+      $(document.body).on('keyup', '#SEARCH', function(event) {
+          if(event.keyCode == 13) { // 13 = Enter Key
+           value = $('#SEARCH').val();
+           window.location.href = "{{url('client/show')}}/" + value
+          }
+        });
     
 
-    
-    
-    
-    
-   
+$('#BANK').change(function(){
+$.getJSON("{{url('bank-branches')}}/" + $(this).val(), function(data){
+$('#BRANCH').empty();
+$('#BRANCH').append('<option value="">--Select Branch--</option>');
+$.each(data, function(i, d){
+
+$('#BRANCH').append('<option value="' + d.id + '">' + d.name + '</option>');
+});
+})
+        });
+$(document).on('click', '#TRANSRCEIPT', function(){
+pid = $(this).attr('data-pid');
+client_id = $(this).attr('data-client-id');
+$.getJSON("{{url('client-info')}}/" + pid + '/' + client_id, function(data){
+$('#pdate').text(data.transactions[0].date)
+        $('#pref').text(data.transactions[0].reference)
+        $('#paccount').text(data.transactions.client_id)
+        $('#paname').text(data.due[0].account_name)
+        $('#pitem').text(data.transactions[0].description)
+        $('#price_').text(data.transactions[0].amount)
+        $('#price_due').text(data.transactions[0].balance)
+        $('#mode').text(data.transactions[0].mode)
+        $('#served').text(data.transactions[0].staff)
+        if (data.due[0].balance == '' || data.due[0].balance > 0){
+balance = '0.00';
+} else{
+balance = data.due[0].balance
+        }
+$('#price_due').text(balance)
+
+
+        })
+        });
+$('#meterselection').change(function(){
+value = $(this).val();
+id = '';
+name = $('#meterselection option:selected').text();
+$.get("{{url('find_id')}}/" + value, function(resp){
+
+if (resp == ''){
+Swal.fire(
+        name + ' has no registered clients',
+        ' ',
+        'error'
+        )
+        } else{
+window.location.href = "{{url('meter_reading_')}}/" + resp + '/' + value
+
+        }
+
+})
+        });
+$('#SUBMITTER').click(function(){
+prev = parseInt($('#prev_reading').val());
+curr = parseInt($('#current_reading').val());
+if (prev > curr){
+Swal.fire(
+        'Invalid Entry',
+        'Previous reading cannot be greater tha current reading!',
+        'error'
+        )
+        return false;
+}
+});
 let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
         let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
         let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
@@ -291,46 +324,40 @@ $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
                 ]
         });
 $.fn.dataTable.ext.classes.sPageButton = '';
-});
-        </script>
-        @yield('scripts')
+});</script>
+@yield('scripts')
 
-        <script>
-            $(function(){
-           // $('.areas,.costcener,.legal,.supplies,.supplies,.status,.client').DataTable({
-            //"autoWidth": false
-           // });
-            $(".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
-            $('#area').select2();
-        
-      
-            });
-            $(".monthPicker").datepicker({
+<script>
+    $(function(){
+    // $('.areas,.costcener,.legal,.supplies,.supplies,.status,.client').DataTable({
+    //"autoWidth": false
+    // });
+    $(".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+    $('#area').select2();
+    });
+    $(".monthPicker").datepicker({
 
-            dateFormat: 'yy-mm-23',
-                    changeMonth: true,
-                    changeYear: true,
-                    showButtonPanel: true,
-                    onClose: function(dateText, inst) {
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).val($.datepicker.formatDate('yy-mm-23', new Date(year, month, 1)));
-                    }
-            });
-            
-                
+    dateFormat: 'yy-mm-23',
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).val($.datepicker.formatDate('yy-mm-23', new Date(year, month, 1)));
+            }
+    });
     function ptr_(){
-	//change the font-size
+    //change the font-size
     $("#Receipt").css({fontSize: '12px'});
     $("#Receipt").css('margin-left', '0');
     $("#Receipt").css('padding', '0');
-	
-    window.print();//trigger the print dialog
-	
-    $("#Receipt").modal('hide');//dismiss modal
-}
+    window.print(); //trigger the print dialog
 
-        </script>
-    </body>
+    $("#Receipt").modal('hide'); //dismiss modal
+    }
+
+</script>
+</body>
 
 </html>

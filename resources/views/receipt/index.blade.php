@@ -44,7 +44,7 @@
                     <table>                
 
                         <tr class="">
-                            <td class=""><p class="itemtext">Receipt No :- {{$transactions[0]->reference}}</p></td>
+                            <td class=""><p class="itemtext">Receipt No :- {{$transactions[0]->id}}</p></td>
                         </tr>
                         <tr class="">
                             <td class=""><p class="itemtext">Receipt Date :- {{explode(' ', $transactions[0]->date)[0]}} </p></td>
@@ -71,9 +71,9 @@
 
                         @endif
 
-                        @if(count($bills) <= 0)
+                        @if(count($bills) > 0)
                         <tr class="">
-                            <td class=""><p class="itemtext">{{$transactions[0]->description}}:      Kshs {{number_format($transactions[0]->amount,2)}}</p></td>
+<!--                            <td class=""><p class="itemtext">{{$transactions[0]->description}}:      Kshs {{number_format($transactions[0]->amount,2)}}</p></td>-->
                         </tr>
                         @foreach ($bills as $b)
                         <tr class="">

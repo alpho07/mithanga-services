@@ -26,6 +26,12 @@ class TransactionController extends Controller {
         return view('transaction.index', compact('transactions', 'i'));
     }
 
+    public function disconnected() {
+        $transactions = DB::select(DB::raw("SELECT * From vm_meter_readings WHERE discon='d' order by id desc"));
+        $i = 1;
+        return view('transaction.index_disconnected', compact('transactions', 'i'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -37,9 +43,11 @@ class TransactionController extends Controller {
         return view('transaction.create', compact('clients', 'transaction'));
     }
 
-    public function statement() {
+    public function statement($start, $end) {
         $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
-        return view('statement.index', compact('clients'));
+        $from = $start;
+        $to = $end;
+        return view('statement.index', compact('clients', 'from', 'to'));
     }
 
     function get(Request $r) {
@@ -56,9 +64,12 @@ class TransactionController extends Controller {
         $credit_amount = '';
         $account_balance = '';
         $account_balance_ = [];
-        $opening_balance_ = DB::select(DB::raw("SELECT SUM(IF(type='debit',-amount,amount)) balance,client_id FROM transactions WHERE date < '$from' AND client_id='$client_id' GROUP BY client_id"));
-        if (isset($opening_balance_[0]->balance)) {
-            $opening_balance = $opening_balance_[0]->balance;
+        $opening_balance=0;
+        $deb1 = DB::select(DB::raw("SELECT SUM(amount) balance,client_id FROM vw_transactions WHERE date < '$from' AND client_id='$client_id' AND type='debit' GROUP BY client_id"))[0]->balance;
+        $cred1= DB::select(DB::raw("SELECT SUM(amount) balance,client_id FROM vw_transactions WHERE date < '$from' AND client_id='$client_id' AND type='credit' GROUP BY client_id"))[0]->balance;
+        $bal = $cred1 - $deb1;
+        if (isset($bal)) {
+            $opening_balance = $bal;
         } else {
             $opening_balance = 0;
         }
@@ -78,7 +89,7 @@ class TransactionController extends Controller {
         $credit_amount = '';
         $account_balance = '';
         $account_balance_ = [];
-        $opening_balance_ = DB::select(DB::raw("SELECT SUM(IF(type='debit',-amount,amount)) balance,client_id FROM transactions WHERE date < '$from' AND client_id='$client_id' GROUP BY client_id"));
+        $opening_balance_ = DB::select(DB::raw("SELECT SUM(IF(type='debit',-amount,amount)) balance,client_id FROM transactions WHERE date <= '$from' AND client_id='$client_id' GROUP BY client_id"));
         if (isset($opening_balance_[0]->balance)) {
             $opening_balance = $opening_balance_[0]->balance;
         } else {
@@ -86,14 +97,13 @@ class TransactionController extends Controller {
         }
         $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM vw_transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY id asc");
         //return view('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
-
         // share data to view
         //view()->share('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
         $pdf = PDF::loadView('statement.printstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
 
         // download PDF file with download method
         return $pdf->download('pdf_file.pdf');
-       // dd($pdf);
+        // dd($pdf);
     }
 
     /**

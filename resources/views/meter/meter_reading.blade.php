@@ -67,7 +67,7 @@ Meter Reading
                             <div class="form-group">
                                 <label class="control-label col-sm-6" for="pwd">Reading(Units)</label>
                                 <div class="col-sm-12">
-                                    <input type="number" class="form-control" value="" required id="current_reading"  name="current_reading" placeholder="Reading(Units)" >
+                                    <input type="number" class="form-control" value="" required id="current_reading"  name="current_reading" placeholder="Reading(Units)" autofocus >
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@ Meter Reading
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" id="SUBMITTER" class="btn btn-danger">Submit</button>
+                                    <input type="submit" id="SUBMITTER" class="btn btn-danger" value="Submit">
                                     <a href="{{route('meter.reading.m',['id'=>$p,'aid'=>$aid])}}" class="btn btn-primary" {{$pvs}}>Previous</a>
                                     <a href="{{route('meter.reading.m',['id'=>$n,'aid'=>$aid])}}" class="btn btn-primary" {{$nts}}>Next</a>
                                 </div>
@@ -101,33 +101,56 @@ Meter Reading
 
                         </div>
                     </div>
-          
+
                     <div class="card-body">
-                       
-                 
-                            <div class="form-group">
-                                <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Previous Meter Reading (Units)</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control"  id="prev_reading" value="{{@$prevr}}" readonly  >
 
-                                </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Previous Meter Reading (Units)</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control"  id="prev_reading" value="{{@$prevr}}" readonly  >
+
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Consumed (Units)</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control"  id="consumed_units" value="0.00" readonly  >
 
-                  
-                            <div class="form-group">
-                                <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Account Balance (Ksh.)</label>
-                                <div class="col-sm-12">
-                                    <input type="number" readonly class="form-control" value="{{$bal}}" required   name="current_reading" placeholder="Reading(Units)" >
-                                </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Billing Rate (Kshs.)</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control"  id="area_rates" value="{{@number_format($area_name,2)}}" readonly  >
 
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-
-                                </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Water Charges (Kshs.)</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control"  id="charges" readonly  >
 
-                     
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Account Balance (Ksh.)</label>
+                            <div class="col-sm-12">
+                                <input type="hidden"  class="form-control" value="{{$bal}}"    id="cust_balance"  >
+
+                                <input type="number" readonly class="form-control" value="{{number_format($bal,2)}}" required   id="show_balance" placeholder="Reading(Units)" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+
+                            </div>
+                        </div>
+
+
                         </form>
                     </div>
                 </div>
@@ -217,6 +240,33 @@ $(function () {
     });
 
     //$('#area_sel').select2();
+
+    $('#current_reading').keyup(function () {
+        val = parseInt($(this).val());
+        prev = parseInt($('#prev_reading').val());
+        cust_balance = parseInt($('#cust_balance').val());
+        $('#consumed_units').val(val - prev);
+        if (val < prev) {
+//            Swal.fire(
+//                    'Current reading cannot be less than the previous reading',
+//                    ' ',
+//                    'error'
+//                    );
+            //$('#current_reading').val('');
+        }
+        consumed = $('#consumed_units').val();
+        area_rates = parseInt($('#area_rates').val());
+        $('#charges').val(consumed * area_rates);
+        charges = $('#charges').val();
+        amount = cust_balance - charges;
+        if (amount > 0) {
+            bal = '(' + amount + ')';
+        } else {
+            bal = amount * -1;
+        }
+        $('#show_balance').val(bal);
+    });
+
 
     $(document).on('click', '.EDITS', function () {
         id = $(this).attr('data-id');

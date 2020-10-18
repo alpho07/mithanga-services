@@ -150,17 +150,26 @@ class PaymentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-
-        $clientid = $request->client_id;
+        //dd($request->all());
+        $check = $clientid = $request->client_id;
         $amount = $request->amount;
+        $date = date('YmdHis');
         $last_credit = DB::select("SELECT * FROM transactions WHERE client_id='$clientid' ORDER BY id DESC LIMIT 1");
-        $update_id = $last_credit[0]->id;
-        $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
-        $client = $request->client_id;
-        if ($last_credit[0]->description == 'Reconnection Fee') {
-            DB::update("UPDATE transactions SET amount='$amount' WHERE id='$update_id'");
-            return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
-                            ->with('success', 'Reconection fee updated');
+        if (count($last_credit) > 0) {
+            $update_id = @$last_credit[0]->id;
+            $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
+            $client = @$request->client_id;
+            $mop = @$request->mop;
+            if ($last_credit[0]->description == 'Reconnection Fee') {
+                DB::update("UPDATE transactions SET amount='$amount',reference='$date',mop='$mop' WHERE id='$update_id'");
+                return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
+                                ->with('success', 'Reconnection fee updated');
+            } else {
+                request()->validate(Transaction::$rules);
+                $transaction = Transaction::create($request->all());
+                return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
+                                ->with('success', 'Payment Successfully Saved');
+            }
         } else {
 
             request()->validate(Transaction::$rules);

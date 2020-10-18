@@ -162,6 +162,9 @@ Route::delete('payment/delete/{id}', 'Admin\PaymentController@destroy')->name('p
 Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('payment.update');
 
 
+Route::get('disconnected/bill', 'Admin\TransactionController@disconnected')->name('billing.disconnected');
+
+
 
 
 
@@ -243,7 +246,7 @@ Route::get('reading_sheet/{area_id}', 'Admin\MeterController@load_sheet')->name(
 Route::get('download_sheet/{area_id}', 'Admin\MeterController@download_sheet')->name('download.sheet');
 
 
-Route::get('statement', 'Admin\TransactionController@statement')->name('statement.index');
+Route::get('statement/{start}/{end}', 'Admin\TransactionController@statement')->name('statement.index');
 Route::post('get-statement', 'Admin\TransactionController@get')->name('statement.get');
 Route::get('statement/print', 'Admin\TransactionController@createPDF');
 

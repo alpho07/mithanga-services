@@ -168,7 +168,7 @@
                 <ul class="nav-dropdown-items">
 
                     <li class="nav-item">
-                        <a href="{{ route("statement.index") }}" class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
+                        <a href="{{ route("statement.index",['start'=>date('Y-m').'-01','end'=>date('Y-m-t',strtotime(date('Y-m-d')))]) }}" class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
 
                             Account Statement

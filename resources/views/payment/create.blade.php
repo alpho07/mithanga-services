@@ -57,10 +57,19 @@ Create Transaction
     $(function () {
         $('#client_id').change(function () {
             id = $(this).val();
+            result = '';
             $.getJSON("{{url('client-last-info')}}/" + id, function (res) {
                 $('#account_name').html(' <strong>' + res[0].account_name + '</strong>');
                 $('#account_reading').html(' <strong>' + res[0].current_reading + '</strong>');
-                $('#account_balance').html(' <strong>' + res[0].balance + '<strog>');
+                st = res[0].balance;
+                if (parseInt(res[0].balance) <= 0) {
+                    result =  st.replace(/-/g, " ");
+                } else {
+                    result = '(' + st.replace(/-/g, " ") + ')';
+
+                }            
+
+                $('#account_balance').html(' <strong>' + result + '<strong>');
             });
         });
     })

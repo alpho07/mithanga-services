@@ -51,10 +51,10 @@ Transaction
                                     </td>
                                
                                     <td>
-                                        <input type="text" name="from" placeholder="From" reqired class="form-control datepicker"/>
+                                        <input type="text" name="from" value="{{$from}}" placeholder="From" reqired class="form-control datepicker"/>
                                     </td>
                                     <td>
-                                        <input type="text" name="to" placeholder="To" required class="form-control datepicker"/>
+                                        <input type="text" name="to" placeholder="To" value="{{$to}}" required class="form-control datepicker"/>
                                     </td>
 
                                     <td>
