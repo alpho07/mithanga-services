@@ -5,7 +5,7 @@ Route::redirect('/home', '/admin');
 Auth::routes();
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
-    Route::redirect('/', '/admin/expenses');
+    Route::redirect('/', 'client');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -163,6 +163,7 @@ Route::patch('payment/update/{id}', 'Admin\PaymentController@update')->name('pay
 
 
 Route::get('disconnected/bill', 'Admin\TransactionController@disconnected')->name('billing.disconnected');
+Route::get('client/loadclient/{cid}', 'Admin\MeterController@getClientPage')->name('client.load');
 
 
 

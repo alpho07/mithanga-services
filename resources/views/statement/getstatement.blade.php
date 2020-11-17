@@ -5,6 +5,12 @@ Transaction
 @endsection
 
 @section('content')
+<style>
+
+    table td {
+        border: 1px solid black;
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -30,7 +36,7 @@ Transaction
 
                 <div class="table-responsive">
                     <form action="{{ route('statement.get') }}" method="POST">
-                        <table class="table table-striped table-hover">
+                        <table class="table table-striped table-hover table-bordered">
                             <thead class="thead">
                                 <tr>
                                     <th>Client/Area</th>
@@ -79,32 +85,37 @@ Transaction
                             <div class="d-flex justify-content-end mb-4">
                                 <form action="{{ url('statement/print') }}" method="get">
                                     @csrf
-                                    <button class="btn btn-primary" type="submit" >Export to PDF</button>
+                                    <button class="btn btn-primary" type="button" id="PRINT">PRINT</button>
+                                    <!--                                    <button class="btn btn-primary" type="submit" >Export to PDF</button>-->
                                 </form>
                             </div>
                         </div>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Name</strong></td>
-                                <td><strong>{{strtoupper($clients_narrowed[0]->account_name)}}</strong></td>
-                                <td><strong>Service Area</strong></td>
-                                <td><strong>{{strtoupper($clients_narrowed[0]->area_name)}}</strong></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Account No:</strong></td>
-                                <td><strong>{{strtoupper($clients_narrowed[0]->id)}}</strong></td>
-                                <td><strong>Statement Period</strong></td>
-                                <td><strong>{{date('M Y', strtotime($from))}} to {{date('M Y', strtotime($to))}}</strong></td>
-                            </tr>
 
-                        </table>
+
                     </div>
 
 
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-bordered">
                             <thead class="thead">
-
+                                <tr>
+                                    <td><strong>Name</strong></td>
+                                    <td><strong>{{strtoupper($clients_narrowed[0]->account_name)}}</strong></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Service Area</strong></td>
+                                    <td><strong>{{strtoupper($clients_narrowed[0]->area_name)}}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Account No:</strong></td>
+                                    <td><strong>{{strtoupper($clients_narrowed[0]->id)}}</strong></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Statement Period</strong></td>
+                                    <td><strong>{{date('M Y', strtotime($from))}} to {{date('M Y', strtotime($to))}}</strong></td>
+                                </tr>
                                 <tr>
                                     <th>DATE</th>
                                     <th>DESCRIPTION</th>
@@ -115,8 +126,9 @@ Transaction
                                     <th style="text-align: right;">BALANCE</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" style="font-weight: bold;">{{$opening_balance >= 0 ? 'OPENING BALANCE' : 'ARREARS'}}</td>                              
-                                    <td style="text-align: right;"><b>{{str_replace('-','',number_format($opening_balance,2))}}</b></td>
+                                    <td colspan="6" style="font-weight: bold;">{{$opening_balance >= 0 ? 'OPENING BALANCE' : 'ARREARS'}}</td>
+                                     @php $balan2  = ($opening_balance < 0) ? '('.number_format($opening_balance,2).')' : number_format($opening_balance,2) @endphp
+                                    <td style="text-align: right;"><b>{{str_replace('-','',$balan2)}}</b></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -159,8 +171,9 @@ Transaction
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    @php $balan  = ($account_balance < 0) ? '('.number_format($account_balance,2).')' : number_format($account_balance,2) @endphp
                                     <td colspan="6" style="font-weight: bold;">CLOSING BALANCE</td>                              
-                                    <td style="text-align: right;"><b>{{($account_balance < 0) ? '('.number_format($account_balance,2).')' : number_format($account_balance,2) }}</b></td>
+                                    <td style="text-align: right;"><b>{{str_replace('-','',$balan) }}</b></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -175,10 +188,31 @@ Transaction
 
 </div>
 
-</div>
+
 <script>
     $(function () {
-        $('#SCLIENTID').val("{{$client_id}}").trigger('change')
+        $('#SCLIENTID').val("{{$client_id}}").trigger('change');
+
+
+
+        function printData()
+        {
+            $('table th').css('border', '1px solid black')
+            $('table th').css('padding', '3px`')
+            $('table td').css('border', '1px solid black')
+            $('table td').css('padding', '3px')
+            $('table').css('border-collapse', 'collapse')
+            var divToPrint = document.getElementById("printToPdf");
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+        $('#PRINT').on('click', function () {
+            printData();
+        })
+
     })
 </script>
 @endsection

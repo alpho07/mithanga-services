@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -8,46 +9,70 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ trans('panel.site_title') }}</title>
-        <link href="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
-        <link href="//use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />
-        <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
-        <link href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-        <link href="//cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet" />
-        <link href="//cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" rel="stylesheet" />
-        <link href="//unpkg.com/@coreui/coreui@2.1.16/dist/css/coreui.min.css" rel="stylesheet" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/bootstrap4.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/buttons.dataTables.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/select.dataTables.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/coreui.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/font.awesome.5.2.0') }}" rel="stylesheet" />
+        <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+        <link href="{{ asset('jquery-ui/jquery-ui.css') }}" rel="stylesheet" />
         @yield('styles')
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="//unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>
-        <script src="/cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
-        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-        <script src="//cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
-        <script src="//cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
-        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<!--        <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>-->
+        <script src="{{ asset('js/popper.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>-->
+        <script src="{{ asset('js/coreui.min.js') }}"></script>
+<!--        <script src="//unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>-->
+
+<!--        <script src="/cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>-->
+        <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+        <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>-->
+        <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>-->
+        <script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>-->
+        <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>-->
+        <script src="{{ asset('js/buttons.print.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>-->
+        <script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<!--        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>-->
+        <script src="{{ asset('js/pdfmake.min.js') }}"></script>
+<!--        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>-->
+        <script src="{{ asset('js/vfs_fonts.js') }}"></script>
+<!--        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>-->
+        <script src="{{ asset('js/jszip.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>-->
+        <script src="{{ asset('js/ckeditor.js') }}"></script>
+<!--        <script src="//cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>-->
+        <script src="{{ asset('js/moment.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>-->
+        <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>-->
+    
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>-->
+        <script src="{{ asset('js/dropzone.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>-->
+        <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
+<!--        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+        <script src="{{ asset('js/numeral.min.js') }}"></script>
+<!--        <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>-->
+        <script src="{{ asset('js/sweetalert2.js') }}"></script>
+<!--        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>-->
+         <script src="{{ asset('js/select2.full.min.js') }}"></script>
+
+      
         <style>
             body{
                 background: -webkit-linear-gradient(left, #3931af, #00c6ff);
@@ -141,7 +166,7 @@
                                             <a class="nav-link active" href="{{url('areas/report/'.date('Y-m').'-01')}}"><i class="fa fa-building"></i> Area Report  | </a>
                                         </li>
                                         <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('disconnected/bill')}}"><i class="fa fa-power-off"></i> Disconnected Units</a>
+                                            <a class="nav-link active" href="{{url('disconnected/bill')}}"><i class="fa fa-power-off"></i> Disconnected Consumed Units</a>
                                         </li>
 
                                     </ul>
@@ -165,17 +190,19 @@
     </form>
 </div>
 
+
+
 <script>
 $(function() {
-    
-      $(document.body).on('keyup', '#SEARCH', function(event) {
-          if(event.keyCode == 13) { // 13 = Enter Key
-           value = $('#SEARCH').val();
-           window.location.href = "{{url('client/show')}}/" + value
-          }
-        });
-    
+$('select').select2();
 
+
+$(document.body).on('keyup', '#SEARCH', function(event) {
+if (event.keyCode == 13) { // 13 = Enter Key
+value = $('#SEARCH').val();
+window.location.href = "{{url('client/show')}}/" + value
+        }
+});
 $('#BANK').change(function(){
 $.getJSON("{{url('bank-branches')}}/" + $(this).val(), function(data){
 $('#BRANCH').empty();

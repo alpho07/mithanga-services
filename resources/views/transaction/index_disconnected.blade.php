@@ -13,7 +13,7 @@ Transaction
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            <strong>Disconnected Units</strong>
+                            <strong>Disconnected Consumed Units</strong>
                         </span>
 
 

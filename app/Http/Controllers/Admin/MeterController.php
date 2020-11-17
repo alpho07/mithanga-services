@@ -156,7 +156,7 @@ class MeterController extends Controller {
     }
 
     function disconnect(Request $r) {
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading,discon) VALUES ('$r->cid','$date','$r->current_reading','d')");
         //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','DISCONNECTION FEE','$date','debit','1155')");
         DB::table('clients')->where('id', "$r->cid")->update(['status' => 2]);
@@ -168,7 +168,7 @@ class MeterController extends Controller {
     }
 
     function reconnect(Request $r) {
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         //$query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$r->cid','$date','$r->current_reading')");
         $query = DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','Reconnection Fee','$date','credit','$r->amount')");
         DB::table('clients')->where('id', "$r->cid")->update(['status' => 1]);
@@ -181,7 +181,7 @@ class MeterController extends Controller {
 
     function runBill() {
         $query = DB::select(DB::raw("SELECT * FROM vm_meter_readings  WHERE bill_run='0'"));
-      // dd($query);
+        // dd($query);
         $total = count($query);
         $message = $total > 0 ? $total . ' Bill(s) Sucessfully run and generated' : 'No pending bill(s) to process';
         foreach ($query as $q):
@@ -194,7 +194,7 @@ class MeterController extends Controller {
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $total_cost = ($q->water_charges) ? $q->water_charges : 0;
             if ($q->discon == 'd') {
-                $description = 'DISCONNECTION FEE';
+                $description = 'DISCONNECTION UNITS';
             } else {
                 $description = "WATER CHARGES($date2)";
             }
@@ -270,6 +270,15 @@ class MeterController extends Controller {
         return $result;
     }
 
+    function getClientPage($cid) {
+        $client = Client::find($cid);
+        if (empty($client)) {
+            return '0';
+        } else {
+            return $client;
+        }
+    }
+
     function updateTransaction() {
 
         DB::insert("REPLACE INTO transactions (client_id,description,date,type,amount) VALUES ('$r->client_id','$r->reading_date','$r->current_reading')");
@@ -303,6 +312,7 @@ class MeterController extends Controller {
         $client = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id WHERE c.id='$id'"));
         $area = Area::all();
         $status = Status::all();
+
 
         return view('client.show', ['area' => $area, 'status' => $status, 'client' => $client]);
     }

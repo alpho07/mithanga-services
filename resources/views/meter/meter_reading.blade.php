@@ -37,7 +37,23 @@ Meter Reading
                     @endif
 
                     <div class="card-body">
-                        <form class="form-horizontal" method="post" action="{{route('save.meter.reading',['cid'=>$client[0]->id,'id'=>$n,'aid'=>$aid])}}">
+
+                        <form class="" action="" method="post" id='SearchForm'>
+                            <div class="row col-12">
+                                <div class="col-10">
+                                    <input type="number" style="width:100%;" id='clientID' class="form-control" placeholder="Enter Client Account Number & Press Enter"/>
+
+                                </div>
+                                <div class="col-2">
+                                    <input type="button" value="Find" id="FINDER" class="btn btn-md btn-danger"><br>
+
+                                </div>
+                            </div>
+
+                        </form>
+
+
+                        <form class="form-horizontal" id="MForm" method="post" action="{{route('save.meter.reading',['cid'=>$client[0]->id,'id'=>$n,'aid'=>$aid])}}">
                             @csrf
                             <div class="form-group">
                                 <label class="control-label col-sm-6" for="email">Area:</label>
@@ -81,7 +97,7 @@ Meter Reading
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <input type="submit" id="SUBMITTER" class="btn btn-danger" value="Submit">
                                     <a href="{{route('meter.reading.m',['id'=>$p,'aid'=>$aid])}}" class="btn btn-primary" {{$pvs}}>Previous</a>
-                                    <a href="{{route('meter.reading.m',['id'=>$n,'aid'=>$aid])}}" class="btn btn-primary" {{$nts}}>Next</a>
+                                    <a href="#{{route('meter.reading.m',['id'=>$n,'aid'=>$aid])}}" class="btn btn-primary" data-cid="{{$client[0]->id}}" data-n="{{$n}}" data-aid="{{$aid}}" id="SAVEONNEXT" {{$nts}}>Next</a>
                                 </div>
                             </div>
                         </form>
@@ -138,9 +154,14 @@ Meter Reading
                         <div class="form-group">
                             <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Account Balance (Ksh.)</label>
                             <div class="col-sm-12">
-                                <input type="hidden"  class="form-control" value="{{$bal}}"    id="cust_balance"  >
-
-                                <input type="number" readonly class="form-control" value="{{number_format($bal,2)}}" required   id="show_balance" placeholder="Reading(Units)" >
+                                <input type="hidden" readonly  class="form-control" value="{{($bal > 0) ? '('.str_replace('-','',$bal).')' : $bal * -1 }}" id="cust_balance_"  >                             
+                                <input type="text" readonly  class="form-control" value="{{$bal}}" id="cust_balance"  >                             
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Current Balance (Ksh.)</label>
+                            <div class="col-sm-12">       
+                                <input type="text" readonly class="form-control"    id="show_balance" placeholder="Current Balance" >
                             </div>
                         </div>
 
@@ -221,76 +242,112 @@ Meter Reading
 
 
 
-
-@endsection
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-$(function () {
-    $(".datepicker11").datepicker({dateFormat: 'yy-mm-dd'});
-    $('#area_sel').change(function () {
-        val = $(this).val();
-        $.getJSON("{{url('api/v1/client')}}/" + val, function (resp) {
-            $('#account_').empty();
-            $('#account_').append('<option value="">-Select Account-</option>');
-            $.each(resp, function (i, d) {
-                $('#account_').append('<option value="' + d.id + '">' + d.account_name + '</option>');
-            })
-            //  $('#account_').select2();
+    $(function () {
+        $(".datepicker11").datepicker({dateFormat: 'yy-mm-dd'});
+        $('#area_sel').change(function () {
+            val = $(this).val();
+            $.getJSON("{{url('api/v1/client')}}/" + val, function (resp) {
+                $('#account_').empty();
+                $('#account_').append('<option value="">-Select Account-</option>');
+                $.each(resp, function (i, d) {
+                    $('#account_').append('<option value="' + d.id + '">' + d.account_name + '</option>');
+                })
+                //  $('#account_').select2();
+            });
         });
-    });
 
-    //$('#area_sel').select2();
+        $('#FINDER').click(function (e) {
 
-    $('#current_reading').keyup(function () {
-        val = parseInt($(this).val());
-        prev = parseInt($('#prev_reading').val());
-        cust_balance = parseInt($('#cust_balance').val());
-        $('#consumed_units').val(val - prev);
-        if (val < prev) {
+            val = $("#clientID").val()
+
+            $.getJSON("{{url('client/loadclient')}}/" + val, function (resp) {
+                if (resp == '0') {
+                    alert("Error: Client " + val + " Not Found")
+                    return false;
+                } else {
+                    window.location.href = "{{url('meter_reading_')}}/" + resp.id + '/' + resp.area;
+                }
+            });
+
+        });
+
+        $('#SAVEONNEXT').click(function () {
+            prev = parseInt($('#prev_reading').val());
+            curr = parseInt($('#current_reading').val());
+
+            if (curr < prev || Number.isNaN(curr)) {
+                Swal.fire(
+                        'Invalid Entry',
+                        'Previous reading cannot be greater tha current reading!',
+                        'error'
+                        )
+                return false;
+            } else {
+                $.post("{{route('save.meter.reading',['cid'=>$client[0]->id,'id'=>$n,'aid'=>$aid])}}", $('#MForm').serialize(), function () {
+                    window.location.href = "{{route('meter.reading.m',['id'=>$n,'aid'=>$aid])}}";
+                });
+            }
+
+        });
+
+        //$('#area_sel').select2();
+
+        $('#current_reading').keyup(function () {
+            val = parseInt($(this).val());
+            prev = parseInt($('#prev_reading').val());
+            cust_balance = parseInt($('#cust_balance').val());
+            //alert(cust_balance)
+            $('#consumed_units').val(val - prev);
+            if (val < prev) {
 //            Swal.fire(
 //                    'Current reading cannot be less than the previous reading',
 //                    ' ',
 //                    'error'
 //                    );
-            //$('#current_reading').val('');
-        }
-        consumed = $('#consumed_units').val();
-        area_rates = parseInt($('#area_rates').val());
-        $('#charges').val(consumed * area_rates);
-        charges = $('#charges').val();
-        amount = cust_balance - charges;
-        if (amount > 0) {
-            bal = '(' + amount + ')';
-        } else {
-            bal = amount * -1;
-        }
-        $('#show_balance').val(bal);
-    });
-
-
-    $(document).on('click', '.EDITS', function () {
-        id = $(this).attr('data-id');
-        account = $(this).attr('data-account');
-        account_name = $(this).attr('data-account-name');
-        area = $(this).attr('data-area');
-        date = $(this).attr('data-date');
-        units = $(this).attr('data-units');
-        $('#EDITTITLE').text("AREA > " + area + " | ACCOUNT No. > " + account + " | ACC.NAME > " + account_name);
-        $('#reading_date1').val(date);
-        $('#current_reading1').val(units);
-        $('#id_').val(id);
-    });
-
-    $('#UpdateData').click(function () {
-        data = {
-            id_: $('#id_').val(),
-            reading_date: $('#reading_date1').val(),
-            current_reading: $('#current_reading1').val(),
-            _token: "{{csrf_token()}}"
-        }
-        $.post("{{url('updateReadings')}}/", data, function () {
-            window.location.href = ""
+                //$('#current_reading').val('');
+            }
+            consumed = $('#consumed_units').val();
+            area_rates = parseInt($('#area_rates').val());
+            $('#charges').val(consumed * area_rates);
+            charges = $('#charges').val();
+            amount = cust_balance - charges;
+            if (amount > 0) {
+                bal = '(' + amount + ')';
+            } else {
+                bal = amount * -1;
+            }
+            // console.log(bal);
+            $('#show_balance').val(bal);
         });
-    });
-})
+
+
+        $(document).on('click', '.EDITS', function () {
+            id = $(this).attr('data-id');
+            account = $(this).attr('data-account');
+            account_name = $(this).attr('data-account-name');
+            area = $(this).attr('data-area');
+            date = $(this).attr('data-date');
+            units = $(this).attr('data-units');
+            $('#EDITTITLE').text("AREA > " + area + " | ACCOUNT No. > " + account + " | ACC.NAME > " + account_name);
+            $('#reading_date1').val(date);
+            $('#current_reading1').val(units);
+            $('#id_').val(id);
+        });
+
+        $('#UpdateData').click(function () {
+            data = {
+                id_: $('#id_').val(),
+                reading_date: $('#reading_date1').val(),
+                current_reading: $('#current_reading1').val(),
+                _token: "{{csrf_token()}}"
+            }
+            $.post("{{url('updateReadings')}}/", data, function () {
+                window.location.href = ""
+            });
+        });
+    })
 </script>
+
+@endsection
+

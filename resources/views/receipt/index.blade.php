@@ -7,8 +7,7 @@
 
 
         <link href="{{url('print.css')}}" rel="stylesheet" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{url('print.js')}}"></script>
 
         <title>Samdamte | Receipt</title>
@@ -44,72 +43,89 @@
                     <table>                
 
                         <tr class="">
-                            <td class=""><p class="itemtext">Receipt No :- {{$transactions[0]->id}}</p></td>
+                            <td class=""><span class="itemtext">Receipt No :- {{$transactions[0]->id}}</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Receipt Date :- {{explode(' ', $transactions[0]->date)[0]}} </p></td>
+                            <td class=""><span class="itemtext">Receipt Date :- {{explode(' ', $transactions[0]->date)[0]}} </span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Receipt Time :- {{explode(' ', $transactions[0]->date)[1]}}</p></td>
+                            <td class=""><span class="itemtext">Receipt Time :- {{explode(' ', $transactions[0]->date)[1]}}</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Total Received : {{number_format($transactions[0]->amount,2)}}</p></td>
+                            <td class=""><span class="itemtext">Total Received : {{number_format($transactions[0]->amount,2)}}</span></td>
                         </tr>
 
 
                         <tr class="">
-                            <td class=""><p class="itemtext">Account Number:     {{$transactions[0]->client_id}}</p></td>
+                            <td class=""><p> </p></td>
+                        </tr>
+                         <tr class="">
+                            <td class=""><p> </p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Account Name:       {{$transactions[0]->account_name}}</p></td>
+                            <td class=""><span style="margin-top: 3px;" class="itemtext">Account Number:     {{$transactions[0]->client_id}}</span></td>
+                        </tr>
+                        <tr class="">
+                            <td class=""><span class="itemtext">Account Name:       {{$transactions[0]->account_name}}</span></td>
                         </tr>
                         @php
                         $allsum=0;
                         @endphp
                         @if(count($arrears) > 0)
-                        <td class=""><p class="itemtext">Arrears:      Kshs {{number_format($arrears[0]->balance,2)}}</p></td>
+                        <td class=""><span class="itemtext">Arrears:      Kshs {{number_format($arrears[0]->balance,2)}}</span></td>
 
                         @endif
 
                         @if(count($bills) > 0)
-                        <tr class="">
-<!--                            <td class=""><p class="itemtext">{{$transactions[0]->description}}:      Kshs {{number_format($transactions[0]->amount,2)}}</p></td>-->
-                        </tr>
+                       <!--   <tr class="">
+                          <td class=""><span class="itemtext">{{$transactions[0]->description}}:      Kshs {{number_format($transactions[0]->amount,2)}}</span></t
+                        </tr-->
                         @foreach ($bills as $b)
                         <tr class="">
-                            <td class=""><p class="itemtext">{{$b->description}}:      Kshs {{number_format($b->amount,2)}}</p></td>
+                            <td class=""><span class="itemtext">{{$b->description}}:      Kshs {{number_format($b->amount,2)}}</span></td>
                         </tr>
                         @endforeach
                         @endif
 
                         <tr class="">
-                            <td class=""><p class="itemtext">Amount Due:         Kshs {{@number_format($arrears[0]->balance,2)}}</p></td>
+                            <td class=""><span class="itemtext">Amount Due:         Kshs {{@number_format($arrears[0]->balance,2)}}</span></td>
+                        </tr>
+                         <tr class="">
+                            <td class=""><p> </p></td>
+                        </tr>
+                         <tr class="">
+                            <td class=""><p> </p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Payment Mode:      {{$transactions[0]->mode}}</p></td>
+                            <td class=""><span class="itemtext">Payment Mode:      {{$transactions[0]->mode}}</span></td>
                         </tr>
-
+                         <tr class="">
+                            <td class=""><p> </p></td>
+                        </tr>
 
                         <tr class="">                    
-                            <td class=""><p class="itemtext">{{strtoupper($words).' SHILLINGS ONLY'}}</p></td>
+                            <td class=""><span class="itemtext">{{strtoupper($words).' SHILLINGS ONLY'}}</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">You can pay your bills through Paybill No.:- 823496</p></td>
+                            <td class=""><span class="itemtext">You can pay your bills through Paybill No.:- 823496</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Disconnection for non-payment is 10<sup>th</sup> of every month</p></td>
+                            <td class=""><span class="itemtext">Disconnection for non-payment is 10<sup>th</sup> of every month</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">Reconnection Charges are Kshs. 1,155.00</p></td>
+                            <td class=""><span class="itemtext">Reconnection Charges are Kshs. 1,155.00</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">We thank you for giving us an opportunity to serve you.</p></td>
+                            <td class=""><span class="itemtext">We thank you for giving us an opportunity to serve you.</span></td>
+                        </tr>
+                         <tr class="">
+                            <td class=""><p class="itemtext"></p></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext">You were served by:- {{strtoupper($transactions[0]->staff)}}</p></td>
+                            <td class=""><span class="itemtext">You were served by:- {{strtoupper($transactions[0]->staff)}}</span></td>
                         </tr>
                     </table>
-                    <p class="" style="margin-top:320px;">Official Stamp..........................................</p>
+                    <p class="" style="margin-top:400px;">Official Stamp..........................................</p>
                 </div><!--End Table-->
 
 

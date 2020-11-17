@@ -181,7 +181,15 @@
                                 <label>Current Balance</label>
                             </div>
                             <div class="col-md-6 pull-right">
-                                <p style="font-family: 'Times New Roman', sans-serif; text-align: right; font-size: 17px;font-weight: bold; ">{{number_format($balance,2)}}</p>
+                                @php 
+                                $bal='';
+                                if($balance > 0){
+                                $bal = '('.number_format($balance,2).')';
+                                }else{
+                                $bal = number_format(($balance * -1),2);
+                                }
+                                @endphp
+                                <p style="font-family: 'Times New Roman', sans-serif; text-align: right; font-size: 17px;font-weight: bold; ">{{$bal}}</p>
                             </div>
                         </div>
 
@@ -216,7 +224,7 @@
                                 <label>Meter Reading Date</label>
                             </div>
                             <div class="col-md-6">
-                                <p> {{$client[0]->meter_reading_date}}</p>
+                                <p> {{$rd}}</p>
                             </div>
                         </div>
 

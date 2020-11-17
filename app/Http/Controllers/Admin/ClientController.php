@@ -112,7 +112,7 @@ class ClientController extends Controller {
         DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units) VALUES ('$cid','Application Fee','$date','debit','1155','0')");
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','0')");
         $message = "Dear " . strtoupper($request->account_name) . " Your A/C is " . $id[0]->id . "  We are pleased to welcome you as a new client. We feel honored that you have chosen us to fill your water service needs, and we are eager to be of service. WE MAKE IT SAFE BECAUSE WATER IS LIFE. THANK YOU AND WELCOME!";
-       // $this->sendSampleText($message, $request->phone_no);
+        // $this->sendSampleText($message, $request->phone_no);
         return redirect()->route('client.index')
                         ->with('success', 'Client created successfully.');
     }
@@ -129,7 +129,10 @@ class ClientController extends Controller {
         $status = Status::all();
         $reding = DB::select(DB::raw("SELECT  `fn_prv_reading`('$id')` reading"));
         $balance = DB::select(DB::raw("SELECT `fn_get_balance`('$id')` balance"));
-        return view('client.show', ['area' => $area, 'status' => $status, 'client' => $client, 'balance' => $balance[0]->balance, 'reading' => $reding[0]->reading]);
+        $reading_date = DB::select(DB::raw("SELECT reading_date FROM meter_readings WHERE client_id='$id' ORDER BY id DESC LIMIT 1"))[0]->reading_date;
+        $date1 = date_create($reading_date);
+        $rrd= date_format($date1, "nS M, Y");
+        return view('client.show', ['area' => $area, 'status' => $status, 'client' => $client, 'balance' => $balance[0]->balance, 'reading' => $reding[0]->reading, 'rd' => $rrd]);
     }
 
     /**

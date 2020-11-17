@@ -5,9 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>SAMDAMTE LOGIN</title>
-        <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         <style>
             body {
                 font-family: "Karla", sans-serif;
@@ -95,7 +93,7 @@
     </head>
     <body style=" background: rgb(111,250,246);
           background: linear-gradient(0deg, rgba(111,250,246,1) 8%, rgba(45,77,253,1) 95%); ">
-        <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <main class="d-flex align-items-center min-vh-100 py-3 py-md-0" style="margin-top: 100px;">
             <div class="container">
                 <div class="card login-card">
                     <div class="row no-gutters">
@@ -148,8 +146,6 @@
 
             </div>
         </main>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+     
     </body>
 </html>

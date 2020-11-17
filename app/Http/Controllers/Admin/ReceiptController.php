@@ -32,7 +32,7 @@ class ReceiptController extends Controller {
         $opening_balance_ = DB::select(DB::raw("SELECT SUM(IF(type='debit',-amount,amount)) balance,client_id FROM transactions WHERE date < '$date' AND client_id='$clent_id' GROUP BY client_id"));
         $bills_ = DB::select(DB::raw("SELECT * FROM transactions WHERE type='debit' AND date >= '$date' AND client_id='$clent_id'"));
         $bills_2 = DB::select(DB::raw("SELECT * FROM transactions WHERE id='$pid'"));
-      //  dd($bills_);
+      //  dd($transaction);
 
 
         return view('receipt.index', ['transactions' => $transaction, 'due' => $due, 'words' => $words, 'bills' => $bills_, 'arrears' => $opening_balance_, 'bils_2' => $bills_2]);

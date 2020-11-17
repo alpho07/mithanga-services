@@ -154,19 +154,22 @@ class PaymentController extends Controller {
         $check = $clientid = $request->client_id;
         $amount = $request->amount;
         $date = date('YmdHis');
+
         $last_credit = DB::select("SELECT * FROM transactions WHERE client_id='$clientid' ORDER BY id DESC LIMIT 1");
         if (count($last_credit) > 0) {
             $update_id = @$last_credit[0]->id;
-            $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
+
             $client = @$request->client_id;
             $mop = @$request->mop;
             if ($last_credit[0]->description == 'Reconnection Fee') {
+
                 DB::update("UPDATE transactions SET amount='$amount',reference='$date',mop='$mop' WHERE id='$update_id'");
-                return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
+                return redirect()->route('client.receipt', ['pid' => $last_credit[0]->id, 'client_id' => $client])
                                 ->with('success', 'Reconnection fee updated');
             } else {
                 request()->validate(Transaction::$rules);
                 $transaction = Transaction::create($request->all());
+                $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
                 return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
                                 ->with('success', 'Payment Successfully Saved');
             }
@@ -174,6 +177,7 @@ class PaymentController extends Controller {
 
             request()->validate(Transaction::$rules);
             $transaction = Transaction::create($request->all());
+            $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
             return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
                             ->with('success', 'Payment Successfully Saved');
         }

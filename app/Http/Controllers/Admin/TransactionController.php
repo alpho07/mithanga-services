@@ -64,16 +64,21 @@ class TransactionController extends Controller {
         $credit_amount = '';
         $account_balance = '';
         $account_balance_ = [];
-        $opening_balance=0;
-        $deb1 = DB::select(DB::raw("SELECT SUM(amount) balance,client_id FROM vw_transactions WHERE date < '$from' AND client_id='$client_id' AND type='debit' GROUP BY client_id"))[0]->balance;
-        $cred1= DB::select(DB::raw("SELECT SUM(amount) balance,client_id FROM vw_transactions WHERE date < '$from' AND client_id='$client_id' AND type='credit' GROUP BY client_id"))[0]->balance;
-        $bal = $cred1 - $deb1;
-        if (isset($bal)) {
-            $opening_balance = $bal;
-        } else {
+        $opening_balance = 0;
+        //$deb1 = DB::select(DB::raw("SELECT SUM(amount) balance,client_id FROM vw_transactions WHERE date < '$from' AND client_id='$client_id' AND type='debit' GROUP BY client_id")); 
+        $deb1 = DB::select(DB::raw("SELECT SUM(IF(type='debit',amount,-amount)) balance,client_id FROM transactions WHERE date < '$from' AND client_id='$client_id' GROUP BY client_id"));
+        //$cred1 = DB::select(DB::raw("SELECT SUM(amount) balance,client_id FROM vw_transactions WHERE date < '$from' AND client_id='$client_id' AND type='credit' GROUP BY client_id")); 
+        if (count($deb1) <= 0) {
             $opening_balance = 0;
+        } else {
+            $bal = $deb1[0]->balance;
+            if (isset($bal)) {
+                $opening_balance = $bal;
+            } else {
+                $opening_balance = 0;
+            }
         }
-        $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM vw_transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY id asc");
+        $statement = DB::select("SELECT *,DATE_FORMAT(date,'%d-%M-%Y') transaction_date FROM vw_transactions WHERE client_id='$client_id' AND DATE(date) >= '$from' AND DATE(date) <= '$to'   ORDER BY date asc");
         return view('statement.getstatement', compact('clients', 'statement', 'debit_amount', 'credit_amount', 'opening_balance', 'account_balance', 'from', 'to', 'client_id', 'clients_narrowed'));
     }
 
