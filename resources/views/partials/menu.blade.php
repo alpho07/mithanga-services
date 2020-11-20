@@ -2,6 +2,16 @@
     <nav class="sidebar-nav">
 
         <ul class="nav">
+            @can('dashboard_access')
+            <li class="nav-item">
+                <a href="{{ route("dashboard.index") }}" class="nav-link {{ request()->is('dashboard') || request()->is('dashboard/*') ? 'active' : '' }}">
+                    <i class="fa-fw fas fa-dashboard nav-icon">
+
+                    </i>
+                    Dashboard
+                </a>
+            </li>
+            @endcan
             @can('user_management_access')
             <li class="nav-item nav-dropdown">
                 <a class="nav-link  nav-dropdown-toggle" href="#">
@@ -11,6 +21,7 @@
                     {{ trans('cruds.userManagement.title') }}
                 </a>
                 <ul class="nav-dropdown-items">
+
                     @can('permission_access')
                     <li class="nav-item">
                         <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is('admin/permissions') || request()->is('admin/permissions/*') ? 'active' : '' }}">
@@ -182,12 +193,12 @@
                         </a>
                     </li>
 
-<!--                    <li class="nav-item">
-                        <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Reading Sheets
-                        </a>
-                    </li>-->
+                    <!--                    <li class="nav-item">
+                                            <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                                Reading Sheets
+                                            </a>
+                                        </li>-->
 
                 </ul>
             </li>

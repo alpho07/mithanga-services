@@ -127,7 +127,7 @@ Transaction
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="font-weight: bold;">{{$opening_balance >= 0 ? 'OPENING BALANCE' : 'ARREARS'}}</td>
-                                     @php $balan2  = ($opening_balance < 0) ? '('.number_format($opening_balance,2).')' : number_format($opening_balance,2) @endphp
+                                    @php $balan2  = ($opening_balance < 0) ? '('.number_format($opening_balance,2).')' : number_format($opening_balance,2) @endphp
                                     <td style="text-align: right;"><b>{{str_replace('-','',$balan2)}}</b></td>
                                 </tr>
                             </thead>
@@ -146,7 +146,17 @@ Transaction
 
                                 <tr>
                                     <td>{{$s->transaction_date}}</td>                                                                    
-                                    <td>{{$s->description}}</td>  
+                                    <td>
+                                        @php
+                                        if(strpos( $s->description,'CASH') !== false){
+                                        echo "RECEIPTS";
+                                        } else{
+                                        echo $s->description;
+                                        }
+                                        @endphp
+
+
+                                    </td>  
                                     <td>
                                         @if (strpos(strtolower($s->description), 'water') !== false) 
                                         {{$s->units.'(C) - '.$s->last_read.'(R)'}}                                        
@@ -157,9 +167,21 @@ Transaction
                                     </td>
                                     <td>
                                         @if(\is_null($s->mode))
+                                        @if (strpos(strtolower($s->description), 'disconnection') !== false) 
+                                        {{date('Hi').'-'.$s->reference}}
+                                        @elseif(strpos(strtolower($s->description), 'reconnection') !== false)
+                                        {{date('Hi').'-'.$s->reference}}
+                                        @else
                                         {{$s->reference}}
+                                        @endif
+
+                                        @else
+
+                                        @if (strpos(strtolower($s->description), 'reconnection') !== false) 
+                                        {{date('Ym').'-'.$s->reference}}
                                         @else
                                         {{$s->m_reference}}
+                                        @endif
                                         @endif
                                     </td>
                                     <td style="text-align: right;">{{is_numeric($debit_amount) ? number_format($debit_amount,2) : $debit_amount}}</td>

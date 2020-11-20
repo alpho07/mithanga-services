@@ -31,6 +31,7 @@
         <script src="{{ asset('js/popper.min.js') }}"></script>
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>-->
         <script src="{{ asset('js/coreui.min.js') }}"></script>
+        <script src="{{ asset('js/coreui.min.js') }}"></script>
 <!--        <script src="//unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>-->
 
 <!--        <script src="/cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>-->

@@ -59,7 +59,7 @@
                         <tr class="">
                             <td class=""><p> </p></td>
                         </tr>
-                         <tr class="">
+                        <tr class="">
                             <td class=""><p> </p></td>
                         </tr>
                         <tr class="">
@@ -70,16 +70,23 @@
                         </tr>
                         @php
                         $allsum=0;
+                        if($arrears[0]->balance < 0){
+                        $bal = $arrears[0]->balance * -1;
+                        }else{
+                        $bal = 0;
+                        }
+
+
                         @endphp
                         @if(count($arrears) > 0)
-                        <td class=""><span class="itemtext">Arrears:      Kshs {{number_format($arrears[0]->balance,2)}}</span></td>
+                        <td class=""><span class="itemtext">Arrears:      Kshs {{ number_format($bal,2)}}</span></td>
 
                         @endif
 
                         @if(count($bills) > 0)
-                       <!--   <tr class="">
-                          <td class=""><span class="itemtext">{{$transactions[0]->description}}:      Kshs {{number_format($transactions[0]->amount,2)}}</span></t
-                        </tr-->
+                        <tr class="">
+                            <td class=""></td>
+                        </tr>
                         @foreach ($bills as $b)
                         <tr class="">
                             <td class=""><span class="itemtext">{{$b->description}}:      Kshs {{number_format($b->amount,2)}}</span></td>
@@ -88,18 +95,18 @@
                         @endif
 
                         <tr class="">
-                            <td class=""><span class="itemtext">Amount Due:         Kshs {{@number_format($arrears[0]->balance,2)}}</span></td>
+                            <td class=""><span class="itemtext">Amount Due:  Kshs {{@$bal}}</span></td>
                         </tr>
-                         <tr class="">
+                        <tr class="">
                             <td class=""><p> </p></td>
                         </tr>
-                         <tr class="">
+                        <tr class="">
                             <td class=""><p> </p></td>
                         </tr>
                         <tr class="">
                             <td class=""><span class="itemtext">Payment Mode:      {{$transactions[0]->mode}}</span></td>
                         </tr>
-                         <tr class="">
+                        <tr class="">
                             <td class=""><p> </p></td>
                         </tr>
 
@@ -118,7 +125,7 @@
                         <tr class="">
                             <td class=""><span class="itemtext">We thank you for giving us an opportunity to serve you.</span></td>
                         </tr>
-                         <tr class="">
+                        <tr class="">
                             <td class=""><p class="itemtext"></p></td>
                         </tr>
                         <tr class="">
