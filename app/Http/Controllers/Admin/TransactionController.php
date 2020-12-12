@@ -42,6 +42,8 @@ class TransactionController extends Controller {
         $clients = DB::select("SELECT * FROM vw_clients");
         return view('transaction.create', compact('clients', 'transaction'));
     }
+    
+    
 
     public function statement($start, $end) {
         $clients = DB::select("SELECT * FROM vw_clients order by id ASC");

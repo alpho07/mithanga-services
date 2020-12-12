@@ -18,9 +18,31 @@ use PDF;
 class MeterController extends Controller {
 
     private $ref = '';
+    private $cd = '';
 
     public function __construct() {
         $this->ref = date('YmdHis');
+        $this->cd = '1868-' . date('YmdHis');
+    }
+
+    public function change() {
+        $clients = DB::select("SELECT * FROM vw_clients");
+        return view('meter.create', compact('clients'));
+    }
+
+    function registerChange(Request $r) {
+        DB::statement("INSERT INTO meter_changes (client_id,change_date,reading) VALUE('$r->client_id','$r->change_date','$r->reading')");
+        DB::statement("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUE('$r->client_id','$r->change_date','$r->reading')");
+        return redirect()->back()->with('message', 'Meter changing data saved');
+    }
+
+    function loadLastReading($id) {
+        $res = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$id' ORDER BY id DESC LIMIT 1");
+        if (count($res) > 0) {
+            return $res;
+        } else {
+            return ['0' => ['current_reading' => 'No Previous Readings found']];
+        }
     }
 
     /**
@@ -160,6 +182,27 @@ class MeterController extends Controller {
         $query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading,discon) VALUES ('$r->cid','$date','$r->current_reading','d')");
         //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','DISCONNECTION FEE','$date','debit','1155')");
         DB::table('clients')->where('id', "$r->cid")->update(['status' => 2]);
+
+        $query2 = DB::select(DB::raw("SELECT * FROM vm_meter_readings  WHERE bill_run='0'"));
+
+        foreach ($query2 as $q):
+            $id = $q->id;
+            $cid = $q->client_id;
+            $date = $q->reading_date;
+            $date1 = date_create($date);
+            $date2 = date_format($date1, "M-Y");
+            $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
+            $current_reading = ($q->current_reading) ? $q->current_reading : 0;
+            $total_cost = ($q->water_charges) ? $q->water_charges : 0;
+            if ($q->discon == 'd') {
+                $description = 'DISCONNECTION UNITS';
+            } else {
+                $description = "WATER CHARGES";
+            }
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','$description','$date','debit','$total_cost','$consumed','$current_reading','$this->cd')");
+            DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
+        endforeach;
+
         if ($query) {
             return ['status' => 'true'];
         } else {
@@ -170,7 +213,7 @@ class MeterController extends Controller {
     function reconnect(Request $r) {
         $date = date('Y-m-d H:i:s');
         //$query = DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$r->cid','$date','$r->current_reading')");
-        $query = DB::insert("INSERT INTO transactions (client_id,description,date,type,amount) VALUES ('$r->cid','Reconnection Fee','$date','credit','$r->amount')");
+        $query = DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,reference) VALUES ('$r->cid','Reconnection Fee','$date','debit','$r->amount','$this->cd')");
         DB::table('clients')->where('id', "$r->cid")->update(['status' => 1]);
         if ($query) {
             return ['status' => 'true'];
@@ -189,14 +232,14 @@ class MeterController extends Controller {
             $cid = $q->client_id;
             $date = $q->reading_date;
             $date1 = date_create($date);
-            $date2 = date_format($date1, "M-Y");
+            $date2 = date_format($date1, "M - Y");
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $total_cost = ($q->water_charges) ? $q->water_charges : 0;
             if ($q->discon == 'd') {
                 $description = 'DISCONNECTION UNITS';
             } else {
-                $description = "WATER CHARGES($date2)";
+                $description = "WATER - " . date('M Y');
             }
             DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','$description','$date','debit','$total_cost','$consumed','$current_reading','$this->ref')");
             DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
@@ -214,7 +257,8 @@ class MeterController extends Controller {
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $total_cost = '100';
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,'ref') VALUES ('$cid','Standing Charge','$date','debit','$total_cost','$consumed',$current_reading,'$this->ref')");
+            $description = "WATER - " . date('M Y');
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid',$description,'$date','debit','$total_cost','$consumed',$current_reading,'$this->ref')");
             DB::update("UPDATE meter_readings SET standing_charge='1' WHERE id = '$id';");
         endforeach;
     }

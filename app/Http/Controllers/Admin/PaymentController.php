@@ -154,33 +154,29 @@ class PaymentController extends Controller {
         $check = $clientid = $request->client_id;
         $amount = $request->amount;
         $date = date('YmdHis');
+        $date1 = date('Y-m-d H:i:s');
 
-        $last_credit = DB::select("SELECT * FROM transactions WHERE client_id='$clientid' ORDER BY id DESC LIMIT 1");
-        if (count($last_credit) > 0) {
-            $update_id = @$last_credit[0]->id;
+        $client = @$request->client_id;
+        $mop = @$request->mop;
 
-            $client = @$request->client_id;
-            $mop = @$request->mop;
-            if ($last_credit[0]->description == 'Reconnection Fee') {
+        request()->validate(Transaction::$rules);
+        $transaction = Transaction::create($request->all());
 
-                DB::update("UPDATE transactions SET amount='$amount',reference='$date',mop='$mop' WHERE id='$update_id'");
-                return redirect()->route('client.receipt', ['pid' => $last_credit[0]->id, 'client_id' => $client])
-                                ->with('success', 'Reconnection fee updated');
-            } else {
-                request()->validate(Transaction::$rules);
-                $transaction = Transaction::create($request->all());
-                $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
-                return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
-                                ->with('success', 'Payment Successfully Saved');
-            }
-        } else {
+        $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
 
-            request()->validate(Transaction::$rules);
-            $transaction = Transaction::create($request->all());
-            $pid = DB::select("SELECT MAX(id) id FROM transactions ")[0]->id;
-            return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
-                            ->with('success', 'Payment Successfully Saved');
-        }
+
+        $last_credit = DB::select("SELECT * FROM transactions WHERE client_id='$clientid' AND type NOT IN('credit') AND dnp='0' ORDER BY id ASC");
+
+        foreach ($last_credit as $c):
+            $desc = $c->description;
+            $amount1 = $c->amount;
+            DB::insert("INSERT INTO  receipt_details (items,amount,datetime,trans_id) VALUES('$desc','$amount1','$date1','$pid')");
+        endforeach;
+        DB::update("UPDATE transactions  SET dnp='1' WHERE client_id = '$clientid'");
+        //$update_id = @$last_credit[0]->id;
+
+        return redirect()->route('client.receipt', ['pid' => $pid, 'client_id' => $client])
+                        ->with('success', 'Payment Successfully Saved');
     }
 
     /**

@@ -30,7 +30,7 @@
             <div id="mid">
                 <div class="info">                  
                     <p> 
-                        P.O. Box 24732 00100, NAIROBI GPO</br>
+                        P.O. Box 24732-00100, NAIROBI GPO</br>
                         Tel:- +254-704-107-724 / +254-788-484-737</br>
                         Email:- samdamtewaterservices@yahoo.com</br>
                     </p>
@@ -59,9 +59,7 @@
                         <tr class="">
                             <td class=""><p> </p></td>
                         </tr>
-                        <tr class="">
-                            <td class=""><p> </p></td>
-                        </tr>
+
                         <tr class="">
                             <td class=""><span style="margin-top: 3px;" class="itemtext">Account Number:     {{$transactions[0]->client_id}}</span></td>
                         </tr>
@@ -76,11 +74,10 @@
                         $bal = 0;
                         }
 
-
+                        
                         @endphp
-                        @if(count($arrears) > 0)
-                        <td class=""><span class="itemtext">Arrears:      Kshs {{ number_format($bal,2)}}</span></td>
-
+                        @if((int)$bal < 0)
+                        <td class=""><span class="itemtext">ARREARS:      Kshs {{ number_format($bal,2)}}</span></td>
                         @endif
 
                         @if(count($bills) > 0)
@@ -89,20 +86,17 @@
                         </tr>
                         @foreach ($bills as $b)
                         <tr class="">
-                            <td class=""><span class="itemtext">{{$b->description}}:      Kshs {{number_format($b->amount,2)}}</span></td>
+                            <td class=""><span class="itemtext">{{($b->items=='DISCONNECTION UNITS') ? 'WATER CHARGES' : $b->items }}:      Kshs {{number_format($b->amount,2)}}</span></td>
                         </tr>
                         @endforeach
                         @endif
-
+                        <tr class="">
+                            <td class="" style="height: 10px;"></td>
+                        </tr>
                         <tr class="">
                             <td class=""><span class="itemtext">Amount Due:  Kshs {{@$bal}}</span></td>
-                        </tr>
-                        <tr class="">
-                            <td class=""><p> </p></td>
-                        </tr>
-                        <tr class="">
-                            <td class=""><p> </p></td>
-                        </tr>
+                        </tr>                     
+
                         <tr class="">
                             <td class=""><span class="itemtext">Payment Mode:      {{$transactions[0]->mode}}</span></td>
                         </tr>
@@ -117,17 +111,21 @@
                             <td class=""><span class="itemtext">You can pay your bills through Paybill No.:- 823496</span></td>
                         </tr>
                         <tr class="">
+                            <td class="" style="height: 16px;"></td>
+                        </tr>
+                        <tr class="">
                             <td class=""><span class="itemtext">Disconnection for non-payment is 10<sup>th</sup> of every month</span></td>
                         </tr>
                         <tr class="">
                             <td class=""><span class="itemtext">Reconnection Charges are Kshs. 1,155.00</span></td>
                         </tr>
                         <tr class="">
-                            <td class=""><span class="itemtext">We thank you for giving us an opportunity to serve you.</span></td>
+                            <td class="" style="height: 16px;"></td>
                         </tr>
                         <tr class="">
-                            <td class=""><p class="itemtext"></p></td>
+                            <td class=""><span class="itemtext">We thank you for giving us an opportunity to serve you.</span></td>
                         </tr>
+                
                         <tr class="">
                             <td class=""><span class="itemtext">You were served by:- {{strtoupper($transactions[0]->staff)}}</span></td>
                         </tr>

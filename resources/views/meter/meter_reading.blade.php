@@ -124,7 +124,7 @@ Meter Reading
                         <div class="form-group">
                             <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Previous Meter Reading (Units)</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control"  id="prev_reading" value="{{@$prevr}}" readonly  >
+                                <input type="text" class="form-control"  id="prev_reading" value="{{empty($prevr) ? 0 : $prevr}}" readonly  >
 
                             </div>
                         </div>
@@ -156,7 +156,7 @@ Meter Reading
                             <div class="col-sm-12">
                                 <input type="hidden" readonly  class="form-control" value="{{($bal < 0) ? '('.str_replace('-','',$bal).')' : $bal * -1 }}" id="cust_balance_"  >  
                                 <input type="hidden" readonly  class="form-control" value="{{$bal}}" id="cust_balance"  >   
-                                <input type="text" readonly  class="form-control" value="{{($bal<0)? '('.str_replace('-','',$bal).')' : $bal}}" id=""  >                             
+                                <input type="text" readonly  class="form-control" value="{{($bal<0)?   str_replace('-','',$bal): '('.str_replace('-','',$bal).')'}}" id=""  >                             
                             </div>
                         </div>
                         <div class="form-group">

@@ -48,9 +48,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('areas/create', 'AreaController@create')->name('areas.create');
 });
 
+  
+
+
 Route::get('dashboard/', 'Admin\DashboardController@index')->name('dashboard.index')->middleware('auth');
 Route::get('dashboard/all-consumption', 'Admin\DashboardController@loadConsumptionByMonths')->name('dashboard.allconsumption')->middleware('auth');
 Route::get('dashboard/area-consumption', 'Admin\DashboardController@loadAreaConsumption')->name('dashboard.areaconsumption')->middleware('auth');
+Route::get('dashboard/all-income', 'Admin\DashboardController@loadAllIncome')->name('dashboard.income')->middleware('auth');
 Route::get('dashboard/all-income', 'Admin\DashboardController@loadAllIncome')->name('dashboard.income')->middleware('auth');
 
 Route::get('dashboard/all-consumption_/{y}/{m}', 'Admin\DashboardController@loadConsumptionByMonths_')->name('dashboard.allconsumption_')->middleware('auth');
@@ -131,6 +135,8 @@ Route::get('meter/edit/{id}', 'Admin\MeterController@edit')->name('meter.edit')-
 Route::get('meter/show/{id}', 'Admin\MeterController@show')->name('meter.show')->middleware('auth');
 Route::delete('meter/delete/{id}', 'Admin\MeterController@destroy')->name('meter.destroy')->middleware('auth');
 Route::patch('meter/update/{id}', 'Admin\MeterController@update')->name('meter.update')->middleware('auth');
+Route::get('meter/change', 'Admin\MeterController@change')->name('meter.change')->middleware('auth');
+Route::post('meter/change/post', 'Admin\MeterController@registerChange')->name('meter.change.post')->middleware('auth');
 
 
 Route::get('settings-nbrd/', 'Admin\SettingsNbrdController@index')->name('settings_nbrd.index')->middleware('auth');
@@ -158,6 +164,10 @@ Route::get('billing/edit/{id}', 'Admin\TransactionController@edit')->name('bill.
 Route::get('billing/show/{id}', 'Admin\TransactionController@show')->name('bill.show')->middleware('auth');
 Route::delete('billing/delete/{id}', 'Admin\TransactionController@destroy')->name('bill.destroy')->middleware('auth');
 Route::patch('billing/update/{id}', 'Admin\TransactionController@update')->name('bill.update')->middleware('auth');
+
+
+
+Route::get('lastRead/{id}', 'Admin\MeterController@loadLastReading')->name('last.reading')->middleware('auth');
 
 
 Route::get('payment/', 'Admin\PaymentController@index')->name('payment.index')->middleware('auth');
@@ -274,9 +284,26 @@ Route::get('client-last-info/{id}', 'Admin\MeterController@loadlast')->name('cli
 
 Route::get('notification/{id}/{date}', 'Admin\MeterController@notification_center')->name('notification.index')->middleware('auth');
 
-Route::get('areas/report/{period}', 'Admin\AreaController@area_report')->name('area.report')->middleware('auth');
+
 
 Route::get('point', 'Admin\AreaController@generateReferral')->name('point')->middleware('auth');
+
+
+Route::get('meter/changes', 'Admin\MeterController@changes')->name('mchanges')->middleware('auth');
+
+
+/*Reports*/
+Route::get('waterbill', 'Admin\ReportController@waterbill')->name('waterbill')->middleware('auth');
+Route::get('balances', 'Admin\ReportController@balances')->name('balances')->middleware('auth');
+Route::get('balances/client', 'Admin\ReportController@balances_client')->name('client.balances')->middleware('auth');
+Route::get('history', 'Admin\ReportController@history')->name('reading.history')->middleware('auth');
+Route::get('sales/revenue', 'Admin\ReportController@sales_revenue')->name('sales.revenue')->middleware('auth');
+Route::get('reading/sheets', 'Admin\ReportController@reading_sheets')->name('reading.sheets')->middleware('auth');
+Route::get('no_water_debits', 'Admin\ReportController@no_water_debits')->name('no.water.debits')->middleware('auth');
+Route::post('no-water-debits-post', 'Admin\ReportController@no_water_debit_post')->name('no.water.debits.post')->middleware('auth');
+Route::get('areas/report', 'Admin\ReportController@area_report')->name('area.report')->middleware('auth');
+Route::get('meter/changes', 'Admin\ReportController@meter_changes')->name('meter.changes')->middleware('auth');
+Route::get('meter/history', 'Admin\ReportController@history_report')->name('meter.history')->middleware('auth');
 
 Route::get('/logout-user', function() {
     Auth::logout()->middleware('auth');

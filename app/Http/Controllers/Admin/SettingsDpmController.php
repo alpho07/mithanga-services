@@ -85,8 +85,9 @@ class SettingsDpmController extends Controller
      * @param  SettingsDpm $settingsDpm
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SettingsDpm $settingsDpm)
+    public function update(Request $request, SettingsDpm $settingsDpm, $id)
     {
+        $settingsDpm = SettingsDpm::find($id);
         request()->validate(SettingsDpm::$rules);
 
         $settingsDpm->update($request->all());

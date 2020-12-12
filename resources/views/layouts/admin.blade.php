@@ -61,7 +61,7 @@
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>-->
         <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>-->
-    
+
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>-->
         <script src="{{ asset('js/dropzone.min.js') }}"></script>
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>-->
@@ -71,9 +71,9 @@
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>-->
         <script src="{{ asset('js/sweetalert2.js') }}"></script>
 <!--        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>-->
-         <script src="{{ asset('js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('js/select2.full.min.js') }}"></script>
 
-      
+
         <style>
             body{
                 background: -webkit-linear-gradient(left, #3931af, #00c6ff);
@@ -148,26 +148,41 @@
                                     <span class="navbar-toggler-icon"></span>
                                 </button>
                                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                                    <a class="navbar-brand" href="{{url('client')}}"><i class="fa fa-users"></i> Clients | </a>
-                                    <a class="navbar-brand" href="{{url('statement/'.date('Y-m').'-01/'.date('Y-m-t',strtotime(date('Y-m-d'))))}}"><i class="fa fa-file"></i> Statements | </a>
+                                    <a class="navbar-brand" href="{{url('client')}}"><i class="fa fa-users"></i> Clients  </a>
+                                    <a class="navbar-brand" href="{{url('statement/'.date('Y-m').'-01/'.date('Y-m-t',strtotime(date('Y-m-d'))))}}"><i class="fa fa-file"></i> Statements  </a>
                                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                                         <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('meter')}}"><i class="fa fa-dashboard"></i> Meter Reading  | </a>
+                                            <a class="nav-link active" href="{{url('meter')}}"><i class="fa fa-dashboard"></i> Meter Reading   </a>
                                         </li>
                                         <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('billing')}}"><i class="fa fa-clipboard"></i> Bills  | </a>
+                                            <a class="nav-link active" href="{{url('billing')}}"><i class="fa fa-clipboard"></i> Bills   </a>
                                         </li>
                                         <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('payment')}}"><i class="fa fa-money-bill"></i> Payments  | </a>
+                                            <a class="nav-link active" href="{{url('payment')}}"><i class="fa fa-money-bill"></i> Payments  </a>
                                         </li>
                                         <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('areas')}}"><i class="fa fa-building"></i> Areas  | </a>
-                                        </li>
+                                            <a class="nav-link active" href="{{url('areas')}}"><i class="fa fa-building"></i> Areas   </a>
+                                        </li>                                      
+<!--                                            <a class="nav-link active" href="{{url('areas/report/'.date('Y-m').'-01')}}"><i class="fa fa-building"></i> Area Report  | </a>-->
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Reports
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" href="{{route('waterbill')}}">Monthly Bill(s)</a>
+                                                <a class="dropdown-item" href="{{url("areas/report?type=AREA&period=".date('Y-m-d')."")}}">Monthly Water Consumption</a>
+                                                <a class="dropdown-item" href="{{route('reading.sheets')}}">Meter Reading Sheets</a>
+                                                <a class="dropdown-item" href="{{url("meter/changes?period=".date('Y-m-d')."")}}">Meter Changes</a>
+                                                <a class="dropdown-item" href="{{url("meter/history?type=1&period=".date('Y-m-d')."")}}">Meter Reading History</a>
+                                                <a class="dropdown-item" href="{{route('no.water.debits')}}">No Water Debits</a>
+                                                <a class="dropdown-item" href="{{route('balances')}}">Balances</a>
+                                                <a class="dropdown-item" href="{{ route("statement.index",['start'=>date('Y-m').'-01','end'=>date('Y-m-t',strtotime(date('Y-m-d')))]) }}">Statement of Accounts</a>
+                                                <a class="dropdown-item" href="{{route('sales.revenue')}}">Sales Revenue</a>
+                                                <a class="dropdown-item" href="#">Income Expenditure</a>
+                                            </div>
+                                        </li>                                      
                                         <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('areas/report/'.date('Y-m').'-01')}}"><i class="fa fa-building"></i> Area Report  | </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('disconnected/bill')}}"><i class="fa fa-power-off"></i> Disconnected Consumed Units</a>
+                                            <a class="nav-link active" href="{{url('disconnected/bill')}}"><i class="fa fa-power-off"></i> Disconnected Consumed Units</a>                                     
                                         </li>
 
                                     </ul>
@@ -195,14 +210,12 @@
 
 <script>
 $(function() {
-$('select').select2();
-
-
+//$('select').select2();
 $(document.body).on('keyup', '#SEARCH', function(event) {
 if (event.keyCode == 13) { // 13 = Enter Key
 value = $('#SEARCH').val();
 window.location.href = "{{url('client/show')}}/" + value
-        }
+}
 });
 $('#BANK').change(function(){
 $.getJSON("{{url('bank-branches')}}/" + $(this).val(), function(data){
@@ -213,7 +226,7 @@ $.each(data, function(i, d){
 $('#BRANCH').append('<option value="' + d.id + '">' + d.name + '</option>');
 });
 })
-        });
+});
 $(document).on('click', '#TRANSRCEIPT', function(){
 pid = $(this).attr('data-pid');
 client_id = $(this).attr('data-client-id');
@@ -231,12 +244,12 @@ $('#pdate').text(data.transactions[0].date)
 balance = '0.00';
 } else{
 balance = data.due[0].balance
-        }
+}
 $('#price_due').text(balance)
 
 
-        })
-        });
+})
+});
 $('#meterselection').change(function(){
 value = $(this).val();
 id = '';
@@ -249,13 +262,13 @@ Swal.fire(
         ' ',
         'error'
         )
-        } else{
+} else{
 window.location.href = "{{url('meter_reading_')}}/" + resp + '/' + value
 
-        }
+}
 
 })
-        });
+});
 $('#SUBMITTER').click(function(){
 prev = parseInt($('#prev_reading').val());
 curr = parseInt($('#current_reading').val());

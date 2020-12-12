@@ -129,10 +129,10 @@ class ClientController extends Controller {
         $status = Status::all();
         $reding = DB::select(DB::raw("SELECT  `fn_prv_reading`('$id')` reading"));
         $balance = DB::select(DB::raw("SELECT `fn_get_balance`('$id')` balance"));
-        $reading_date = DB::select(DB::raw("SELECT reading_date FROM meter_readings WHERE client_id='$id' ORDER BY id DESC LIMIT 1"))[0]->reading_date;
-        $date1 = date_create($reading_date);
-        $rrd= date_format($date1, "nS M, Y");
-        return view('client.show', ['area' => $area, 'status' => $status, 'client' => $client, 'balance' => $balance[0]->balance, 'reading' => $reding[0]->reading, 'rd' => $rrd]);
+        $reading_date = DB::select(DB::raw("SELECT reading_date FROM meter_readings WHERE client_id='$id' ORDER BY id DESC LIMIT 1"));
+       // $date1 = date_create($reading_date[0]->reading_date);
+        //$rrd= date_format($date1, "nS M, Y");
+        return view('client.show', ['area' => @$area, 'status' => @$status, 'client' => @$client, 'balance' => @$balance[0]->balance, 'reading' => @$reding[0]->reading, 'rd' => @$reading_date[0]->reading_date]);
     }
 
     /**

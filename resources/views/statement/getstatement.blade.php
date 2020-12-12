@@ -145,13 +145,13 @@ Transaction
                                 @endphp
 
                                 <tr>
-                                    <td>{{$s->transaction_date}}</td>                                                                    
+                                    <td>{{\Carbon\Carbon::parse($s->transaction_date)->format('d/m/Y')}}</td>                                                                    
                                     <td>
                                         @php
-                                        if(strpos( $s->description,'CASH') !== false){
+                                        if(strpos( $s->description,'CASH') !== false || strpos( $s->description,'M-PESA') !== false){
                                         echo "RECEIPTS";
                                         } else{
-                                        echo $s->description;
+                                        echo strtoupper($s->description);
                                         }
                                         @endphp
 
@@ -168,9 +168,9 @@ Transaction
                                     <td>
                                         @if(\is_null($s->mode))
                                         @if (strpos(strtolower($s->description), 'disconnection') !== false) 
-                                        {{date('Hi').'-'.$s->reference}}
+                                        {{$s->reference}}
                                         @elseif(strpos(strtolower($s->description), 'reconnection') !== false)
-                                        {{date('Hi').'-'.$s->reference}}
+                                        {{$s->reference}}
                                         @else
                                         {{$s->reference}}
                                         @endif
@@ -178,7 +178,7 @@ Transaction
                                         @else
 
                                         @if (strpos(strtolower($s->description), 'reconnection') !== false) 
-                                        {{date('Ym').'-'.$s->reference}}
+                                        {{$s->reference}}
                                         @else
                                         {{$s->m_reference}}
                                         @endif

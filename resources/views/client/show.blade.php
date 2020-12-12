@@ -224,7 +224,7 @@
                                 <label>Meter Reading Date</label>
                             </div>
                             <div class="col-md-6">
-                                <p> {{$rd}}</p>
+                                <p> {{ \Carbon\Carbon::parse($rd)->format('jS F, Y') }}</p>
                             </div>
                         </div>
 
@@ -301,15 +301,27 @@
 
 
         $('#RECONNECT').click(function () {
-            previous = parseInt("{{$reading}}")
+            //You are about to reconnect {{$client[0]->account_name.'('.$client[0]->id.')'}},
+            previous = parseInt("{{$reading}}")      
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You are about to reconnect {{$client[0]->account_name.'('.$client[0]->id.')'}}, Do you want to continue?",
-                icon: 'warning',
+                title: 'Enter reconnection fee',
+                input: 'text',
+                inputValue: '1155',
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    
+                },
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Reconnect'
+                confirmButtonText: 'Submit',
+                showLoaderOnConfirm: true,
+                preConfirm: (para) => {
+
+                    if (para == '') {
+                        Swal.showValidationMessage(`Request failed: No fee found, Please enter amount..`)
+                    }
+
+                },
+                allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
 
                 if (result.value) {
