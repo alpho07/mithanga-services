@@ -304,6 +304,7 @@ Route::post('no-water-debits-post', 'Admin\ReportController@no_water_debit_post'
 Route::get('areas/report', 'Admin\ReportController@area_report')->name('area.report')->middleware('auth');
 Route::get('meter/changes', 'Admin\ReportController@meter_changes')->name('meter.changes')->middleware('auth');
 Route::get('meter/history', 'Admin\ReportController@history_report')->name('meter.history')->middleware('auth');
+Route::get('income/expenditure', 'Admin\ReportController@income_expenditure')->name('income.expenditure')->middleware('auth');
 
 Route::get('/logout-user', function() {
     Auth::logout()->middleware('auth');

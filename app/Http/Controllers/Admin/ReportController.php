@@ -110,8 +110,7 @@ class ReportController extends Controller {
         $date = $r->input('report_type');
         $date_from = $r->input('report_type');
         $date_to = $r->input('report_type');
-        echo $report_type;
-        die;
+
 
         DB::statement("DROP TABLE IF EXISTS temp_balances_clients;CREATE TABLE temp_balances_clients as SELECT * FROM vw_balances;");
         $balances = DB::select("SELECT * FROM temp_balances_clients");
@@ -230,14 +229,41 @@ class ReportController extends Controller {
         $single = Client::find($type);
         $date = date_create($period);
         $period1 = strtoupper(date_format($date, "F-Y"));
-    
+
 
 
 
         $result = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='$type' AND DATE_FORMAT(reading_date,'%Y-%m-%d') <='$period' ORDER BY id ASC"));
-                                
-     
-        return view('reports.hreport', compact('period1', 'result', 'period', 'type','clients','single'));
+
+
+        return view('reports.hreport', compact('period1', 'result', 'period', 'type', 'clients', 'single'));
+    }
+
+    public function income_expenditure() {
+        $from = @$_GET['from'];
+        $to = @$_GET['to'];
+        $range_in = " DATE_FORMAT(date,'%Y-%m-%d') >= '$from' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$to'";
+        $range_ex = " DATE_FORMAT(created_at,'%Y-%m-%d') >= '$from' AND DATE_FORMAT(created_at,'%Y-%m-%d') <= '$to'";
+        
+
+        /*INCOME*/
+        $arrears = DB::select("SELECT SUM(balance) amount FROM vw_balances WHERE balance > 0");
+        $application = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE '%Application%'");
+        $water_charges = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE '%Application%' OR description LIKE '%standing%';");
+        $adjustments = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE '%Debited%'");
+        $miscallenous = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE 'ill%' OR description like '%Meter%'");
+        
+        /*EXPENSES*/
+        $expenses = DB::select("SELECT ec.name, SUM(amount) amount
+                    FROM expenses e 
+                    INNER JOIN expense_categories ec ON e.expense_category_id = ec.id 
+                    GROUP BY ec.name");
+        
+        
+        
+       // dd($application);
+
+        return view('reports.income_expenditure', compact('from', 'to','arrears','application','water_charges','adjustments','miscallenous','expenses'));
     }
 
 }

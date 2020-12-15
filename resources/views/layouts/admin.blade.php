@@ -178,7 +178,7 @@
                                                 <a class="dropdown-item" href="{{route('balances')}}">Balances</a>
                                                 <a class="dropdown-item" href="{{ route("statement.index",['start'=>date('Y-m').'-01','end'=>date('Y-m-t',strtotime(date('Y-m-d')))]) }}">Statement of Accounts</a>
                                                 <a class="dropdown-item" href="{{route('sales.revenue')}}">Sales Revenue</a>
-                                                <a class="dropdown-item" href="#">Income Expenditure</a>
+                                                <a class="dropdown-item" href="{{ route("income.expenditure",['from'=>date('Y-m').'-01','to'=>date('Y-m-t',strtotime(date('Y-m-d')))])}}">Income Expenditure</a>
                                             </div>
                                         </li>                                      
                                         <li class="nav-item ">
