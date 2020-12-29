@@ -23,6 +23,7 @@
         <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
         <link href="{{ asset('jquery-ui/jquery-ui.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/BsMultiSelect.css') }}" rel="stylesheet" />
         @yield('styles')
         <script src="{{ asset('js/jquery.min.js') }}"></script>
 <!--        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
@@ -72,6 +73,7 @@
         <script src="{{ asset('js/sweetalert2.js') }}"></script>
 <!--        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>-->
         <script src="{{ asset('js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('js/BsMultiSelect.js') }}"></script>
 
 
         <style>

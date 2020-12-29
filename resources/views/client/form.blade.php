@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label for="area">Area</label>
                     <select class="form-control" id="area" name="area" required>
-                                  
+
                         @foreach($area as $a)
                         <option value="{{$a->id}}">{{$a->name}}</option>
                         @endforeach
@@ -19,6 +19,18 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Application Fee(KES.)</label>
+                    <input type="text" class="form-control" id="application_fee" value="{{Request::old('application_fee')}}" required name="application_fee" placeholder="Application Fee e.g. 20,000.00">
+                </div>
+            </div>
+            <div class="col-6">
+
+            </div>
+        </div>
+  
 
         <div class="row">
             <div class="col-6">
@@ -58,7 +70,8 @@
                     <label for="exampleFormControlInput1">KRA PIN</label>
                     <input type="text" class="form-control" id="kra_pin"  required  name="kra_pin"  value="{{Request::old('kra_pin')}}" data-date-format="DD MMMM YYYY" placeholder="KRA PIN">
                 </div>
-            </div>            <div class="col-6">              
+            </div> 
+            <div class="col-6">              
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Meter Number</label>
                     <input type="text" class="form-control" id="meter_number" readonly name="meter_number" value="{{$account ?? Request::old('meter_number')}}" placeholder="Meter Number">
@@ -70,7 +83,7 @@
                 <div class="form-group">
                     <label for="exampleFormControlSelect2">Account Status</label>
                     <select  class="form-control" id="status" name="status"  required >
-                                
+
                         @foreach($status as $a)
                         <option value="{{$a->id}}">{{$a->status}}</option>
                         @endforeach

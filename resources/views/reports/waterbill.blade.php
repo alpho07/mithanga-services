@@ -5,6 +5,44 @@ Transaction
 @endsection
 
 @section('content')
+<script>
+    $(function () {
+
+//        $("#CLIENT").bsMultiSelect({cssPatch: {
+//                choices: {columnCount: '3'},
+//            }});
+    });
+</script>
+
+<!--form method="post" action="{{route('waterbill')}}">
+                                    @csrf
+                                    <select  id="selecOR" class="form-control" name="selected" >
+                                        <option value="area">Service Area Account(s)</option>
+                                        <option value="person">Client(s) Account(s)</option>
+                                        <option value="account">Single Account</option>
+                                    </select>
+
+                                    <span id="AREA" >
+                                        <select class="form-input mt-2" name="area[]" style="width:200px !important; " multiple>
+                                            @foreach($areas as $b)
+                                            <option value="{{$b->id}}">{{$b->name}}</option>
+                                            @endforeach                            
+                                        </select> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    </span>
+                                    <span id="CLIENT"  style="display:none !important;">
+                                        <select   class="form-input mt-2" name="client[]"  multiple>
+                                            @foreach($clients as $a)
+                                            <option value="{{$a->id}}">{{$a->account_name}}</option>
+                                            @endforeach                            
+                                        </select> 
+                                    </span>
+
+                                    <input class="form-control mr-sm-2  mt-2" id="CCID" style="display:none;" type="text" value="{{$cid ?? ''}}" name="account" autofocus placeholder="Enter Client Account" aria-label="Search">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;                                        
+                                    <input class="btn btn-sm btn-primary mt-3" type="submit"  value="Submit">
+
+                                </form-->
+
 
 <div class="container-fluid">
     <div class="row">
@@ -16,11 +54,11 @@ Transaction
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-4">
-                                    <select value="" id="selecOR" class="form-control">
+<!--                                    <select value="" id="selecOR" class="form-control">
                                         <option value="area">Area</option>
                                         <option value="person">Person</option>
                                         <option value="account">Account</option>
-                                    </select>
+                                    </select>-->
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4"></div>
@@ -32,26 +70,26 @@ Transaction
 
                                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-                                    <form method="get" action="{{route('waterbill')}}">
-                                        <select class="form-input" name="client" id="CLIENT">
+                                    <form method="get" action="{{route('waterbilla')}}">
+                                        <!--select class="form-input" name="client" id="CLIENT" style="display:none;">
                                             <option value="">-Select Client-</option>
                                             @foreach($clients as $a)
-                                            <option value="{{$a->id}}">{{$a->account_name}}<option>
-                                                @endforeach                            
+                                            <option value="{{$a->id}}">{{$a->account_name}}</option>
+                                            @endforeach                            
                                         </select> &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <div id="AREA2" style="display:none !important;">
+                                        <div id="AREA2" style="display:none;" >
                                             <select class="form-input" name="" style="width:200px !important; " id="AREA">
                                                 <option value="">-Select Area-</option>
                                                 @foreach($areas as $a)
-                                                <option value="{{$a->id}}">{{$a->name}}<option>
-                                                    @endforeach                            
+                                                <option value="{{$a->id}}">{{$a->name}}</option>
+                                                @endforeach                            
                                             </select> &nbsp;&nbsp;&nbsp;&nbsp;
-                                        </div>
+                                        </div-->
 
 
-                                        <input class="form-control mr-sm-2" id="CCID" style="display:none;" type="text" value="{{$cid ?? ''}}" name="" autofocus placeholder="Enter Client Account" aria-label="Search">
+                                        <input class="form-control mr-sm-2" id="CCID"  type="text" value="{{$cid ?? ''}}" name="cid" autofocus placeholder="Enter Client Account" aria-label="Search">
                                         &nbsp;&nbsp;&nbsp;&nbsp;                                        
-                                        <input class="btn btn-sm btn-primary" type="submit"  value="Submit">
+                                        <input class="btn btn-sm btn-primary mt-2" type="submit"  value="Submit">
 
                                     </form>
                                 </div>
@@ -176,13 +214,13 @@ Transaction
                                                     <p>WATER CHARGES @ {{$billing[0]->rate}} Shs. PER CUBIC METER</p>
                                                 </td>
                                                 <td class="tg-0pky" style="text-align: right;">
-                                                    <p>{{number_format($balance[0]->balance,2)}}</p>
+                                                    <p>{{str_replace('-','',number_format($balance[0]->balance,2))}}</p>
                                                     <p>{{$data2[0]->water_charges}}</p>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-7btt" colspan="4">AMOUNT DUE</td>
-                                                <td class="tg-fymr" style="text-align: right;">{{number_format($data2[0]->balance + $data2[0]->water_charges,2)}}</td>
+                                                <td class="tg-fymr" style="text-align: right;">{{str_replace('-','',number_format($data2[0]->balance + $data2[0]->water_charges,2))}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -210,29 +248,22 @@ Transaction
     $(function () {
 
 
-        $('#selecOR').on('select2:select', function () {
+        $('#selecOR').on('change', function () {
             value = $(this).val();
 
             if (value == 'area') {
                 alert(value)
-                $('#CLIENT').removeAttr('name');
-                $('#AREA2').attr('name');
-                $('#CCID').removeAttr('cid');
+                $('#AREA').show();
                 $('#CLIENT').hide();
                 $('#CCID').hide();
             } else if (value == 'person') {
-                $('#CLIENT').attr('name', 'client');
-                $('#AREA2').removeAttr('name');
-                $('#CCID').removeAttr('name');
-                $('#AREA2').hide();
+                $('#AREA').hide();
+                $('#CLIENT').show();
                 $('#CCID').hide();
             } else if (value == 'account') {
-                $('#CLIENT').removeAttr('name', 'client');
-                $('#AREA2').removeAttr('name');
-                $('#CCID').atr('name', 'cid');
-                $('#CCID').show();
-                $('#AREA2').hide();
+                $('#AREA').hide();
                 $('#CLIENT').hide();
+                $('#CCID').show();
             }
         })
 

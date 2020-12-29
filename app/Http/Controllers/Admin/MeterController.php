@@ -258,7 +258,7 @@ class MeterController extends Controller {
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $total_cost = '100';
             $description = "WATER - " . date('M Y');
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid',$description,'$date','debit','$total_cost','$consumed',$current_reading,'$this->ref')");
+            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','$description','$date','debit','$total_cost','$consumed',$current_reading,'$this->ref')");
             DB::update("UPDATE meter_readings SET standing_charge='1' WHERE id = '$id';");
         endforeach;
     }

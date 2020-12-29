@@ -28,6 +28,7 @@ class ReceiptController extends Controller {
 
         $words = $this->convertNumberToWord($transaction[0]->amount);
         $due = DB::table('vw_balances')->where('client_id', $clent_id)->get();
+
         $date = date('Y-m-d');
         // $opening_balance_ = DB::select(DB::raw("SELEC SUM(IF(type='debit',amount,-amount)) balance,client_id FROM transactions WHERE date < '$date' AND client_id='$clent_id' GROUP BY client_id"));
         $bills_ = DB::select(DB::raw("SELECT * FROM transactions WHERE type='debit' AND date >= '$date' AND client_id='$clent_id' AND description NOT LIKE 'CA%'"));
@@ -35,7 +36,7 @@ class ReceiptController extends Controller {
         $receipt_details = DB::select(DB::raw("SELECT item items,SUM(amount) amount FROM vw_receipt_items WHERE trans_id='$pid' GROUP BY item"));
 
 
-        return view('receipt.index', ['transactions' => $transaction, 'due' => $due, 'words' => $words, 'bills' => $receipt_details, 'arrears' => $due, 'bils_2' => $bills_2]);
+        return view('receipt.index', ['transactions' => $transaction, 'dupe' => (@$due[0]->balance > 0) ? '(' . @$due[0]->balance . ')' : str_replace('-','',@$due[0]->balance), 'words' => $words, 'bills' => $receipt_details, 'arrears' => $due, 'bils_2' => $bills_2]);
     }
 
     function convertNumberToWord($num = false) {

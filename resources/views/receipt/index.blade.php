@@ -15,8 +15,10 @@
     </head>
 
     <body translate="no" >
+        <span id='prINT'>
         <a class="btn btn-sm btn-primary" href="{{url('payment')}}">< BACK</a>
         <button class="btn btn-warning btn-sm" id="PRINTER">PRINT</button>
+        </span>
 
 
         <div id="invoice-POS">
@@ -27,17 +29,17 @@
 
 
 
-            <div id="mid">
-                <div class="info">                  
-                    <p> 
+            <div id="">
+                <div class="">                  
+                    <span style="font-size: 14px; font-weight: bold;"> 
                         P.O. Box 24732-00100, NAIROBI GPO</br>
                         Tel:- +254-704-107-724 / +254-788-484-737</br>
                         Email:- samdamtewaterservices@yahoo.com</br>
-                    </p>
+                    </span>
                 </div>
             </div><!--End Invoice Mid-->
 
-            <div id="bot">
+            <div id="bot " style="margin-top: 5px;">
 
                 <div id="table">
                     <table>                
@@ -94,7 +96,7 @@
                             <td class="" style="height: 10px;"></td>
                         </tr>
                         <tr class="">
-                            <td class=""><span class="itemtext">Amount Due:  Kshs {{@$bal}}</span></td>
+                            <td class=""><span class="itemtext">Amount Due:  Kshs {{$dupe}}</span></td>
                         </tr>                     
 
                         <tr class="">
@@ -141,6 +143,7 @@
 
 $(function () {
     $('#PRINTER').click(function () {
+        $('#prINT').hide();
         $('#invoice-POS').printThis({
             importCSS: false,
             loadCSS: "{{url('print.css')}}",

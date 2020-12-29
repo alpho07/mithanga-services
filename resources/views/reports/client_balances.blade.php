@@ -50,6 +50,7 @@ Transaction
 
 
 
+                @foreach($data as $d)
                 <div class="card-body" id="printToPdf">
 
                     <div class="row">           
@@ -58,6 +59,9 @@ Transaction
                             <table class="table table-bordered" style="width:1000px !important;">
                                 <thead>
                                     <tr>
+                                        <td colspan="4"><strong>AREA: {{$d['area']}}</td>
+                                    </tr>
+                                    <tr>
                                         <th class="tg-7btt">AREA CODE</th>
                                         <th class="">AREA NAME</th>
                                         <th class="tg-7btt">CLIENT NAME</th>
@@ -65,7 +69,7 @@ Transaction
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($balances as $b)
+                                    @foreach($d['clients'] as $b)
                                     <tr>
                                         <td class="">{{$b->area}}</td>
                                         <td class="tg-c3ow" style="text-align: left;">{{$b->area_name}}</td>
@@ -75,11 +79,18 @@ Transaction
                                     @endforeach
 
                                 </tbody>
+                                <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td><strong>TOTALS</strong></td>
+                                <td style="text-align: right;"><strong>{{number_format($d['balance'],2)}}</strong></td>
+                                </tfoot>
                             </table>
                         </div>
                         <div class="col-md-1"></div>
                     </div>
                 </div>
+                @endforeach
             </div>
         </div>
     </div>

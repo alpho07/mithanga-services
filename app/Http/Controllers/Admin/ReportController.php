@@ -20,6 +20,34 @@ class ReportController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function waterbill() {
+
+        /*
+          $selected = $r->selected;
+          $area = $r->area;
+          $client = $r->client;
+          $account = $cid = $r->account;
+
+          $query = '';
+          $area_s = '';
+          $account_s = '';
+
+          if ($selected == 'area') {
+          foreach ($area as $a) {
+          $area_s .= "'" . $a . "'" . ",";
+          }
+          $ids = '(' . rtrim($area_s, ',') . ')';
+          $query .= " AND area_id IN $ids";
+          } else if ($selected == 'person') {
+          foreach ($client as $b) {
+          $account_s .= "'" . $b . "'" . ",";
+          }
+          $ids2 = '(' . rtrim($account_s, ',') . ')';
+          $query .= " AND client_id IN $ids2";
+          } else if ($selected == 'account') {
+          $query .= " AND client_id ='$account'";
+          } */
+
+
         $cid = @$_GET['cid'];
         $client = @$_GET['client'];
         $area = @$_GET['area'];
@@ -64,6 +92,62 @@ class ReportController extends Controller {
         }
     }
 
+    public function waterbillbyaccount() {
+
+        /*
+          $selected = $r->selected;
+          $area = $r->area;
+          $client = $r->client;
+          $account = $cid = $r->account;
+
+          $query = '';
+          $area_s = '';
+          $account_s = '';
+
+          if ($selected == 'area') {
+          foreach ($area as $a) {
+          $area_s .= "'" . $a . "'" . ",";
+          }
+          $ids = '(' . rtrim($area_s, ',') . ')';
+          $query .= " AND area_id IN $ids";
+          } else if ($selected == 'person') {
+          foreach ($client as $b) {
+          $account_s .= "'" . $b . "'" . ",";
+          }
+          $ids2 = '(' . rtrim($account_s, ',') . ')';
+          $query .= " AND client_id IN $ids2";
+          } else if ($selected == 'account') {
+          $query .= " AND client_id ='$account'";
+          } */
+
+
+        $client = $cid = @$_GET['cid'];
+        //$client = @$_GET['client'];
+        $area = @$_GET['area'];
+        $query = '';
+
+        $areas = Area::all();
+        $clients = Client::all();
+        $data = DB::select(DB::raw("SELECT * FROM settings_dpms"));
+
+
+
+        $query .= " AND client_id ='$cid'";
+
+        $raw = preg_replace('/AND/', '', $query, 1);
+
+
+
+        $billing = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='$cid'"));
+        $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='$cid'"));
+        $data2 = DB::table('vm_meter_readings')->whereRaw($raw)->paginate(1)->appends(request()->query());
+        if ($data2->count() > 0) {
+            return view('reports.waterbill', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'client', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
+        } else {
+            return redirect()->back()->with('error', 'Record Not found');
+        }
+    }
+
     function balances() {
         $areas = Area::all();
         DB::statement("DROP TABLE IF EXISTS temp_balances;CREATE TABLE temp_balances as SELECT * FROM vw_final_balances");
@@ -74,8 +158,16 @@ class ReportController extends Controller {
     function balances_client() {
         $areas = Area::all();
         DB::statement("DROP TABLE IF EXISTS temp_balances_clients;CREATE TABLE temp_balances_clients as SELECT * FROM vw_balances");
-        $balances = DB::select("SELECT * FROM temp_balances_clients");
-        return view('reports.client_balances', compact('areas', 'balances'));
+        $data = [];
+        foreach ($areas as $a):
+            $area = Area::find($a);
+            $clients = DB::select("SELECT * FROM temp_balances_clients WHERE area='$a->id' ORDER BY id ASC");
+            $balance = DB::select("SELECT SUM(balance) balance FROM temp_balances_clients WHERE area='$a->id'");
+            $fidata = ['area' => $a->name, 'balance' => $balance[0]->balance, 'clients' => $clients];
+            array_push($data, $fidata);
+        endforeach;
+      
+        return view('reports.client_balances', compact('data'));
     }
 
     function history() {
@@ -107,14 +199,91 @@ class ReportController extends Controller {
         $areas = Area::all();
 
         $report_type = $r->input('report_type');
-        $date = $r->input('report_type');
-        $date_from = $r->input('report_type');
-        $date_to = $r->input('report_type');
+        $datecriteria = $r->input('datecriteria');
+        $dc = $datecriteria;
+        $receiptno = $r->input('receiptno');
+        $vh = $receiptno;
+        $date = $r->input('date');
+        $datefrom = $r->input('datefrom');
+        $dateto = $r->input('dateto');
+        $voteheadselection = $r->input('voteheadselection');
+        $vhs = $voteheadselection;
 
+        if ($datecriteria == 'datesingle') {
+            $ds = "style=display:block";
+            $dr = "style=display:none";
+        } else {
+            $ds = "style=display:none";
+            $dr = "style=display:block";
+        }
 
-        DB::statement("DROP TABLE IF EXISTS temp_balances_clients;CREATE TABLE temp_balances_clients as SELECT * FROM vw_balances;");
-        $balances = DB::select("SELECT * FROM temp_balances_clients");
-        return view('reports.sales_revenue', compact('areas', 'balances'));
+        if ($report_type == 'votehead') {
+            $vs = "style=display:block";
+        } else {
+            $vs = "style=display:none";
+        }
+
+        if ($report_type == 'receipt') {
+            $vd = "style=display:block";
+        } else {
+            $vd = "style=display:none";
+        }
+
+        if ($report_type == 'detail') {
+            $q = '';
+            if ($datecriteria == 'datesingle') {
+                $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date' ";
+                $pe = ' FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+            } else {
+                $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' ";
+                $pe = ' BETWEEN ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+            }
+            $result = DB::select("SELECT * FROM vw_payments WHERE $q");
+            $totals = DB::select("SELECT mode,SUM(amount) amount FROM vw_payments WHERE $q GROUP BY mode");
+            return view('reports.sales_revenue_detail', compact('result', 'totals', 'pe', 'report_type', 'dc', 'ds', 'dr', 'date', 'datefrom', 'dateto', 'vs', 'vh', 'vd', 'vhs'));
+        } else if ($report_type == 'summary') {
+            $q = '';
+            if ($datecriteria == 'datesingle') {
+                $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date' ";
+                $pe = ' FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+            } else {
+                $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' ";
+                $pe = ' BETWEEN ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+            }
+            $result = DB::select("SELECT * FROM vw_payments WHERE $q GROUP BY amount ");
+            //$totals = DB::select("SELECT mode,SUM(amount) amount FROM vw_payments WHERE $q GROUP BY mode");
+            return view('reports.sales_revenue_summary', compact('result', 'pe', 'report_type', 'dc', 'ds', 'dr', 'date', 'datefrom', 'dateto', 'vs', 'vh', 'vd', 'vhs'));
+        } else if ($report_type == 'receipt') {
+            $receiptno = $r->input('receiptno');
+            $receip = DB::select("SELECT * FROM vw_payments WHERE id ='$receiptno'");
+            if (count($receip) > 0) {
+                return redirect()->to('client-info-receipt/' . $receip[0]->id . '/' . $receip[0]->client_id);
+            } else {
+                return redirect()->back()->with('error', 'Receipt Number(' . $receiptno . ') is invalid');
+            }
+        } else if ($report_type == 'votehead') {
+            $voteheadselection = $r->input('voteheadselection');
+
+            $q = '';
+            if ($datecriteria == 'datesingle') {
+                $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date' AND description LIKE '%$voteheadselection%' ";
+                $pe = strtoupper($voteheadselection) . ' RECEIPT FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+            } else {
+                $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' AND description LIKE '%$voteheadselection%'";
+                $pe = strtoupper($voteheadselection) . ' RECEIPT BETWEEM ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+            }
+            $result = DB::select("SELECT * FROM vw_payments WHERE $q ");
+            //$totals = DB::select("SELECT mode,SUM(amount) amount FROM vw_payments WHERE $q GROUP BY mode");
+            return view('reports.votehead', compact('result', 'pe', 'report_type', 'dc', 'ds', 'dr', 'date', 'datefrom', 'dateto', 'vs', 'vh', 'vd', 'vhs'));
+        } else {
+            $report_type = 'detail';
+            $ds = "style=display:block";
+            $dr = "style=display:none";
+            $dc = 'datesingle';
+
+            $vs = "style=display:none";
+            return view('reports.sales_revenue', compact('report_type', 'ds', 'dr', 'dc', 'vd', 'vs'));
+        }
     }
 
     function no_water_debits() {
@@ -244,26 +413,26 @@ class ReportController extends Controller {
         $to = @$_GET['to'];
         $range_in = " DATE_FORMAT(date,'%Y-%m-%d') >= '$from' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$to'";
         $range_ex = " DATE_FORMAT(created_at,'%Y-%m-%d') >= '$from' AND DATE_FORMAT(created_at,'%Y-%m-%d') <= '$to'";
-        
 
-        /*INCOME*/
+
+        /* INCOME */
         $arrears = DB::select("SELECT SUM(balance) amount FROM vw_balances WHERE balance > 0");
         $application = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE '%Application%'");
         $water_charges = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE '%Application%' OR description LIKE '%standing%';");
         $adjustments = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE '%Debited%'");
         $miscallenous = DB::select("SELECT SUM(amount) amount FROM vw_transactions  WHERE description LIKE 'ill%' OR description like '%Meter%'");
-        
-        /*EXPENSES*/
+
+        /* EXPENSES */
         $expenses = DB::select("SELECT ec.name, SUM(amount) amount
                     FROM expenses e 
                     INNER JOIN expense_categories ec ON e.expense_category_id = ec.id 
                     GROUP BY ec.name");
-        
-        
-        
-       // dd($application);
 
-        return view('reports.income_expenditure', compact('from', 'to','arrears','application','water_charges','adjustments','miscallenous','expenses'));
+
+
+        // dd($application);
+
+        return view('reports.income_expenditure', compact('from', 'to', 'arrears', 'application', 'water_charges', 'adjustments', 'miscallenous', 'expenses'));
     }
 
 }

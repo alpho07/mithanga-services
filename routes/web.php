@@ -294,6 +294,7 @@ Route::get('meter/changes', 'Admin\MeterController@changes')->name('mchanges')->
 
 /*Reports*/
 Route::get('waterbill', 'Admin\ReportController@waterbill')->name('waterbill')->middleware('auth');
+Route::get('waterbilla', 'Admin\ReportController@waterbillbyaccount')->name('waterbilla')->middleware('auth');
 Route::get('balances', 'Admin\ReportController@balances')->name('balances')->middleware('auth');
 Route::get('balances/client', 'Admin\ReportController@balances_client')->name('client.balances')->middleware('auth');
 Route::get('history', 'Admin\ReportController@history')->name('reading.history')->middleware('auth');
