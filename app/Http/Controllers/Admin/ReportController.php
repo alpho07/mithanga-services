@@ -19,80 +19,75 @@ class ReportController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function waterbill() {
-
-        /*
-          $selected = $r->selected;
-          $area = $r->area;
-          $client = $r->client;
-          $account = $cid = $r->account;
-
-          $query = '';
-          $area_s = '';
-          $account_s = '';
-
-          if ($selected == 'area') {
-          foreach ($area as $a) {
-          $area_s .= "'" . $a . "'" . ",";
-          }
-          $ids = '(' . rtrim($area_s, ',') . ')';
-          $query .= " AND area_id IN $ids";
-          } else if ($selected == 'person') {
-          foreach ($client as $b) {
-          $account_s .= "'" . $b . "'" . ",";
-          }
-          $ids2 = '(' . rtrim($account_s, ',') . ')';
-          $query .= " AND client_id IN $ids2";
-          } else if ($selected == 'account') {
-          $query .= " AND client_id ='$account'";
-          } */
+    public function waterbill(Request $r) {
+        $area = $r->get('area');
+        $selector = $r->get('people');
+        $criteria = $r->get('selector');
+        $cid = $r->get('cid');
+        $areag = '';
+        $selectorf = '';
+        $used_like_date = '';
+        $day = date('j');
+        
+        echo $criteria;
+       // die;
 
 
-        $cid = @$_GET['cid'];
-        $client = @$_GET['client'];
-        $area = @$_GET['area'];
+        if ($day < 23) {
+            $used_like_date = date("Y-m", strtotime("previous month"));
+        } else {
+            $used_like_date = date("Y-m");
+        }
+
         $query = '';
 
         $areas = Area::all();
         $clients = Client::all();
         $data = DB::select(DB::raw("SELECT * FROM settings_dpms"));
 
+        if ($criteria == 'area') {
+            foreach ($area as $a) {
+                $areag .= "'" . $a . "'" . ',';
+            }
+            $areaf = '(' . rtrim($areag, ',') . ')';
+            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE area_id IN $areaf ");
+            return redirect()->to('billLoader');
+        } else if ($criteria == 'person') {
 
-        if (!empty($cid) && !empty($client)) {
-            $query .= " AND client_id ='$cid'";
-        }
-        if (!empty($client) && empty($cid)) {
-            $query .= " AND client_id ='$client'";
-        }
-
-        if (!empty($cid) && empty($client)) {
-            $query .= " AND client_id ='$cid'";
-        }
-        if (!empty($area)) {
-            $query .= " AND area_id ='$area'";
-        }
-
-        $raw = preg_replace('/AND/', '', $query, 1);
-
-        if (empty($query)) {
+            foreach ($selector as $a) {
+                $selectorf .= "'" . $a . "'" . ',';
+            }
+            $selectorf = '(' . rtrim($selectorf, ',') . ')';
+            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE client_id IN $selectorf");
+            return redirect()->to('billLoader');
+        } else if ($criteria == 'account') {
+            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE client_id = '$cid' ORDER BY id DESC LIMIT 1");
+            return redirect()->to('billLoader');
+        } else {
             $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='1'"));
             $billing = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='1' ORDER BY id DESC LIMIT 1"));
-            $data2 = DB::table('vm_meter_readings')->paginate(1)->appends(request()->query());
-            return view('reports.waterbill', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'client', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
-        } else {
-
-            $billing = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='$client'"));
-            $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='$client'"));
-            $data2 = DB::table('vm_meter_readings')->whereRaw($raw)->paginate(1)->appends(request()->query());
-            if ($data2->count() > 0) {
-                return view('reports.waterbill', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'client', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
-            } else {
-                return redirect()->back()->with('error', 'Record Not found');
-            }
+            $data2 = DB::table('vm_meter_readings')->where('client_id', $cid)->paginate(1)->appends(request()->query());
+            return view('reports.waterbill', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'clients', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
         }
     }
 
-    public function waterbillbyaccount() {
+    function billLoader() {
+        $areas = Area::all();
+        $clients = Client::all();
+        $cid = '';
+        $area = '';
+        $data = DB::select(DB::raw("SELECT * FROM settings_dpms"));
+        $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='1'"));
+        $billing = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='1' ORDER BY id DESC LIMIT 1"));
+        $data2 = DB::table('vw_bills')->paginate(1)->appends(request()->query());
+        return view('reports.waterbills2', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'clients', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
+    }
+
+    public function waterbillbyaccount(Request $r) {
+        $area = $r->input->get('area');
+        foreach ($area as $a) {
+            echo $a . '<br>';
+        }
 
         /*
           $selected = $r->selected;
@@ -121,31 +116,39 @@ class ReportController extends Controller {
           } */
 
 
-        $client = $cid = @$_GET['cid'];
-        //$client = @$_GET['client'];
-        $area = @$_GET['area'];
-        $query = '';
+        /* $client = $cid = @$_GET['cid'];
+          //$client = @$_GET['client'];
+          $area = @$_GET['area'];
+          $query = '';
 
-        $areas = Area::all();
-        $clients = Client::all();
-        $data = DB::select(DB::raw("SELECT * FROM settings_dpms"));
-
-
-
-        $query .= " AND client_id ='$cid'";
-
-        $raw = preg_replace('/AND/', '', $query, 1);
+          $areas = Area::all();
+          $clients = Client::all();
+          $data = DB::select(DB::raw("SELECT * FROM settings_dpms"));
 
 
 
-        $billing = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='$cid'"));
-        $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='$cid'"));
-        $data2 = DB::table('vm_meter_readings')->whereRaw($raw)->paginate(1)->appends(request()->query());
-        if ($data2->count() > 0) {
-            return view('reports.waterbill', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'client', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
-        } else {
-            return redirect()->back()->with('error', 'Record Not found');
-        }
+          $query .= " AND client_id ='$cid'";
+
+          $raw = preg_replace('/AND/', '', $query, 1);
+
+
+
+          $billing = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='$cid'"));
+          $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='$cid'"));
+          $data2 = DB::table('vm_meter_readings')->whereRaw($raw)->paginate(1)->appends(request()->query());
+          if ($data2->count() > 0) {
+          return view('reports.waterbill', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'client', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
+          } else {
+          return redirect()->back()->with('error', 'Record Not found');
+          } */
+    }
+
+    function areas() {
+        return Area::all();
+    }
+
+    function people() {
+        return Client::all();
     }
 
     function balances() {
@@ -166,7 +169,7 @@ class ReportController extends Controller {
             $fidata = ['area' => $a->name, 'balance' => $balance[0]->balance, 'clients' => $clients];
             array_push($data, $fidata);
         endforeach;
-      
+
         return view('reports.client_balances', compact('data'));
     }
 

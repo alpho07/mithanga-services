@@ -291,10 +291,14 @@ Route::get('point', 'Admin\AreaController@generateReferral')->name('point')->mid
 
 Route::get('meter/changes', 'Admin\MeterController@changes')->name('mchanges')->middleware('auth');
 
+Route::get('r/area', 'Admin\ReportController@areas')->name('r.area')->middleware('auth');
+Route::get('r/people', 'Admin\ReportController@people')->name('r.people')->middleware('auth');
+
 
 /*Reports*/
 Route::get('waterbill', 'Admin\ReportController@waterbill')->name('waterbill')->middleware('auth');
 Route::get('waterbilla', 'Admin\ReportController@waterbillbyaccount')->name('waterbilla')->middleware('auth');
+Route::get('billLoader', 'Admin\ReportController@billLoader')->name('billLoader')->middleware('auth');
 Route::get('balances', 'Admin\ReportController@balances')->name('balances')->middleware('auth');
 Route::get('balances/client', 'Admin\ReportController@balances_client')->name('client.balances')->middleware('auth');
 Route::get('history', 'Admin\ReportController@history')->name('reading.history')->middleware('auth');
@@ -308,7 +312,7 @@ Route::get('meter/history', 'Admin\ReportController@history_report')->name('mete
 Route::get('income/expenditure', 'Admin\ReportController@income_expenditure')->name('income.expenditure')->middleware('auth');
 
 Route::get('/logout-user', function() {
-    Auth::logout()->middleware('auth');
+    Auth::logout();
     return Redirect::to('login');
 })->middleware('auth');
 
