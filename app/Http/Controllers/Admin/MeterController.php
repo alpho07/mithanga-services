@@ -31,8 +31,13 @@ class MeterController extends Controller {
     }
 
     function registerChange(Request $r) {
-        DB::statement("INSERT INTO meter_changes (client_id,change_date,reading) VALUE('$r->client_id','$r->change_date','$r->reading')");
-        DB::statement("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUE('$r->client_id','$r->change_date','$r->reading')");
+        $res = DB::select("SELECT id,current_reading FROM meter_readings WHERE client_id='$r->client_id' ORDER BY id DESC LIMIT 1");
+        $id = $res[0]->id;
+        $date = $r->change_date . ' ' . date('H:i:s');
+        DB::statement("INSERT INTO meter_changes (client_id,change_date,reading) VALUE('$r->client_id','$date','$r->reading')");
+        DB::statement("DELETE FROM meter_readings  WHERE id='$id'");
+        //DB::update("UPDATE meter_readings SET current_reading='$r->prevreading' WHERE id='$id'");
+        DB::statement("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUE('$r->client_id','$date','$r->reading')");
         return redirect()->back()->with('message', 'Meter changing data saved');
     }
 
@@ -41,8 +46,9 @@ class MeterController extends Controller {
         if (count($res) > 0) {
             return $res;
         } else {
-            return ['0' => ['current_reading' => 'No Previous Readings found']];
+           return ['0' => ['current_reading' => 'No Previous Readings found']];
         }
+      
     }
 
     /**
@@ -253,7 +259,7 @@ class MeterController extends Controller {
         foreach ($query as $q):
             $id = $q->id;
             $cid = $q->client_id;
-            $date = date('Y-d-m H:i:s');
+            $date = date('Y-m-d H:i:s');
             $current_reading = ($q->current_reading) ? $q->current_reading : 0;
             $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
             $total_cost = '100';

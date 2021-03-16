@@ -14,35 +14,6 @@ Transaction
     });
 </script>
 
-<!--form method="post" action="{{route('waterbill')}}">
-                                    @csrf
-                                    <select  id="selecOR" class="form-control" name="selected" >
-                                        <option value="area">Service Area Account(s)</option>
-                                        <option value="person">Client(s) Account(s)</option>
-                                        <option value="account">Single Account</option>
-                                    </select>
-
-                                    <span id="AREA" >
-                                        <select class="form-input mt-2" name="area[]" style="width:200px !important; " multiple>
-                                            @foreach($areas as $b)
-                                            <option value="{{$b->id}}">{{$b->name}}</option>
-                                            @endforeach                            
-                                        </select> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    </span>
-                                    <span id="CLIENT"  style="display:none !important;">
-                                        <select   class="form-input mt-2" name="client[]"  multiple>
-                                            @foreach($clients as $a)
-                                            <option value="{{$a->id}}">{{$a->account_name}}</option>
-                                            @endforeach                            
-                                        </select> 
-                                    </span>
-
-                                    <input class="form-control mr-sm-2  mt-2" id="CCID" style="display:none;" type="text" value="{{$cid ?? ''}}" name="account" autofocus placeholder="Enter Client Account" aria-label="Search">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;                                        
-                                    <input class="btn btn-sm btn-primary mt-3" type="submit"  value="Submit">
-
-                                </form-->
-
 
 <div class="container-fluid">
     <div class="row">
@@ -89,21 +60,7 @@ Transaction
 
                                     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-                                        <!--                                    <form method="get" action="{{route('waterbilla')}}">-->
-                                        <!--select class="form-input" name="client" id="CLIENT" style="display:none;">
-                                            <option value="">-Select Client-</option>
-                                            @foreach($clients as $a)
-                                            <option value="{{$a->id}}">{{$a->account_name}}</option>
-                                            @endforeach                            
-                                        </select> &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <div id="AREA2" style="display:none;" >
-                                            <select class="form-input" name="" style="width:200px !important; " id="AREA">
-                                                <option value="">-Select Area-</option>
-                                                @foreach($areas as $a)
-                                                <option value="{{$a->id}}">{{$a->name}}</option>
-                                                @endforeach                            
-                                            </select> &nbsp;&nbsp;&nbsp;&nbsp;
-                                        </div-->
+                                 
 
 
                                         <input class="form-control mr-sm-2" id="CCID"  type="text" value="{{$cid ?? ''}}" name="cid" autofocus placeholder="Enter Client Account" aria-label="Search" style="display:none;">
@@ -138,7 +95,7 @@ Transaction
 
                     <div class="row">
 
-
+                       @if(count($data2) > 0)
                         <div class="row col-md-12">
 
 
@@ -256,6 +213,9 @@ Transaction
                                 <span>{{$data[0]->third_billing_message}}.</span>
                             </div>
                         </div>
+                       @else
+                       <div class="badge badge-danger" style="font-weight: bold;font-size: 25px;">No Data found at the moment'</div>
+                       @endif
                     </div>
                 </div>
             </div>

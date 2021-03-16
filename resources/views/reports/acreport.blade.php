@@ -75,8 +75,21 @@ Area
                             </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                $clients = 0;
+                                $units = 0;
+                                $flat_rates = 0;
+                                $invoiced = 0;
+                                ?>
+
                                 @if(count($result) > 0)
                                 @foreach($result as $r)
+                                <?php
+                                $clients = $clients + $r->clients;
+                                $units = $units + $r->units_consumed;
+                                $flat_rates = $flat_rates + $r->flat_rate;
+                                $invoiced = $invoiced + $r->invoiced;
+                                ?>
                                 <tr>
                                     <td>{{$r->id}}</td>
                                     <td>{{$r->name}}</td>
@@ -92,6 +105,16 @@ Area
                             </tr>
                             @endif
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>TOTALS</th>
+                                    <th><center>{{number_format($clients,0)}}</center></th>
+                            <th><center>{{number_format($units,0)}}</center></th>
+                            <th><center>{{number_format($clients,0)}}</center></th>
+                            <th style="text-align: right;">{{number_format($invoiced,2)}}</th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

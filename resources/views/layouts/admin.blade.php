@@ -85,11 +85,18 @@
                 margin: 1px;
             }
 
+            .navbar-toggle{
+                display: none;
+            }
+            .sidebar{
+
+            }
+
         </style>
 
     </head>
 
-    <body class="app header-fixed sidebar-fixed aside-menu-fixed pace-done sidebar-lg-show">
+    <body class="app header-fixed sidebar-fixed aside-menu-fixed pace-done">
         <header class="app-header navbar">
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
@@ -143,49 +150,67 @@
                     </div>
                     @endif
                     <div class="card">
-                        <div class="card-header">Quick Links</div>
+                        <a style="color:red;font-weight: bold;text-align: right;" href="{{url('logout-user')}}" class="nav-link" >
+                            <i class="nav-icon fas fa-fw fa-sign-out-alt">
+
+                            </i>
+                            {{ trans('global.logout') }}
+                        </a>
+                        <div class="card-header"><a href="{{url('/')}}"><i class="fa fas fa-home"> Main Menu</i> </div>
                         <div class="card-body">
                             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
+
                                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                                    <a class="navbar-brand" href="{{url('client')}}"><i class="fa fa-users"></i> Clients  </a>
-                                    <a class="navbar-brand" href="{{url('statement/'.date('Y-m').'-01/'.date('Y-m-t',strtotime(date('Y-m-d'))))}}"><i class="fa fa-file"></i> Statements  </a>
+
                                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                                        <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('meter')}}"><i class="fa fa-dashboard"></i> Meter Reading   </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('billing')}}"><i class="fa fa-clipboard"></i> Bills   </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('payment')}}"><i class="fa fa-money-bill"></i> Payments  </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('areas')}}"><i class="fa fa-building"></i> Areas   </a>
-                                        </li>                                      
-<!--                                            <a class="nav-link active" href="{{url('areas/report/'.date('Y-m').'-01')}}"><i class="fa fa-building"></i> Area Report  | </a>-->
                                         <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <a style="color:blue;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="fa fas fa-file"></i> File
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" href="{{url('areas')}}"><i class="fa fas fa-arrow-circle-right"></i>Areas</a>
+                                                <a class="dropdown-item" href="{{url('client')}}"><i class="fa fas fa-arrow-circle-right"></i>Clients</a>
+                                                <a class="dropdown-item" href="{{url('suppliers')}}"><i class="fa fas fa-arrow-circle-right"></i>Suppliers</a>
+                                                <a class="dropdown-item" href="{{url('cost-center')}}"><i class="fa fas fa-arrow-circle-right"></i>Cost Center</a>
+                                                <a class="dropdown-item" href="{{url('legal-centers')}}"><i class="fa fas fa-arrow-circle-right"></i>Legal Costs</a>
+                                                <a class="dropdown-item" href="{{url('bank')}}"><i class="fa fas fa-arrow-circle-right"></i>Banks</a>
+                                                <a class="dropdown-item" href="{{url('mops')}}"><i class="fa fas fa-arrow-circle-right"></i>Modes of Payment</a>
+                                                <a class="dropdown-item" href="{{url('status')}}"><i class="fa fas fa-arrow-circle-right"></i>Account Status</a>
+                                            </div>
+                                        </li>
+
+                                        <li class="nav-item dropdown">
+                                            <a style="color:blue;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="fa fas fa-recycle"></i> Transactions
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" href="{{url('meter')}}"><i class="fa fas fa-arrow-circle-right"></i>Meter Reading </a>
+                                                <a class="dropdown-item" href="{{url('meter/change')}}"><i class="fa fas fa-arrow-circle-right"></i>Meter Change</a>
+                                                <a class="dropdown-item" href="{{url('billing')}}"><i class="fa fas fa-arrow-circle-right"></i>Bills</a>
+                                                <a class="dropdown-item" href="{{url('payment')}}"><i class="fa fas fa-arrow-circle-right"></i>Payments</a>
+                                                <a class="dropdown-item" href="{{url('invoice')}}"><i class="fa fas fa-arrow-circle-right"></i>Invoices</a>                                              
+                                            </div>
+                                        </li>
+
+                                        <li class="nav-item dropdown">
+                                            <a style="color:blue;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Reports
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <a class="dropdown-item" href="{{route('waterbill')}}">Monthly Bill(s)</a>
-                                                <a class="dropdown-item" href="{{url("areas/report?type=AREA&period=".date('Y-m-d')."")}}">Monthly Water Consumption</a>
-                                                <a class="dropdown-item" href="{{route('reading.sheets')}}">Meter Reading Sheets</a>
-                                                <a class="dropdown-item" href="{{url("meter/changes?period=".date('Y-m-d')."")}}">Meter Changes</a>
-                                                <a class="dropdown-item" href="{{url("meter/history?type=1&period=".date('Y-m-d')."")}}">Meter Reading History</a>
-                                                <a class="dropdown-item" href="{{route('no.water.debits')}}">No Water Debits</a>
-                                                <a class="dropdown-item" href="{{route('balances')}}">Balances</a>
-                                                <a class="dropdown-item" href="{{ route("statement.index",['start'=>date('Y-m').'-01','end'=>date('Y-m-t',strtotime(date('Y-m-d')))]) }}">Statement of Accounts</a>
-                                                <a class="dropdown-item" href="{{route('sales.revenue')}}">Sales Revenue</a>
-                                                <a class="dropdown-item" href="{{ route("income.expenditure",['from'=>date('Y-m').'-01','to'=>date('Y-m-t',strtotime(date('Y-m-d')))])}}">Income Expenditure</a>
+                                                <a class="dropdown-item" href="{{route('waterbill')}}"><i class="fa fas fa-arrow-circle-right"></i>Monthly Bill(s)</a>
+                                                <a class="dropdown-item" href="{{url("areas/report?type=AREA&period=".date('Y-m-d')."")}}"><i class="fa fas fa-arrow-circle-right"></i>Monthly Water Consumption</a>
+                                                <a class="dropdown-item" href="{{route('reading.sheets')}}"><i class="fa fas fa-arrow-circle-right"></i>Meter Reading Sheets</a>
+                                                <a class="dropdown-item" href="{{url("meter/changes?period=".date('Y-m-d')."")}}"><i class="fa fas fa-arrow-circle-right"></i>Meter Changes</a>
+                                                <a class="dropdown-item" href="{{url("meter/history?type=1&period=".date('Y-m-d')."")}}"><i class="fa fas fa-arrow-circle-right"></i>Meter Reading History</a>
+                                                <a class="dropdown-item" href="{{route('no.water.debits')}}"><i class="fa fas fa-arrow-circle-right"></i>No Water Debits</a>
+                                                <a class="dropdown-item" href="{{route('balances')}}"><i class="fa fas fa-arrow-circle-right"></i>Balances</a>
+                                                <a class="dropdown-item" href="{{ route("statement.index",['start'=>date('Y-m').'-01','end'=>date('Y-m-t',strtotime(date('Y-m-d')))]) }}"><i class="fa fas fa-arrow-circle-right"></i>Statement of Accounts</a>
+                                                <a class="dropdown-item" href="{{route('sales.revenue')}}"><i class="fa fas fa-arrow-circle-right"></i>Sales Revenue</a>
+                                                <a class="dropdown-item" href="{{ route("income.expenditure",['from'=>date('Y-m').'-01','to'=>date('Y-m-t',strtotime(date('Y-m-d')))])}}"><i class="fa fas fa-arrow-circle-right"></i>Income Expenditure</a>
+                                                <a class="dropdown-item" href="{{url('disconnected/bill')}}"><i class="fa fas fa-arrow-circle-right"></i>Disconnected Consumed Units</a>
                                             </div>
                                         </li>                                      
-                                        <li class="nav-item ">
-                                            <a class="nav-link active" href="{{url('disconnected/bill')}}"><i class="fa fa-power-off"></i> Disconnected Consumed Units</a>                                     
-                                        </li>
+
 
                                     </ul>
                                     <form class="form-inline my-2 my-lg-0">
@@ -212,6 +237,7 @@
 
 <script>
 $(function() {
+//$('.navbar-toggler').trigger('click');
 //$('select').select2();
 $(document.body).on('keyup', '#SEARCH', function(event) {
 if (event.keyCode == 13) { // 13 = Enter Key

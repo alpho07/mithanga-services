@@ -5,7 +5,8 @@ Route::redirect('/home', '/admin');
 Auth::routes();
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
-    Route::redirect('/', 'client');
+    //Route::redirect('/', 'client');
+    
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -48,8 +49,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('areas/create', 'AreaController@create')->name('areas.create');
 });
 
-  
 
+
+
+Route::get('home_page', 'Admin\ClientController@home_page')->name('home.index')->middleware('auth');
 
 Route::get('dashboard/', 'Admin\DashboardController@index')->name('dashboard.index')->middleware('auth');
 Route::get('dashboard/all-consumption', 'Admin\DashboardController@loadConsumptionByMonths')->name('dashboard.allconsumption')->middleware('auth');
@@ -289,13 +292,13 @@ Route::get('notification/{id}/{date}', 'Admin\MeterController@notification_cente
 Route::get('point', 'Admin\AreaController@generateReferral')->name('point')->middleware('auth');
 
 
-Route::get('meter/changes', 'Admin\MeterController@changes')->name('mchanges')->middleware('auth');
+//Route::get('meter/changes', 'Admin\MeterController@changes')->name('mchanges')->middleware('auth');
 
 Route::get('r/area', 'Admin\ReportController@areas')->name('r.area')->middleware('auth');
 Route::get('r/people', 'Admin\ReportController@people')->name('r.people')->middleware('auth');
 
 
-/*Reports*/
+/* Reports */
 Route::get('waterbill', 'Admin\ReportController@waterbill')->name('waterbill')->middleware('auth');
 Route::get('waterbilla', 'Admin\ReportController@waterbillbyaccount')->name('waterbilla')->middleware('auth');
 Route::get('billLoader', 'Admin\ReportController@billLoader')->name('billLoader')->middleware('auth');

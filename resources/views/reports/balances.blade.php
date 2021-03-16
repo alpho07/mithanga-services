@@ -6,6 +6,8 @@ Transaction
 
 @section('content')
 
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -48,7 +50,7 @@ Transaction
                 </div>
                 @endif
 
-
+               
 
                 <div class="card-body" id="printToPdf">
 
@@ -65,7 +67,16 @@ Transaction
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($balances as $b)
+                                    <?php
+                                    $clients=0;
+                                    $balances=0;
+                                    ?>
+                                    @foreach($balances_ as $b)
+                                    <?php
+                                    $clients =  $clients + $b->client_count;
+                                    $balances = $balances + $b->balance;
+                                    ?>
+                                
                                     <tr>
                                         <td class="">{{$b->area}}</td>
                                         <td class="tg-c3ow" style="text-align: left;">{{$b->area_name}}</td>
@@ -73,7 +84,12 @@ Transaction
                                         <td class="" style="text-align: right;">{{($b->balance < 0) ? '('.str_replace('-','',number_format($b->balance,2)).')' : number_format($b->balance,2) }}</td>                                      
                                     </tr>
                                     @endforeach
-
+                                    <tr>
+                                        <td class="" colspan="1">TOTALS</td>
+                                        <td class="tg-c3ow"></td>
+                                        <td class="tg-c3ow">{{$clients}}</td>
+                                          <td class="" style="text-align: right;">{{($balances < 0) ? '('.str_replace('-','',number_format($balances,2)).')' : number_format($balances,2) }}</td>                                    
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

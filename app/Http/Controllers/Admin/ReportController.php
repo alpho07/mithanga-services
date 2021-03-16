@@ -28,9 +28,8 @@ class ReportController extends Controller {
         $selectorf = '';
         $used_like_date = '';
         $day = date('j');
-        
-        echo $criteria;
-       // die;
+
+
 
 
         if ($day < 23) {
@@ -50,7 +49,7 @@ class ReportController extends Controller {
                 $areag .= "'" . $a . "'" . ',';
             }
             $areaf = '(' . rtrim($areag, ',') . ')';
-            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE area_id IN $areaf ");
+            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE area_id IN $areaf AND reading_date LIKE '%$used_like_date%' ");
             return redirect()->to('billLoader');
         } else if ($criteria == 'person') {
 
@@ -58,10 +57,10 @@ class ReportController extends Controller {
                 $selectorf .= "'" . $a . "'" . ',';
             }
             $selectorf = '(' . rtrim($selectorf, ',') . ')';
-            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE client_id IN $selectorf");
+            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE client_id IN $selectorf AND reading_date LIKE '%$used_like_date%'");
             return redirect()->to('billLoader');
         } else if ($criteria == 'account') {
-            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE client_id = '$cid' ORDER BY id DESC LIMIT 1");
+            DB::statement("CREATE OR REPLACE VIEW vw_bills as SELECT * FROM vm_meter_readings WHERE client_id = '$cid' AND reading_date LIKE '%$used_like_date%' ORDER BY id DESC LIMIT 1");
             return redirect()->to('billLoader');
         } else {
             $balance = DB::select(DB::raw("SELECT balance FROM vw_balances WHERE client_id='1'"));
@@ -154,8 +153,8 @@ class ReportController extends Controller {
     function balances() {
         $areas = Area::all();
         DB::statement("DROP TABLE IF EXISTS temp_balances;CREATE TABLE temp_balances as SELECT * FROM vw_final_balances");
-        $balances = DB::select("SELECT * FROM temp_balances");
-        return view('reports.balances', compact('areas', 'balances'));
+        $balances_ = DB::select("SELECT * FROM temp_balances");
+        return view('reports.balances', compact('areas', 'balances_'));
     }
 
     function balances_client() {
@@ -266,17 +265,47 @@ class ReportController extends Controller {
             }
         } else if ($report_type == 'votehead') {
             $voteheadselection = $r->input('voteheadselection');
-
             $q = '';
-            if ($datecriteria == 'datesingle') {
-                $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date' AND description LIKE '%$voteheadselection%' ";
-                $pe = strtoupper($voteheadselection) . ' RECEIPT FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+            if ($voteheadselection == 'ADVANCE PAY') {
+                if ($datecriteria == 'datesingle') {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date' AND balance > 0";
+                    $pe = strtoupper($voteheadselection) . ' FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+                } else {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' AND  balance > 0 ";
+                    $pe = strtoupper($voteheadselection) . ' ADVANCE PAY BETWEEM ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+                }
+                $result = DB::select("SELECT * FROM vw_arrears_advance WHERE $q ");
+                //$totals = DB::select("SELECT mode,SUM(amount) amount FROM vw_payments WHERE $q GROUP BY mode")
+            } else if ($voteheadselection == 'ARREARS') {
+                if ($datecriteria == 'datesingle') {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date' AND balance < 0";
+                    $pe = strtoupper($voteheadselection) . ' FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+                } else {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' AND  balance < 0 ";
+                    $pe = strtoupper($voteheadselection) . ' ADVANCE PAY BETWEEM ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+                }
+                $result = DB::select("SELECT * FROM vw_arrears_advance WHERE $q ");
+            } else if ($voteheadselection == 'WATER CHARGES') {
+               
+                if ($datecriteria == 'datesingle') {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date'  AND description LIKE 'WATER%'";
+                    $pe = strtoupper($voteheadselection) . ' RECEIPT FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+                } else {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' AND description LIKE 'WATER%'";
+                    $pe = strtoupper($voteheadselection) . ' RECEIPT BETWEEM ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+                }
+                $result = DB::select("SELECT * FROM vw_transactions WHERE $q ");
             } else {
-                $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' AND description LIKE '%$voteheadselection%'";
-                $pe = strtoupper($voteheadselection) . ' RECEIPT BETWEEM ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+                if ($datecriteria == 'datesingle') {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date'  AND description LIKE '%$voteheadselection%'";
+                    $pe = strtoupper($voteheadselection) . ' RECEIPT FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
+                } else {
+                    $q = " DATE_FORMAT(date,'%Y-%m-%d') >= '$datefrom' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$dateto' AND description LIKE '%$voteheadselection%'";
+                    $pe = strtoupper($voteheadselection) . ' RECEIPT BETWEEM ' . \Carbon\Carbon::parse($datefrom)->format('l F dS, Y ') . ' AND ' . \Carbon\Carbon::parse($dateto)->format('l F dS, Y ');
+                }
+                $result = DB::select("SELECT * FROM vw_payments WHERE $q ");
+                //$totals = DB::select("SELECT mode,SUM(amount) amount FROM vw_payments WHERE $q GROUP BY mode");
             }
-            $result = DB::select("SELECT * FROM vw_payments WHERE $q ");
-            //$totals = DB::select("SELECT mode,SUM(amount) amount FROM vw_payments WHERE $q GROUP BY mode");
             return view('reports.votehead', compact('result', 'pe', 'report_type', 'dc', 'ds', 'dr', 'date', 'datefrom', 'dateto', 'vs', 'vh', 'vd', 'vhs'));
         } else {
             $report_type = 'detail';
@@ -343,7 +372,6 @@ class ReportController extends Controller {
 
         $date = date_create($period);
         $period1 = strtoupper(date_format($date, "F-Y"));
-
 
         if ($type == 'AREA') {
             $result = DB::select(DB::raw("SELECT a.id,a.name,COUNT(c.id) clients, SUM(mr.consumed_units) units_consumed, (a.rate * SUM(mr.consumed_units)) + (COUNT(mr.consumed_units='0') * 100) invoiced,COUNT(mr.consumed_units='0')  flat_rate

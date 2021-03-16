@@ -33,7 +33,7 @@ class ReceiptController extends Controller {
         // $opening_balance_ = DB::select(DB::raw("SELEC SUM(IF(type='debit',amount,-amount)) balance,client_id FROM transactions WHERE date < '$date' AND client_id='$clent_id' GROUP BY client_id"));
         $bills_ = DB::select(DB::raw("SELECT * FROM transactions WHERE type='debit' AND date >= '$date' AND client_id='$clent_id' AND description NOT LIKE 'CA%'"));
         $bills_2 = DB::select(DB::raw("SELECT * FROM transactions WHERE id='$pid' AND description NOT LIKE 'CA%'"));
-        $receipt_details = DB::select(DB::raw("SELECT item items,SUM(amount) amount FROM vw_receipt_items WHERE trans_id='$pid' GROUP BY item"));
+        $receipt_details = DB::select(DB::raw("SELECT item items,SUM(amount) amount FROM vw_receipt_items WHERE trans_id='$pid' GROUP BY item"));    
 
 
         return view('receipt.index', ['transactions' => $transaction, 'dupe' => (@$due[0]->balance > 0) ? '(' . @$due[0]->balance . ')' : str_replace('-','',@$due[0]->balance), 'words' => $words, 'bills' => $receipt_details, 'arrears' => $due, 'bils_2' => $bills_2]);

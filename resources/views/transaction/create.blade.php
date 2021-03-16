@@ -27,4 +27,9 @@
             </div>
         </div>
     </section>
+<script>
+    $(function(){
+      $('#client_id').select2(); 
+    });
+</script>
 @endsection

@@ -16,11 +16,14 @@
             @endif
         </div>
         <div class="form-group">
-            <input type="text" readonly="" class="form-control datepicker" required="" id="DateS" name='change_date' placeholder="Select Change Date..."/>
+            <input type="text" value="<?php echo date('Y-m-d');?>" class="form-control datepicker" readonly id="DateS" name='change_date' placeholder="Select Change Date..."/>
         </div>
         <div class="form-group">
-            <label>Previous reading before change</label>
-            <input class="form-control" type="text" id="PREREADING" readonly style="font-weight: bold; color: blue;font-size: 18px;"/>
+            <label><strong><u>Previous reading before change:</u></strong></label>
+            <span class="badge badge-info" id="PREREADING" style="font-weight: bold; color: blue;font-size: 18px;"></span>
+            <br>
+            <p></p>
+            <input class="form-control" name="prevreading" type="text" id="PREREADINGA" placeholder="Adjusted previous reading"  />
         </div>
         <div class="form-group">
             

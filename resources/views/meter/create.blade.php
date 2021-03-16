@@ -33,7 +33,7 @@ Create Transaction
 
         $('#suMit').click(function () {
             val1 = parseInt($('#NewPReading').val());
-            val2 = parseInt($('#PREREADING').val());
+            val2 = parseInt($('#PREREADING').text());
 
             if ($('#client_id').val() == '') {
                 Swal.fire(
@@ -65,14 +65,14 @@ Create Transaction
                             'success'
                             );
                     $('#TFORM').submit();
-                } else if (val2 > val1) {
+                } /*else if (val2 > val1) {
                     Swal.fire(
                             'Invalid Entry',
                             'You cannot change meter readings and have the meter changed reading as less than the previous one!',
                             'error'
                             );
                     return false;
-                } else {
+                }*/ else {
                     Swal.fire(
                             'Success',
                             'Meter Changes saved successfully!',
@@ -87,7 +87,7 @@ Create Transaction
             value = $(this).val();
             $.getJSON("{{url('lastRead')}}/" + value, function (v) {
                 //if(v[0].current_reading)
-                $('#PREREADING').val(v[0].current_reading);
+                $('#PREREADING').text(v[0].current_reading);
             });
         });
     })

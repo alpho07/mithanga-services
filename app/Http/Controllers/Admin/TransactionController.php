@@ -21,7 +21,7 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $transactions = DB::select(DB::raw("SELECT * From vw_bills order by id desc"));
+        $transactions = DB::select(DB::raw("SELECT * From vw_bills_bills order by id desc"));
         $i = 1;
         return view('transaction.index', compact('transactions', 'i'));
     }

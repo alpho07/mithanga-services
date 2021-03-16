@@ -25,10 +25,11 @@ class ClientController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //   $clients = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id"));
-        //return $clients;
-
         return view('client.index');
+    }
+
+    public function home_page() {
+        return view('client.home_page');
     }
 
     function loadClients() {

@@ -17,8 +17,8 @@ Meter Reading
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
-                            <span id="card_title">
-                                <strong>METER READING ENTRY</strong>
+                            <span id="card_title" style="font-size:17px;">
+                                <strong>METER READING ENTRY - ACCOUNT No.<span style="color:blue">#{{$client[0]->id}}</span></strong>
                             </span>
                             <!--span class="badge badge-info pull-right" style="font-weight: bold; font-size: 17px;">{{$i.'/'.$total}}</span-->
 
@@ -38,16 +38,16 @@ Meter Reading
 
                     <div class="card-body">
 
-                        <form class="" action="" method="post" id='SearchForm'>
+<!--                        <form class="" action="" method="post" id='SearchForm'>-->
                             <div class="row col-12">
                                 <div class="col-10">
                                     <input type="number" style="width:100%;" id='clientID' class="form-control" placeholder="Enter Client Account Number & Press Enter"/>
 
                                 </div>
-                                <div class="col-2">
+<!--                                <div class="col-2">
                                     <input type="button" value="Find" id="FINDER" class="btn btn-md btn-danger"><br>
 
-                                </div>
+                                </div>-->
                             </div>
 
                         </form>
@@ -189,7 +189,7 @@ Meter Reading
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title float-left" style="float: left;">Meter Reading</h4>
+                <h4 class="modal-title float-left" style="float: left;">Meter Reading - Account ()</h4>
 
             </div>
             <div class="modal-body">
@@ -244,7 +244,23 @@ Meter Reading
 
 
 <script>
+    $('#meterselection').select2();
     $(function () {
+
+        $(document.body).on('keyup', '#clientID', function (event) {
+            if (event.keyCode == 13) { // 13 = Enter Key
+                val = $('#clientID').val();
+                $.getJSON("{{url('client/loadclient')}}/" + val, function (resp) {
+                    if (resp == '0') {
+                        alert("Error: Client " + val + " Not Found")
+                        return false;
+                    } else {
+                        window.location.href = "{{url('meter_reading_')}}/" + resp.id + '/' + resp.area;
+                    }
+                });
+            }
+        });
+
         $(".datepicker11").datepicker({dateFormat: 'yy-mm-dd'});
         $('#area_sel').change(function () {
             val = $(this).val();
@@ -314,7 +330,7 @@ Meter Reading
             charges = $('#charges').val();
             amount = cust_balance - charges;
             if (amount < 0) {
-                bal = '(' + amount*-1 + ')';
+                bal = '(' + amount * -1 + ')';
             } else {
                 bal = amount * -1;
             }

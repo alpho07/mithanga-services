@@ -56,13 +56,13 @@ Transaction
                                     @php $TOT=0 @endphp
                                     @if(count($result)>0)
                                     @foreach($result as $r)
-                                    @php $TOT = $TOT +  @$r->balance * -1 @endphp
+                                    @php $TOT = $TOT +  $r->balance * -1 @endphp
                                     <tr>
                                         <td>{{$r->client_id}}</td>                                      
                                         <td>{{$r->account_name}}</td>                                      
                                         <td>{{$r->area_name}}</td>                                      
                                         <td style="text-align: right;">{{number_format($r->amount,2)}}</td>                                      
-                                        <td style="text-align: right;">{{number_format(str_replace('-','',@$r->balance ?? 0),2) ?? ''}}</td>                                     
+                                        <td style="text-align: right;">{{number_format($r->balance,2)}}</td>                                     
                                         <td>{{\Carbon\Carbon::parse($r->date)->format('d/m/Y')}}</td>
                                         <td>{{$r->reference}}</td>   
 
@@ -81,7 +81,7 @@ Transaction
                                         <th class=""></th>
                                         <th class="">GRAND TOTAL</th>                                     
                                         <th class="" ></th> 
-                                        <th class="tg-7btt" style="text-align: right; font-size: 20px;"> {{number_format(str_replace('-','',$TOT),2)}}</th> 
+                                        <th class="tg-7btt" style="text-align: right; font-size: 20px;"> {{number_format($TOT,2)}}</th> 
                                         <th class=""></th>
                                         <th class=""></th>
                                     </tr>

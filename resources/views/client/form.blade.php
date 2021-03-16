@@ -68,7 +68,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlInput1">KRA PIN</label>
-                    <input type="text" class="form-control" id="kra_pin"  required  name="kra_pin"  value="{{Request::old('kra_pin')}}" data-date-format="DD MMMM YYYY" placeholder="KRA PIN">
+                    <input type="text" class="form-control" id="kra_pin"   name="kra_pin"  value="{{Request::old('kra_pin')}}" data-date-format="DD MMMM YYYY" placeholder="KRA PIN">
                 </div>
             </div> 
             <div class="col-6">              

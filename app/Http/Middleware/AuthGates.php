@@ -6,14 +6,13 @@ use App\Role;
 use Closure;
 use Illuminate\Support\Facades\Gate;
 
-class AuthGates
-{
-    public function handle($request, Closure $next)
-    {
+class AuthGates {
+
+    public function handle($request, Closure $next) {
         $user = \Auth::user();
 
         if (!app()->runningInConsole() && $user) {
-            $roles            = Role::with('permissions')->get();
+            $roles = Role::with('permissions')->get();
             $permissionsArray = [];
 
             foreach ($roles as $role) {
@@ -31,4 +30,5 @@ class AuthGates
 
         return $next($request);
     }
+
 }

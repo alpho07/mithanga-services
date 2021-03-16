@@ -33,6 +33,12 @@ Create Transaction
                 <div class="card-header">
                     <span class="card-title"><b>Client Details</b></span>
                 </div>
+                <div class="LOADER" style="display:none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span> 
+                    </div>
+                    Loading Client Details, Please Wait ...
+                </div>
                 <div class="card-body">
                     <table class="table-bordered table-responsive">
                         <tr>
@@ -55,7 +61,11 @@ Create Transaction
 </section>
 <script>
     $(function () {
-        $('#client_id').change(function () {
+        $('#client_id').select2().on('change', (function (e) {
+            $('.LOADER').show();
+            $('#account_name').html('');
+            $('#account_reading').html('');
+            $('#account_balance').html('');
             id = $(this).val();
             result = '';
             $.getJSON("{{url('client-last-info')}}/" + id, function (res) {
@@ -63,15 +73,17 @@ Create Transaction
                 $('#account_reading').html(' <strong>' + res[0].current_reading + '</strong>');
                 st = res[0].balance;
                 if (parseInt(res[0].balance) <= 0) {
-                    result =  st.replace(/-/g, " ");
+                    result = st.replace(/-/g, " ");
                 } else {
                     result = '(' + st.replace(/-/g, " ") + ')';
-
-                }            
+                }
 
                 $('#account_balance').html(' <strong>' + result + '<strong>');
+                 $('.LOADER').hide();
+            }).done(function(e){
+                
             });
-        });
+        }));
     })
 </script>
 @endsection

@@ -49,7 +49,7 @@ Transaction
                 @endif
 
 
-
+                <?php $bal = 0; ?>
                 @foreach($data as $d)
                 <div class="card-body" id="printToPdf">
 
@@ -79,6 +79,7 @@ Transaction
                                     @endforeach
 
                                 </tbody>
+                                <?php $bal = $bal + $d['balance']; ?>
                                 <tfoot>
                                 <td></td>
                                 <td></td>
@@ -86,11 +87,20 @@ Transaction
                                 <td style="text-align: right;"><strong>{{number_format($d['balance'],2)}}</strong></td>
                                 </tfoot>
                             </table>
+
                         </div>
                         <div class="col-md-1"></div>
                     </div>
                 </div>
                 @endforeach
+                <table class="table">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><strong>TOTALS</strong></td>
+                        <td style="text-align: right; font-weight: bold;font-size: 20px;"><strong>{{($bal < 0) ? '('.str_replace('-','',number_format($bal,2)).')' : number_format($bal,2) }}</strong></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
