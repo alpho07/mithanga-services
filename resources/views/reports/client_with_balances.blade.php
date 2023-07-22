@@ -19,7 +19,7 @@
                             </div>
                             <div class="col">
                                 <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">CLIENTS WITH NO BALANCES
-                                    3</a>
+                                    </a>
                             </div>
                         </div>
                         <div class="card">
@@ -76,7 +76,6 @@
                     <div class="card-body" id="printToPdf">
 
                         <div class="row">
-                            <div class="col-md-1"></div>
                             <div class="col-md-10">
                                 <table class="table table-bordered" style="width:1000px !important;">
                                     <thead>
@@ -119,7 +118,7 @@
                                 </table>
 
                             </div>
-                            <div class="col-md-1"></div>
+                           
                         </div>
                     </div>
 
