@@ -63,7 +63,7 @@
 
                             <div class="row pull-right">
                                 <button id="PRINT" class="btn btn-sm btn-primary">Print</button>
-                                <button id="SEND" class="btn btn-sm btn-secondary ml-4">Send SMS Notification</button>
+                            
                             </div>
                         </div>
                     </div>
