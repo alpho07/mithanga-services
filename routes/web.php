@@ -52,7 +52,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
 
 
-Route::get('home_page', 'Admin\ClientController@home_page')->name('home.index')->middleware('auth');
+Route::get('home_page', function(){
+    
+    return redirect()->route('dashboard.index');
+
+})->name('home.index')->middleware('auth');
 
 Route::get('dashboard/', 'Admin\DashboardController@index')->name('dashboard.index')->middleware('auth');
 Route::get('dashboard/all-consumption', 'Admin\DashboardController@loadConsumptionByMonths')->name('dashboard.allconsumption')->middleware('auth');
