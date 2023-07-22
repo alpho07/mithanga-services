@@ -120,7 +120,7 @@ class ClientController extends Controller {
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','0')");
         $message = "Dear " . strtoupper($request->account_name) . " Your A/C is " . $id[0]->id . "  We are pleased to welcome you as a new client. We feel honored that you have chosen us to fill your water service needs, and we are eager to be of service. WE MAKE IT SAFE BECAUSE WATER IS LIFE. THANK YOU AND WELCOME!";
         // $this->sendSampleText($message, $request->phone_no);
-        return redirect()->route('client.index')
+        return redirect()->route('client.create')
                         ->with('success', 'Client created successfully.');
         
             

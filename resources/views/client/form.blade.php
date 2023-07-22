@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Application Fee(KES.)</label>
@@ -29,7 +29,7 @@
             <div class="col-6">
 
             </div>
-        </div>
+        </div> --}}
   
 
         <div class="row">
@@ -66,10 +66,10 @@
                     <label for="exampleFormControlInput1">Account Open Date</label>
                     <input type="text" class="form-control datepicker" readonly id="account_open_date" value="{{Request::old('account_open_date') ? Request::old('account_open_date') : date('Y-m-d')}}" name="account_open_date"  >
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="exampleFormControlInput1">KRA PIN</label>
                     <input type="text" class="form-control" id="kra_pin"   name="kra_pin"  value="{{Request::old('kra_pin')}}" data-date-format="DD MMMM YYYY" placeholder="KRA PIN">
-                </div>
+                </div> --}}
             </div> 
             <div class="col-6">              
                 <div class="form-group">
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="exampleFormControlSelect2">Account Status</label>
@@ -97,8 +97,8 @@
                     <input type="file" class="form-control" id="avatar" name="avatar" placehRequest::older="Avatar">
                 </div>
             </div>
-        </div>
-        <div class="row">
+        </div> --}}
+        {{-- <div class="row">
             <div class="col-4">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Connection Date</label>
@@ -118,8 +118,8 @@
 
                 </div>
             </div>
-        </div>
-        <div class="row">
+        </div> --}}
+        {{-- <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Meter Reading Date</label>
@@ -133,7 +133,7 @@
                     <textarea class="form-control" id="comment" name="comment" placehRequest::older="Any Comment" rows="3">{{Request::old('comment')}}"</textarea>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-12">
