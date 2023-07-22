@@ -12,14 +12,17 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary"> DETAILED AREA  BALANCES</a>
+                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary"> DETAILED AREA
+                                    BALANCES</a>
                             </div>
                             <div class="col">
-                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-secondary">CLIENTS WITH  BALANCES</a>
+                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-danger">CLIENTS WITH
+                                    BALANCES</a>
                             </div>
                             <div class="col">
-                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">CLIENTS WITH NO BALANCES
-                                    </a>
+                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">CLIENTS
+                                    WITH NO BALANCES
+                                </a>
                             </div>
                         </div>
                         <div class="card">
@@ -35,20 +38,20 @@
 
                                         <center>
                                             <div class="card-title mt-3" style="font-weight:bold;">
-                                                DETAILED AREA  BALANCES
+                                                DETAILED AREA BALANCES
                                             </div>
                                         </center>
                                         <!--form method="get" action="{{ route('waterbill') }}">
-                                                <select class="form-input" name="area" style="width:200px !important;"
-                                                    id="AREA">
-                                                    <option value="">-SELECT-</option>
-                                                    <option value="AREA">DETAILED AREA BALANCES</option>
-                                                    <option value="CWB">CLIENTS WITH BALANCES</option>
-                                                    <option value="CWNB">CLIENTS WITH NO BALANCES</option>
-                                                </select>
+                                                    <select class="form-input" name="area" style="width:200px !important;"
+                                                        id="AREA">
+                                                        <option value="">-SELECT-</option>
+                                                        <option value="AREA">DETAILED AREA BALANCES</option>
+                                                        <option value="CWB">CLIENTS WITH BALANCES</option>
+                                                        <option value="CWNB">CLIENTS WITH NO BALANCES</option>
+                                                    </select>
 
 
-                                            </form-->
+                                                </form-->
                                     </div>
                                 </nav>
                             </div>
@@ -126,6 +129,22 @@
 
     <script>
         $(function() {
+
+            // Check/uncheck all individual checkboxes when the "Select All" checkbox is clicked
+            $('.send_messageMain').click(function() {
+                var isChecked = $(this).prop('checked');
+                $('.send_message').prop('checked', isChecked);
+            });
+
+            // If any of the individual checkboxes are unchecked, uncheck the "Select All" checkbox
+            $('.send_message').click(function() {
+                if (!$(this).prop('checked')) {
+                    $('.send_messageMain').prop('checked', false);
+                }
+            });
+
+
+
             $('#AREA').change(function() {
                 value = $(this).val();
                 if (value == 'AREA') {

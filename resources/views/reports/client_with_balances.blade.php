@@ -12,18 +12,21 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary"> DETAILED AREA  BALANCES</a>
+                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary"> DETAILED AREA
+                                    BALANCES</a>
                             </div>
                             <div class="col">
-                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-secondary">CLIENTS WITH  BALANCES</a>
+                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-danger">CLIENTS WITH
+                                    BALANCES</a>
                             </div>
                             <div class="col">
-                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">CLIENTS WITH NO BALANCES
-                                    </a>
+                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">CLIENTS
+                                    WITH NO BALANCES
+                                </a>
                             </div>
                         </div>
                         <div class="card">
-                            
+
 
                             <div class="card-body">
                                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,10 +37,10 @@
                                     </button>
                                     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                                         <center>
-                                            <div class="card-title mt-3"  style="font-weight:bold;">
+                                            <div class="card-title mt-3" style="font-weight:bold;">
                                                 CLIENTS WITH NO BALANCES
                                             </div>
-                                            </center>
+                                        </center>
 
                                         {{-- <form method="get" action="{{route('waterbill')}}">
                                         <select class="form-input" name="area" style="width:200px !important;"
@@ -81,7 +84,7 @@
                                     <thead>
 
                                         <tr>
-                                            <th class="tg-7btt"><input type="checkbox" class="send_message"> All</th>
+                                            <th class="tg-7btt"><input type="checkbox" class="send_messageMain"> All</th>
                                             <th class="tg-7btt">AREA CODE</th>
                                             <th class="">AREA NAME</th>
                                             <th class="">ACC. NO#</th>
@@ -94,7 +97,8 @@
                                         <?php $bal = 0; ?>
                                         @foreach ($data as $b)
                                             <tr>
-                                                <td><input type="checkbox" class="send_message" data-value="{{ $b->meter_number }}"></td>
+                                                <td><input type="checkbox" class="send_message"
+                                                        data-value="{{ $b->meter_number }}"></td>
                                                 <td class="">{{ $b->area }}</td>
                                                 <td class="tg-c3ow" style="text-align: left;">{{ $b->area_name }}</td>
                                                 <td class="tg-c3ow">{{ $b->meter_number }}<br></td>
@@ -118,7 +122,7 @@
                                 </table>
 
                             </div>
-                           
+
                         </div>
                     </div>
 
@@ -128,7 +132,8 @@
                             <td></td>
                             <td><strong>TOTALS</strong></td>
                             <td style="text-align: right; font-weight: bold;font-size: 20px;">
-                                <strong>{{ str_replace('-', '', number_format($bal, 2)) }}</strong></td>
+                                <strong>{{ str_replace('-', '', number_format($bal, 2)) }}</strong>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -140,6 +145,21 @@
 
     <script>
         $(function() {
+
+            // Check/uncheck all individual checkboxes when the "Select All" checkbox is clicked
+            $('.send_messageMain').click(function() {
+                var isChecked = $(this).prop('checked');
+                $('.send_message').prop('checked', isChecked);
+            });
+
+            // If any of the individual checkboxes are unchecked, uncheck the "Select All" checkbox
+            $('.send_message').click(function() {
+                if (!$(this).prop('checked')) {
+                    $('.send_messageMain').prop('checked', false);
+                }
+            });
+
+
             $('#AREA').change(function() {
                 value = $(this).val();
                 if (value == 'AREA') {
