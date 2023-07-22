@@ -124,7 +124,7 @@ Transaction
                 value = $(this).val();
                 if (value == 'AREA') {
                     localStorage.setItem('page', 'AREA');
-                    window.location.href = "{{ route('balances?balances') }}"
+                    window.location.href = "{{ route('balances') }}"
                 } else if (value == 'CLIENTS') {
                     localStorage.setItem('page', 'CLIENTS');
                     window.location.href = "{{ route('client.balances') }}"
