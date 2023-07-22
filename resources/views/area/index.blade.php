@@ -55,7 +55,8 @@
                                                     <a class="btn btn-sm btn-primary "
                                                         href="{{ route('reading.sheet', $area->id) }}"><i
                                                             class="fa fa-fw fa-eye"></i> View Clients
-                                                        ({{ $area->client->count() }})</a>
+                                                        ({{ $area->client->count() }})
+                                                    </a>
                                                     <a class="btn btn-sm btn-warning "
                                                         href="{{ route('clients.print', $area->id) }}"><i
                                                             class="fa fa-fw fa-print"></i> Print Clients</a>
@@ -64,7 +65,7 @@
                                                             class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    <button type="submit" class="btn btn-danger btn-sm deleteButton"><i
                                                             class="fa fa-fw fa-trash"></i> Delete</button>
                                                 </form>
                                             </td>
@@ -81,9 +82,28 @@
     </div>
     <script>
         $(document).ready(function() {
+
+
+            $('#deleteButton').click(function() {
+                // Show the confirmation alert
+                var confirmDelete = confirm("You are about to delete this record, Continue?");
+
+                // If the user clicks "OK" in the alert, proceed with the delete action
+                if (confirmDelete) {
+                    // Add your code here to handle the delete action
+                    // For example, you can submit a form or make an AJAX request to delete the record
+                    // ...
+
+                    // For this example, we'll just display a success message after a short delay
+                    setTimeout(function() {
+                        alert("Record deleted successfully!");
+                    }, 500); // Wait 500 milliseconds (0.5 seconds) before showing the success message
+                }
+            });
+
             $(document).ready(function() {
                 $('#ZonesData').DataTable({
-                    responsive:true
+                    responsive: true
                 });
             });
         })
