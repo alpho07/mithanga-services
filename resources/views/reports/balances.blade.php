@@ -114,22 +114,19 @@
             $('#AREA').change(function() {
                 value = $(this).val();
                 if (value == 'AREA') {
-                    localStorage.setItem('page', 'AREA');
+                    //.setItem('page', 'AREA');
                     window.location.href = "{{ route('balances') }}"
                 } else if (value == 'CLIENTS') {
-                    localStorage.setItem('page', 'CLIENTS');
+                    //localStorage.setItem('page', 'CLIENTS');
                     window.location.href = "{{ route('client.balances') }}"
                 } else if (value == 'CWB') {
-                    localStorage.setItem('page', 'CWB');
+                    //localStorage.setItem('page', 'CWB');
                     window.location.href = "{{ route('client.with_balances') }}"
                 } else if (value == 'CWNB') {
-                    localStorage.setItem('page', 'CWNB');
+                    //localStorage.setItem('page', 'CWNB');
                     window.location.href = "{{ route('client.with_no_balances') }}"
                 }
             })
-
-            $('#AREA').val(localStorage.getItem('page')).change();
-
 
 
             function printData() {
