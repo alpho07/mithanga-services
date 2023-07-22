@@ -95,13 +95,13 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('billing.index') }}"
                                 class="nav-link {{ request()->is('billing') || request()->is('billing/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                                 Bills
                             </a>
-                        </li>
+                        </li> --}}
 
 
                         <li class="nav-item">
