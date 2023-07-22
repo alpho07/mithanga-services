@@ -133,9 +133,7 @@
 
             <li class="nav-item">
                 <a href="#}" class="nav-link">
-                    <i class="nav-icon fas fa-fw fa-sign-out-alt">
-
-                    </i>
+                    <i class="fa-fw fas fa-file nav-icon"></i>
                     TENANTS
                 </a>
             </li>
