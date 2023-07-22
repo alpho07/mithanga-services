@@ -69,9 +69,8 @@ class DashboardController extends Controller {
                         AND description IS NOT NULL 
                         AND description !=' ' 
                         AND description NOT LIKE 'PAY%'
-                        AND description NOT LIKE 'M-PESA%'
-                        AND description NOT LIKE 'CREDITED%'
-                        AND description NOT LIKE 'FEE%'
+                        AND description NOT LIKE 'M-PESA%'             
+                        AND type='credit'
                         GROUP BY data_year,data_month ,category
                         ORDER BY amount DESC");
     }
