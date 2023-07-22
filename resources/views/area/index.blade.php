@@ -51,7 +51,7 @@
                                             <td>{{ $area->rate }}</td>
 
                                             <td>
-                                                <form action="{{ route('areas.destroy', $area->id) }}" method="POST">
+                                                <form action="{{ route('areas.destroy', $area->id) }}" method="POST" id="DELETE">
                                                     <a class="btn btn-sm btn-primary "
                                                         href="{{ route('reading.sheet', $area->id) }}"><i
                                                             class="fa fa-fw fa-eye"></i> View Clients
@@ -65,7 +65,7 @@
                                                             class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm deleteButton"><i
+                                                    <button type="submit" class="btn btn-danger btn-sm deleteButton" id="deleteButton"><i
                                                             class="fa fa-fw fa-trash"></i> Delete</button>
                                                 </form>
                                             </td>
@@ -90,6 +90,7 @@
 
                 // If the user clicks "OK" in the alert, proceed with the delete action
                 if (confirmDelete) {
+                    $('#DELETE').submit();
                     // Add your code here to handle the delete action
                     // For example, you can submit a form or make an AJAX request to delete the record
                     // ...
@@ -98,6 +99,8 @@
                     setTimeout(function() {
                         alert("Record deleted successfully!");
                     }, 500); // Wait 500 milliseconds (0.5 seconds) before showing the success message
+                }else{
+                    return false;
                 }
             });
 
