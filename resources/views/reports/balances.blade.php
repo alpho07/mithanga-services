@@ -10,6 +10,17 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="btn btn-block btn-primary">Link 1</a>
+                            </div>
+                            <div class="col">
+                                <a href="#" class="btn btn-block btn-secondary">Link 2</a>
+                            </div>
+                            <div class="col">
+                                <a href="#" class="btn btn-block btn-success">Link 3</a>
+                            </div>
+                        </div>
                         <div class="card">
 
                             <div class="card-body">
@@ -20,6 +31,7 @@
                                         <span class="navbar-toggler-icon"></span>
                                     </button>
                                     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
 
                                         <form method="get" action="{{ route('waterbill') }}">
                                             <select class="form-input" name="area" style="width:200px !important;"
