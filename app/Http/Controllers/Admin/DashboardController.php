@@ -63,7 +63,7 @@ class DashboardController extends Controller {
     }
 
     function loadAllIncome() {
-        return DB::select("SELECT UPPER(description) category,SUM(amount) amount, CONCAT(DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) period, YEAR(DATE(date)) data_year, DATE_FORMAT(DATE(date),'%b') data_month  
+        return DB::select("SELECT CONCAT('Total Income - ',DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) category,SUM(amount) amount, CONCAT(DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) period, YEAR(DATE(date)) data_year, DATE_FORMAT(DATE(date),'%b') data_month  
                         FROM vw_transactions 
                         WHERE description NOT LIKE 'CASH%' AND description NOT LIKE 'BANK%' 
                         AND description IS NOT NULL 
