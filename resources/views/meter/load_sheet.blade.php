@@ -23,7 +23,7 @@ METER READING SHEETS
                         <a href="{{route('download.sheet',$area_id)}}" class="btn btn-sm btn-secondary pull-right">PRINT SHEET</a>
                         <table class="table table-bordered table-hover">
                             <thead class="thead">
-                                <tr><td colspan="6" style="text-align: center; font-weight: bold;">SAMDAMTE WATER - METER READING SHEET FOR <?php echo strtoupper(date('M Y')) ?></td></tr>
+                                <tr><td colspan="6" style="text-align: center; font-weight: bold;"> {{trans('panel.site_title')}} - METER READING SHEET FOR <?php echo strtoupper(date('M Y')) ?></td></tr>
                                 <tr>
                                     <th colspan="2">AREA: {{$area->name}}</th>                                   
                                     <th colspan="2">Meter Reader: ________________________________________</th>                                    

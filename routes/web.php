@@ -130,6 +130,7 @@ Route::get('sendNotification/{id}', 'Admin\MeterController@sendNotification')->m
 Route::post('updateReadings', 'Admin\MeterController@updateReadings')->middleware('auth');
 
 Route::get('meter/', 'Admin\MeterController@index')->name('meter.index')->middleware('auth');
+
 Route::get('meter_reading_/{id}/{aid}', 'Admin\MeterController@register')->name('meter.reading.m')->middleware('auth');
 Route::post('save_reading/{cid}/{id}/{aid}', 'Admin\MeterController@save_reading')->name('save.meter.reading')->middleware('auth');
 Route::post('meter/store', 'Admin\MeterController@store')->name('meter.store')->middleware('auth');
@@ -140,6 +141,8 @@ Route::delete('meter/delete/{id}', 'Admin\MeterController@destroy')->name('meter
 Route::patch('meter/update/{id}', 'Admin\MeterController@update')->name('meter.update')->middleware('auth');
 Route::get('meter/change', 'Admin\MeterController@change')->name('meter.change')->middleware('auth');
 Route::post('meter/change/post', 'Admin\MeterController@registerChange')->name('meter.change.post')->middleware('auth');
+Route::post('schedule-cns/', 'Admin\MeterController@schedule_cns')->name('cns.index')->middleware('auth');
+Route::get('scheduler/', 'Admin\MeterController@scheduler')->name('meter.scheduler')->middleware('auth');
 
 
 Route::get('settings-nbrd/', 'Admin\SettingsNbrdController@index')->name('settings_nbrd.index')->middleware('auth');
@@ -304,6 +307,9 @@ Route::get('waterbilla', 'Admin\ReportController@waterbillbyaccount')->name('wat
 Route::get('billLoader', 'Admin\ReportController@billLoader')->name('billLoader')->middleware('auth');
 Route::get('balances', 'Admin\ReportController@balances')->name('balances')->middleware('auth');
 Route::get('balances/client', 'Admin\ReportController@balances_client')->name('client.balances')->middleware('auth');
+Route::get('clients/with-balances', 'Admin\ReportController@clients_with_balances')->name('client.with_balances')->middleware('auth');
+Route::get('clients/with-no-balances', 'Admin\ReportController@clients_with_no_balances')->name('client.with_no_balances')->middleware('auth');
+
 Route::get('history', 'Admin\ReportController@history')->name('reading.history')->middleware('auth');
 Route::get('sales/revenue', 'Admin\ReportController@sales_revenue')->name('sales.revenue')->middleware('auth');
 Route::get('reading/sheets', 'Admin\ReportController@reading_sheets')->name('reading.sheets')->middleware('auth');

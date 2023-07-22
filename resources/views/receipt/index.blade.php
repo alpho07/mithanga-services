@@ -10,7 +10,7 @@
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{url('print.js')}}"></script>
 
-        <title>Samdamte | Receipt</title>
+        <title>Fiancial | Receipt</title>
 
     </head>
 
@@ -24,7 +24,7 @@
         <div id="invoice-POS">
 
             <center>
-                <h2 id="SamTITLE" style=" ">SAMDAMTE WATER CUSTOMER RECEIPT</h2>
+                <h2 id="SamTITLE" style=" "> {{trans('panel.site_title')}} CUSTOMER RECEIPT</h2>
             </center>
 
 
@@ -32,9 +32,9 @@
             <div id="">
                 <div class="">                  
                     <span style="font-size: 14px; font-weight: bold;"> 
-                        P.O. Box 24732-00100, NAIROBI GPO</br>
-                        Tel:- +254-704-107-724 / +254-788-484-737</br>
-                        Email:- samdamtewaterservices@yahoo.com</br>
+                        P.O. Box 0000</br>
+                        Tel:- 00000000</br>
+                        Email:-financial@gmail.com</br>
                     </span>
                 </div>
             </div><!--End Invoice Mid-->

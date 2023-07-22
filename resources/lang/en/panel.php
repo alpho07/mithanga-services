@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Samdamte Water',
+    'site_title' => 'Mithanga Finances',
 ];

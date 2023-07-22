@@ -234,8 +234,8 @@ Transaction
 
                     <p style="font-weight: bold;">
                 <center>
-                    SAMDAMTE WATER SERVICES<br>
-                    <small>P.O.Box 24732 - 00100 Nairobi GPO<br>Tel:+254704107724 / +254788484737<br>Email:samdamtewaterservices@yahoo.com</small>
+                    {{trans('panel.site_title')}} SERVICES<br>
+                    <small>P.O.Box 00000<br>Tel:0700000000000000<br>Email:financial@gmail.com</small>
                 </center></p>
                 <table class="bill-details" style="margin-top: 10px;">
                     <tbody>
@@ -288,11 +288,11 @@ Transaction
                         Mode of payment : <span id="mode">CASH</span>  
                     </p>
                     <p style="margin-top: 2px;">
-                        Served by: <span id="served">JAMILA</span>
+                        Served by: <span id="served">OMELA</span>
                     </p>
                     <hr>
                     <p style="margin-top: 10px;">
-                        Our PAYBILL NO: 823496 for M-PESA payments
+                        Our PAYBILL NO: 554665 for M-PESA payments
                     </p>
                     <p style="margin-top: 2px;">
                         <small>Disconnection For Non-Payment: 10th of every month</small>

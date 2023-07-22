@@ -39,7 +39,7 @@ Transaction
                     <div class="row">
                         <div class="col-md-3"></div>
                         <div class="col-md-5">
-                            <center><strong><b>SAMDAMTE WATER <br> RECEIPT REPORT SUMMARY {{@$pe}}</b></strong></center>
+                            <center><strong><b>FINANCIAL WATER <br> RECEIPT REPORT SUMMARY {{@$pe}}</b></strong></center>
                         </div>
                         <div class="col-md-1"></div>
                     </div>

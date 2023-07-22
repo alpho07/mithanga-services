@@ -60,7 +60,7 @@ Transaction
 
                                     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-                                 
+
 
 
                                         <input class="form-control mr-sm-2" id="CCID"  type="text" value="{{$cid ?? ''}}" name="cid" autofocus placeholder="Enter Client Account" aria-label="Search" style="display:none;">
@@ -95,21 +95,68 @@ Transaction
 
                     <div class="row">
 
-                       @if(count($data2) > 0)
+                        @if(count($data2) > 0)
                         <div class="row col-md-12">
 
 
                             <style type="text/css">
-                                .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
-                                .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
-                                       font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
-                                .tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
-                                       font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-                                .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
-                                .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-                                .tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
-                                .tg .tg-dvpl{border-color:inherit;text-align:right;vertical-align:top}
-                                .tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+                                .tg  {
+                                    border-collapse:collapse;
+                                    border-color:#ccc;
+                                    border-spacing:0;
+                                }
+                                .tg td{
+                                    background-color:#fff;
+                                    border-color:#ccc;
+                                    border-style:solid;
+                                    border-width:1px;
+                                    color:#333;
+                                    font-family:Arial, sans-serif;
+                                    font-size:14px;
+                                    overflow:hidden;
+                                    padding:10px 5px;
+                                    word-break:normal;
+                                }
+                                .tg th{
+                                    background-color:#f0f0f0;
+                                    border-color:#ccc;
+                                    border-style:solid;
+                                    border-width:1px;
+                                    color:#333;
+                                    font-family:Arial, sans-serif;
+                                    font-size:14px;
+                                    font-weight:normal;
+                                    overflow:hidden;
+                                    padding:10px 5px;
+                                    word-break:normal;
+                                }
+                                .tg .tg-c3ow{
+                                    border-color:inherit;
+                                    text-align:center;
+                                    vertical-align:top
+                                }
+                                .tg .tg-0pky{
+                                    border-color:inherit;
+                                    text-align:left;
+                                    vertical-align:top
+                                }
+                                .tg .tg-7btt{
+                                    border-color:inherit;
+                                    font-weight:bold;
+                                    text-align:center;
+                                    vertical-align:top
+                                }
+                                .tg .tg-dvpl{
+                                    border-color:inherit;
+                                    text-align:right;
+                                    vertical-align:top
+                                }
+                                .tg .tg-fymr{
+                                    border-color:inherit;
+                                    font-weight:bold;
+                                    text-align:left;
+                                    vertical-align:top
+                                }
                             </style>
 
                             <div class="row col-12">
@@ -123,7 +170,7 @@ Transaction
                                     <table class="" style="width:750px !important;">
                                         <thead>
                                             <tr>
-                                                <td colspan="4"><center><strong>SAMDAMTE WATER - WATER BILL</strong></center></td>
+                                                <td colspan="4"><center><strong>FINANCIAL WATER - WATER BILL</strong></center></td>
                                         </tr>
                                         <tr><td colspan="4" style="height: 10px;"></td></tr>
                                         </thead>
@@ -213,9 +260,9 @@ Transaction
                                 <span>{{$data[0]->third_billing_message}}.</span>
                             </div>
                         </div>
-                       @else
-                       <div class="badge badge-danger" style="font-weight: bold;font-size: 25px;">No Data found at the moment'</div>
-                       @endif
+                        @else
+                        <div class="badge badge-danger" style="font-weight: bold;font-size: 25px;">No Data found at the moment'</div>
+                        @endif
                     </div>
                 </div>
             </div>

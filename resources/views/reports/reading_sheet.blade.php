@@ -14,7 +14,7 @@
                     <div class="table-responsive ">
                         <table class="table table-bordered table-hover">
                             <thead class="thead">
-                                <tr><td colspan="6" style="text-align: center; font-weight: bold;">SAMDAMTE WATER - METER READING SHEET FOR <?php echo strtoupper(date('M Y')) ?></td></tr>
+                                <tr><td colspan="6" style="text-align: center; font-weight: bold;">FINANCAL WATER - METER READING SHEET FOR <?php echo strtoupper(date('M Y')) ?></td></tr>
                                 <tr>
                                     <th colspan="2">AREA: {{$d[0]->area}}</th>                                   
                                     <th colspan="2">Meter Reader: ________________________________________</th>                                    

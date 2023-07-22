@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>SAMDAMTE LOGIN</title>
+        <title>WATER SERVICES LOGIN</title>
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         <style>
             body {
@@ -19,7 +19,7 @@
 
             .login-card {
                 border: 0;
-                border-radius: 27.5px;
+                border-radius: 10px;
                 box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
                 overflow: hidden; }
             .login-card-img {
@@ -98,7 +98,7 @@
                 <div class="card login-card">
                     <div class="row no-gutters">
                         <div class="col-md-5">
-                            <img src="{{url('5.jpg')}}" alt="login" class="login-card-img">
+                            <img src="{{url('water-tap.jpg')}}" alt="login" class="login-card-img">
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
@@ -108,7 +108,7 @@
                                         {{ \Session::get('message') }}
                                     </p>
                                     @endif
-                                    <h3>SAMDAMTE WATER SERVICES</h3>
+                                    <h3> {{ trans('panel.site_title') }}</h3>
                                 </div>
                                 <p class="login-card-description">Sign into your account</p>
                                 <form method="POST" action="{{ route('login') }}">
@@ -131,7 +131,7 @@
                                         </div>
                                         @endif
                                     </div>
-                                    <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
+                                    <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" style="background:#3054FD !important" value="Login">
                                 </form>
                                 <a href="{{ route('password.request') }}" class="forgot-password-link">Forgot password?</a>
                                 <!--p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p-->

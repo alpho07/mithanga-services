@@ -19,7 +19,7 @@ Transaction
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            <strong>SAMDAMTE WATER - ACCOUNT</strong>
+                            <strong>FINANCIAL WATER - ACCOUNT</strong>
                         </span>
 
                         <div class="float-right">

@@ -63,7 +63,7 @@ Area
                         <table class="table table-striped table-hover areas">
                             <thead class="thead">
                                 <tr>             
-                                    <th colspan="6"><center><b>SAMDAMTE WATER</b></center></th>                                   
+                                    <th colspan="6"><center><b>FINANCIAL WATER</b></center></th>                                   
                             </tr>
                             <tr>             
                                 <th colspan="6"><center><b>METER CHANGES REPORT FOR {{$period1}}</b></center></th>                                   

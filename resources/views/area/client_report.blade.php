@@ -16,7 +16,7 @@
                 <tr>
                     <td colspan="4">
             <center>
-                <strong>SAMDAMTE WATER SERVICES CLIENTS BY AREA - {{$area}}</strong>
+                <strong>{{trans('panel.site_title')}} SERVICES CLIENTS BY AREA - {{$area}}</strong>
             </center>
             </td>
             </tr>
@@ -30,6 +30,7 @@
                 <th>Account Number</th>
                 <th>Name</th>
                 <th>Phone</th>
+                <th>Balance</th>
             </tr>
             </thead>
             <tbody>
@@ -39,6 +40,7 @@
                     <td>{{ $c->id }}</td>
                     <td>{{ $c->account_name }}</td>
                     <td>{{ $c->phone_no }}</td>
+                    <td style="text-align: right">{{ number_format($c->balance) }}</td>
 
 
                 </tr>

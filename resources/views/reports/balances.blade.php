@@ -23,10 +23,13 @@ Transaction
                                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
                                     <form method="get" action="{{route('waterbill')}}">
-                                        <select class="form-input" name="area" style="width:200px !important;" id="AREA">
-                                            <option value="AREA">DETAILED AREA BALANCES</option>
-                                            <option value="CLIENTS">DETAILED CLIENT BALANCES</option>
-                                        </select> 
+                                        <select class="form-input" name="area" style="width:200px !important;"
+                                        id="AREA">
+                                        <option value="">-SELECT-</option>
+                                        <option value="AREA">DETAILED AREA BALANCES</option>
+                                        <option value="CWB">CLIENTS WITH BALANCES</option>
+                                        <option value="CWNB">CLIENTS WITH NO BALANCES</option>
+                                    </select>
 
 
                                     </form>
@@ -104,15 +107,19 @@ Transaction
 
 
 <script>
-    $(function () {
-        $('#AREA').change(function () {
-            value = $(this).val();
-            if (value == 'AREA') {
-                window.location.href = "{{route('balances')}}"
-            } else {
-                window.location.href = "{{route('client.balances')}}"
-            }
-        })
+    $(function() {
+            $('#AREA').change(function() {
+                value = $(this).val();
+                if (value == 'AREA') {
+                    window.location.href = "{{ route('balances') }}"
+                } else if (value == 'CLIENTS') {
+                    window.location.href = "{{ route('client.balances') }}"
+                } else if (value == 'CWB') {
+                    window.location.href = "{{ route('client.with_balances') }}"
+                } else if (value == 'CWNB') {
+                    window.location.href = "{{ route('client.with_no_balances') }}"
+                }
+            })
 
 
 

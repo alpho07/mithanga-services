@@ -39,12 +39,12 @@ Create Transaction
                             <td>Account Name</td>
                             <td><span id="account_name"></span></td>
                         </tr>
-                        <tr>
+<!--                        <tr>
                             <td>Current Reading:</td>
                             <td><span id="account_reading"></span></td>
-                        </tr>
+                        </tr>-->
                         <tr>
-                            <td>Account Balance</td>
+                            <td>Arrears</td>
                             <td><span id="account_balance"></span></td>
                         </tr>
                     </table>                
@@ -55,6 +55,7 @@ Create Transaction
 </section>
 <script>
     $(function () {
+        $('#client_id').select2();
         $('#client_id').change(function () {
             id = $(this).val();
             $.getJSON("{{url('client-last-info')}}/" + id, function (res) {

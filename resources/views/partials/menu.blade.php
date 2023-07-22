@@ -1,5 +1,5 @@
-<div class="sidebar">
-    <nav class="sidebar-nav">
+<div class="sidebar" style="display:block !important;">
+    <nav class="sidebar-nav" style="display:block !important;">
 
         <ul class="nav">
             @can('dashboard_access')
@@ -8,7 +8,7 @@
                     <i class="fa-fw fas fa-dashboard nav-icon">
 
                     </i>
-                    Dashboard
+                    DASHBOARD
                 </a>
             </li>
             @endcan
@@ -18,7 +18,7 @@
                     <i class="fa-fw fas fa-users nav-icon">
 
                     </i>
-                    {{ trans('cruds.userManagement.title') }}
+                    {{ strtoupper(trans('cruds.userManagement.title')) }}
                 </a>
                 <ul class="nav-dropdown-items">
 
@@ -56,127 +56,52 @@
             </li>
             @endcan
 
-            @can('management_access')
+
             <li class="nav-item nav-dropdown">
                 <a class="nav-link  nav-dropdown-toggle" href="#">
-                    <i class="fa-fw fas fa-file nav-icon">
+                    <i class="fa-fw fas fa-file nav-icon"> 
 
                     </i>
-                    File
+                    BOREHOLE WATER
                 </a>
                 <ul class="nav-dropdown-items">
-                    @can('area_access')
-                    <li class="nav-item">
-                        <a href="{{ route("areas.index") }}" class="nav-link {{ request()->is('admin/areas') || request()->is('admin/areas/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
 
-                            {{ trans('cruds.areaManagement.title') }}
-                        </a>
-                    </li>
-                    @endcan
                     @can('client_access')
                     <li class="nav-item">
                         <a href="{{ route("client.index") }}" class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Clients
+                            Customers
                         </a>
                     </li>
-                    @endcan
-                    @can('cost_center_access')
                     <li class="nav-item">
-                        <a href="{{ route("cost-centers.index") }}" class="nav-link {{ request()->is('cost-centers') || request()->is('cost-centers/*') ? 'active' : '' }}">
+                        <a href="{{ route("areas.index") }}" class="nav-link {{ request()->is('admin/areas') || request()->is('admin/areas/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            {{ trans('cruds.costCenters.title') }}
-                        </a>
-                    </li>
-                    @endcan
-                    @can('legal_center_access')
-                    <li class="nav-item">
-                        <a href="{{ route("legal-centers.index") }}" class="nav-link {{ request()->is('legal-centers') || request()->is('legal-centers/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            {{ trans('cruds.legalCenters.title') }}
-                        </a>
-                    </li>
-                    @endcan
-                    @can('suppliers_access')
-                    <li class="nav-item">
-                        <a href="{{ route("suppliers.index") }}" class="nav-link {{ request()->is('suppliers') || request()->is('suppliers/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            {{ trans('cruds.suppliersManagement.title') }}
-                        </a>
-                    </li>
-                    @endcan
-                    @can('bank_access')
-                    <li class="nav-item">
-                        <a href="{{ route("bank.index") }}" class="nav-link {{ request()->is('bank') || request()->is('bank/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Banks
-                        </a>
-                    </li>
-                    @endcan
-                    @can('mop_access')
-                    <li class="nav-item">
-                        <a href="{{ route("mops.index") }}" class="nav-link {{ request()->is('mops') || request()->is('mops/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Modes of Payments
-                        </a>
-                    </li>
-                    @endcan
 
-                    @can('status_access')
-                    <li class="nav-item">
-                        <a href="{{ route("status.index") }}" class="nav-link {{ request()->is('status') || request()->is('status/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Status
+                            Locations
                         </a>
                     </li>
-                    @endcan
-                </ul>
-            </li>
-            <li class="nav-item nav-dropdown">
-                <a class="nav-link  nav-dropdown-toggle" href="#">
-                    <i class="fa-fw fas fa-file nav-icon">
-
-                    </i>
-                    Transactions
-                </a>
-                <ul class="nav-dropdown-items">
-                    @can('meter_access')
                     <li class="nav-item">
-                        <a href="{{ route("meter.index") }}" class="nav-link {{ request()->is('meter') || request()->is('meter/*') ? 'active' : '' }}">
+                        <a href="{{ url('meter_reading_/0000/48') }}" class="nav-link {{ request()->is('meter') || request()->is('meter/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
 
                             Meter Readings
                         </a>
                     </li>
-                    @endcan   
-                    @can('billing_access')
+
                     <li class="nav-item">
                         <a href="{{ route("billing.index") }}" class="nav-link {{ request()->is('billing') || request()->is('billing/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                             Bills
                         </a>
                     </li>
-                    @endcan  
-                    @can('payment_access')
+
+
                     <li class="nav-item">
                         <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                             Payments
                         </a>
                     </li>
-                    @endcan  
-                </ul>
-            </li>
-            @can('report_access')
-            <li class="nav-item nav-dropdown">
-                <a class="nav-link  nav-dropdown-toggle" href="#">
-                    <i class="fa-fw fas fa-file nav-icon">
-
-                    </i>
-                    Reports
-                </a>
-                <ul class="nav-dropdown-items">
 
                     <li class="nav-item">
                         <a href="{{ route("statement.index",['start'=>date('Y-m').'-01','end'=>date('Y-m-t',strtotime(date('Y-m-d')))]) }}" class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
@@ -187,128 +112,28 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route("area.report",['period'=>date('Y-m-d')]) }}" class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
+                        <a href="{{ route("balances") }}" class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
                             <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                            Area Report
+                            Balances
                         </a>
                     </li>
-
-                    <!--                    <li class="nav-item">
-                                            <a href="{{ route("payment.index") }}" class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
-                                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                                                Reading Sheets
-                                            </a>
-                                        </li>-->
-
                 </ul>
-            </li>
-            @endcan
-            <li class="nav-item nav-dropdown">
-                <a class="nav-link  nav-dropdown-toggle" href="#">
-                    <i class="fas fa-cog fa-fw nav-icon">
-
-                    </i>
-                    Set-up
-                </a>
-                <ul class="nav-dropdown-items">
-                    @can('settings_access')
-                    <li class="nav-item">
-                        <a href="{{ route("settings_nbrd.index") }}" class="nav-link {{ request()->is('settings_nbrd') || request()->is('settings_nbrd/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-
-                            Company Settings
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route("settings_dpm.index") }}" class="nav-link {{ request()->is('settings_dpm') || request()->is('settings_dpm/*') ? 'active' : '' }}">
-                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-
-                            Billing Settings
-                        </a>
-                    </li>
-                    @endcan                   
-                </ul>
-            </li>
-            @endcan
 
 
-            @can('expense_category_access')
-            <li class="nav-item">
-                <a href="{{ route("admin.expense-categories.index") }}" class="nav-link {{ request()->is('admin/expense-categories') || request()->is('admin/expense-categories/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-list nav-icon">
-
-                    </i>
-                    {{ trans('cruds.expenseCategory.title') }}
-                </a>
-            </li>
-            @endcan
-            @can('income_category_access')
-            <li class="nav-item">
-                <a href="{{ route("admin.income-categories.index") }}" class="nav-link {{ request()->is('admin/income-categories') || request()->is('admin/income-categories/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-list nav-icon">
-
-                    </i>
-                    {{ trans('cruds.incomeCategory.title') }}
-                </a>
-            </li>
-            @endcan
-            @can('expense_access')
-            <li class="nav-item">
-                <a href="{{ route("admin.expenses.index") }}" class="nav-link {{ request()->is('admin/expenses') || request()->is('admin/expenses/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-arrow-circle-right nav-icon">
-
-                    </i>
-                    {{ trans('cruds.expense.title') }}
-                </a>
-            </li>
-            @endcan
-            @can('income_access')
-            <li class="nav-item">
-                <a href="{{ route("admin.incomes.index") }}" class="nav-link {{ request()->is('admin/incomes') || request()->is('admin/incomes/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-arrow-circle-right nav-icon">
-
-                    </i>
-                    {{ trans('cruds.income.title') }}
-                </a>
-            </li>
-            @endcan
-            @can('expense_report_access')
-            <li class="nav-item">
-                <a href="{{ route("admin.expense-reports.index") }}" class="nav-link {{ request()->is('admin/expense-reports') || request()->is('admin/expense-reports/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-chart-line nav-icon">
-
-                    </i>
-                    {{ trans('cruds.expenseReport.title') }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route("invoicing.index") }}" class="nav-link {{ request()->is('invoicing') || request()->is('invoicing/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-chart-line nav-icon">
-
-                    </i>
-                    Invoicing
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route("legal.index") }}" class="nav-link {{ request()->is('legal') || request()->is('legal/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-chart-line nav-icon">
-
-                    </i>
-                    Legal Center
-                </a>
-            </li>
-            @endcan
+                @endcan
 
             <li class="nav-item">
                 <a href="{{url('logout-user')}}" class="nav-link" >
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
                     </i>
-                    {{ trans('global.logout') }}
+                    {{ trans('global.logout') }} 
                 </a>
             </li>
         </ul>
 
+
+
     </nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-</div>
+</div> 

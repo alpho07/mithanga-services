@@ -66,7 +66,7 @@ Area
                         <table class="table table-bordered table-hover areas">
                             <thead class="thead">
                                 <tr>             
-                                    <th colspan="6"><center><b>SAMDAMTE WATER</b></center></th>                                   
+                                    <th colspan="6"><center><b>FINANCAL WATER</b></center></th>                                   
                             </tr>
                             <tr>             
                                 <th colspan="6"><center><b>METER READING HISTORY FOR {{$single->account_name. ' - '. @$result[0]->area_name}}</b></center></th>                                   

@@ -12,14 +12,16 @@ use DB;
  * Class PaymentController
  * @package App\Http\Controllers
  */
-class ReportController extends Controller {
+class ReportController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function waterbill(Request $r) {
+    public function waterbill(Request $r)
+    {
         $area = $r->get('area');
         $selector = $r->get('people');
         $criteria = $r->get('selector');
@@ -32,7 +34,7 @@ class ReportController extends Controller {
 
 
 
-        if ($day < 23) {
+        if ($day < 31) {
             $used_like_date = date("Y-m", strtotime("previous month"));
         } else {
             $used_like_date = date("Y-m");
@@ -70,7 +72,8 @@ class ReportController extends Controller {
         }
     }
 
-    function billLoader() {
+    function billLoader()
+    {
         $areas = Area::all();
         $clients = Client::all();
         $cid = '';
@@ -82,7 +85,8 @@ class ReportController extends Controller {
         return view('reports.waterbills2', compact('data', 'balance', 'billing', 'data2', 'areas', 'clients', 'cid', 'clients', 'area'))->with('i', (request()->input('page', 1) - 1) * $data2->perPage());
     }
 
-    public function waterbillbyaccount(Request $r) {
+    public function waterbillbyaccount(Request $r)
+    {
         $area = $r->input->get('area');
         foreach ($area as $a) {
             echo $a . '<br>';
@@ -142,29 +146,34 @@ class ReportController extends Controller {
           } */
     }
 
-    function areas() {
+    function areas()
+    {
         return Area::all();
     }
 
-    function people() {
+    function people()
+    {
         return Client::all();
     }
 
-    function balances() {
+    function balances()
+    {
+        //429sec or 7 minutes
         $areas = Area::all();
-        DB::statement("DROP TABLE IF EXISTS temp_balances;CREATE TABLE temp_balances as SELECT * FROM vw_final_balances");
-        $balances_ = DB::select("SELECT * FROM temp_balances");
+        //DB::statement("DROP TABLE IF EXISTS temp_balances;CREATE TABLE temp_balances as SELECT * FROM vw_final_balances");
+        $balances_ = DB::select("SELECT * FROM temp_balances ORDER BY balance ASC");
         return view('reports.balances', compact('areas', 'balances_'));
     }
 
-    function balances_client() {
+    function balances_client()
+    {
         $areas = Area::all();
-        DB::statement("DROP TABLE IF EXISTS temp_balances_clients;CREATE TABLE temp_balances_clients as SELECT * FROM vw_balances");
+        //DB::statement("DROP TABLE IF EXISTS temp_balances_clients;CREATE TABLE temp_balances_clients as SELECT * FROM vw_balances");
         $data = [];
-        foreach ($areas as $a):
+        foreach ($areas as $a) :
             $area = Area::find($a);
             $clients = DB::select("SELECT * FROM temp_balances_clients WHERE area='$a->id' ORDER BY id ASC");
-            $balance = DB::select("SELECT SUM(balance) balance FROM temp_balances_clients WHERE area='$a->id'");
+            $balance = DB::select("SELECT SUM(balance) balance FROM temp_balances_clients WHERE area='$a->id' ORDER BY id ASC");
             $fidata = ['area' => $a->name, 'balance' => $balance[0]->balance, 'clients' => $clients];
             array_push($data, $fidata);
         endforeach;
@@ -172,7 +181,32 @@ class ReportController extends Controller {
         return view('reports.client_balances', compact('data'));
     }
 
-    function history() {
+
+    function clients_with_balances()
+    {
+
+        //$clients = DB::select("SELECT * FROM temp_balances_clients WHERE area='$a->id' ORDER BY id ASC");
+        $data = DB::select("SELECT * FROM temp_balances_clients WHERE balance < 0 GROUP BY client_id ORDER BY balance,id ASC");
+        //return $data;
+
+         return view('reports.client_with_balances', compact('data'));
+    }
+
+    function clients_with_no_balances()
+    {
+
+        //$clients = DB::select("SELECT * FROM temp_balances_clients WHERE area='$a->id' ORDER BY id ASC");
+        $data = DB::select("SELECT * FROM temp_balances_clients WHERE balance >= 0 GROUP BY client_id ORDER BY balance,id ASC");
+       // return $data;
+
+        return view('reports.client_with_balances', compact('data'));
+    }
+
+
+
+
+    function history()
+    {
         $cid = @$_GET['client'];
         $date = @$_GET['date'];
         $query = '';
@@ -197,7 +231,8 @@ class ReportController extends Controller {
         return view('reports.history', compact('areas', 'balances', 'client', 'date', 'cid', 'clients'));
     }
 
-    function sales_revenue(Request $r) {
+    function sales_revenue(Request $r)
+    {
         $areas = Area::all();
 
         $report_type = $r->input('report_type');
@@ -286,7 +321,7 @@ class ReportController extends Controller {
                 }
                 $result = DB::select("SELECT * FROM vw_arrears_advance WHERE $q ");
             } else if ($voteheadselection == 'WATER CHARGES') {
-               
+
                 if ($datecriteria == 'datesingle') {
                     $q = " DATE_FORMAT(date,'%Y-%m-%d') = '$date'  AND description LIKE 'WATER%'";
                     $pe = strtoupper($voteheadselection) . ' RECEIPT FOR ' . \Carbon\Carbon::parse($date)->format('l F dS, Y ');
@@ -318,11 +353,12 @@ class ReportController extends Controller {
         }
     }
 
-    function no_water_debits() {
+    function no_water_debits()
+    {
         $areas1 = @$_GET['area'];
         $area2 = Area::all();
         if (!empty($areas1)) {
-            foreach ($areas1 as $a):
+            foreach ($areas1 as $a) :
                 echo $a;
             endforeach;
         }
@@ -330,7 +366,8 @@ class ReportController extends Controller {
         return view('reports.no_water_index', compact('area2'));
     }
 
-    function no_water_debit_post(Request $r) {
+    function no_water_debit_post(Request $r)
+    {
         $areas1 = $r->area;
         $str = '';
         $data = [];
@@ -344,7 +381,7 @@ class ReportController extends Controller {
                     group by c.id");
 
 
-        foreach ($areas1 as $a):
+        foreach ($areas1 as $a) :
             $areas = Area::find($a);
             $clients = DB::select("SELECT * FROM temp_no_water WHERE area_id='$a' AND reading_date IS NULL ORDER BY account DESC");
             $fidata = ['area' => $areas->name, 'clients' => $clients];
@@ -353,11 +390,12 @@ class ReportController extends Controller {
         return view('reports.no_water_debits', compact('areas', 'data', 'area2'));
     }
 
-    function reading_sheets() {
+    function reading_sheets()
+    {
         $area = Area::all();
         $data = [];
         $i = 0;
-        foreach ($area as $a):
+        foreach ($area as $a) :
             $clients = ['area' => $a->name, 'clients' => DB::select(DB::raw("SELECT * FROM vw_clients WHERE area_id='$a->id'"))];
             array_push($data, $clients);
         endforeach;
@@ -366,7 +404,8 @@ class ReportController extends Controller {
         return view('reports.readingsheet', compact('data', 'i'));
     }
 
-    function area_report() {
+    function area_report()
+    {
         $period = @$_GET['period'];
         $type = @$_GET['type'];
 
@@ -394,7 +433,7 @@ class ReportController extends Controller {
             $area = Area::all();
             $data = [];
             $i = 0;
-            foreach ($area as $a):
+            foreach ($area as $a) :
                 $clients = ['area' => $a->name, 'clients' => DB::select(DB::raw("SELECT * FROM temp_consumption WHERE area_id='$a->id'"))];
                 array_push($data, $clients);
             endforeach;
@@ -403,7 +442,8 @@ class ReportController extends Controller {
         }
     }
 
-    function meter_changes() {
+    function meter_changes()
+    {
         $period = @$_GET['period'];
         $type = @$_GET['type'];
 
@@ -422,7 +462,8 @@ class ReportController extends Controller {
         return view('reports.mchanges', compact('period1', 'result', 'period', 'type', 'clients'));
     }
 
-    function history_report() {
+    function history_report()
+    {
         $period = @$_GET['period'];
         $type = @$_GET['type'];
         $clients = Client::all();
@@ -439,7 +480,8 @@ class ReportController extends Controller {
         return view('reports.hreport', compact('period1', 'result', 'period', 'type', 'clients', 'single'));
     }
 
-    public function income_expenditure() {
+    public function income_expenditure()
+    {
         $from = @$_GET['from'];
         $to = @$_GET['to'];
         $range_in = " DATE_FORMAT(date,'%Y-%m-%d') >= '$from' AND DATE_FORMAT(date,'%Y-%m-%d') <= '$to'";
@@ -465,5 +507,4 @@ class ReportController extends Controller {
 
         return view('reports.income_expenditure', compact('from', 'to', 'arrears', 'application', 'water_charges', 'adjustments', 'miscallenous', 'expenses'));
     }
-
 }

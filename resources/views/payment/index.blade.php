@@ -246,8 +246,8 @@ Transaction
 
                     <p style="font-weight: bold;">
                 <center>
-                    SAMDAMTE WATER SERVICES<br>
-                    <small>P.O.Box 24732 - 00100 Nairobi GPO<br>Tel:+254704107724 / +254788484737<br>Email:samdamtewaterservices@yahoo.com</small>
+                    FIANANCIAL WATER SERVICES<br>
+                    <small>P.O.Box 0000<br>Tel:0071771<br>Email:financial@gmail.com</small>
                 </center></p>
                 <table class="bill-details" style="margin-top: 10px;">
                     <tbody>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DB;
 use PDF;
 use Session;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class TransactionController
@@ -21,7 +22,7 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $transactions = DB::select(DB::raw("SELECT * From vw_bills_bills order by id desc"));
+        $transactions = DB::select(DB::raw("SELECT * From vw_bills_bills order by date,id desc LIMIT 250"));
         $i = 1;
         return view('transaction.index', compact('transactions', 'i'));
     }
@@ -42,11 +43,12 @@ class TransactionController extends Controller {
         $clients = DB::select("SELECT * FROM vw_clients");
         return view('transaction.create', compact('clients', 'transaction'));
     }
-    
-    
 
     public function statement($start, $end) {
-        $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
+        $clients = Cache::remember('users', 86400, function () {
+                    return DB::select("SELECT * FROM vw_clients order by id ASC");
+                });
+
         $from = $start;
         $to = $end;
         return view('statement.index', compact('clients', 'from', 'to'));
@@ -60,7 +62,10 @@ class TransactionController extends Controller {
         Session::put('pdf_from', $from);
         Session::put('pdf_to', $to);
 
-        $clients = DB::select("SELECT * FROM vw_clients order by id ASC");
+        $clients = Cache::remember('users', 86400, function () {
+                    return DB::select("SELECT * FROM vw_clients order by id ASC");
+                });
+
         $clients_narrowed = DB::select("SELECT * FROM vw_clients where id='$client_id'");
         $debit_amount = '';
         $credit_amount = '';

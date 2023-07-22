@@ -60,7 +60,7 @@ Transaction
                         <div class="col-md-10">
                             <table class="table table-bordered">
                                 <thead>
-                                    <tr><th colspan="3"><center>SAMDAMTE WATER  - NO WATER DEBITS FOR {{$d['area']}} </center></th></tr>
+                                    <tr><th colspan="3"><center>FINANCIAL WATER  - NO WATER DEBITS FOR {{$d['area']}} </center></th></tr>
                                 <tr>
                                     <th>Serial</th>
                                     <th>Account No.</th>

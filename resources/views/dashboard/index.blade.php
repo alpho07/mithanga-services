@@ -8,7 +8,7 @@ Dashboard
 <script src="{{asset('js/exporting.js')}}"></script>
 <script src="{{asset('js/export-data.js')}}"></script>
 <script src="{{asset('js/accessibility.js')}}"></script>
-<script src="{{asset('js/samdamte.js')}}"></script>
+<script src="{{asset('js/financial.js')}}"></script>
 <style>
     #container {
         height: 400px; 
@@ -261,11 +261,11 @@ $(function () {
     chartdata = '';
     $.getJSON("{{route('dashboard.allconsumption')}}", function (resp) {
         // console.log(resp);
-        samdamte('containerCR', 'column', 'No. of Units Consumed', source = 'Water Consumption CM3', 'Samdamte Water Services', false, -45, 'Period', 'Period', resp.period, resp.consumed);
+        financial('containerCR', 'column', 'No. of Units Consumed', source = 'Water Consumption CM3', 'Fiancial Water Services', false, -45, 'Period', 'Period', resp.period, resp.consumed);
     });
     $.getJSON("{{route('dashboard.areaconsumption')}}", function (resp) {
         // console.log(resp);
-        samdamte('containerAREA', 'column', 'No. of Units Consumed', source = 'Area Consumption CM3', 'Samdamte Water Services', false, -45, 'Period', 'Area', resp.period, resp.consumed);
+        financial('containerAREA', 'column', 'No. of Units Consumed', source = 'Area Consumption CM3', 'Financial Water Services', false, -45, 'Period', 'Area', resp.period, resp.consumed);
     });
     $.getJSON("{{route('dashboard.income')}}", function (resp) {
         $('#INCOMETABLE').empty();
@@ -286,11 +286,11 @@ $(function () {
 
         $.getJSON("{{url('dashboard/all-consumption')}}", function (resp) {
             // console.log(resp);
-            samdamte('containerCR', 'column', 'No. of Units Consumed', source = 'Water Consumption CM3', 'Samdamte Water Services', false, -45, 'Period', 'Period', resp.period, resp.consumed);
+            financial('containerCR', 'column', 'No. of Units Consumed', source = 'Water Consumption CM3', 'Financial Water Services', false, -45, 'Period', 'Period', resp.period, resp.consumed);
         });
         $.getJSON("{{url('dashboard/area-consumption_')}}" + '/' + month + '/' + year, function (resp) {
             // console.log(resp);
-            samdamte('containerAREA', 'column', 'No. of Units Consumed', source = 'Area Consumption CM3', 'Samdamte Water Services', false, -45, 'Period', 'Area', resp.period, resp.consumed);
+            financial('containerAREA', 'column', 'No. of Units Consumed', source = 'Area Consumption CM3', 'Financial Water Services', false, -45, 'Period', 'Area', resp.period, resp.consumed);
         });
         $.getJSON("{{url('dashboard/all-income_')}}" + '/' + month + '/' + year, function (resp) {
             $('#INCOMETABLE').empty();

@@ -38,17 +38,17 @@ Meter Reading
 
                     <div class="card-body">
 
-<!--                        <form class="" action="" method="post" id='SearchForm'>-->
-                            <div class="row col-12">
-                                <div class="col-10">
-                                    <input type="number" style="width:100%;" id='clientID' class="form-control" placeholder="Enter Client Account Number & Press Enter"/>
+                        <!--                        <form class="" action="" method="post" id='SearchForm'>-->
+                        <div class="row col-12">
+                            <div class="col-10">
+                                <input type="number" style="width:100%;" id='clientID' class="form-control" placeholder="Enter Client Account Number & Press Enter"/>
 
-                                </div>
-<!--                                <div class="col-2">
-                                    <input type="button" value="Find" id="FINDER" class="btn btn-md btn-danger"><br>
-
-                                </div>-->
                             </div>
+                            <!--                                <div class="col-2">
+                                                                <input type="button" value="Find" id="FINDER" class="btn btn-md btn-danger"><br>
+                            
+                                                            </div>-->
+                        </div>
 
                         </form>
 
@@ -154,9 +154,9 @@ Meter Reading
                         <div class="form-group">
                             <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Account Balance (Ksh.)</label>
                             <div class="col-sm-12">
-                                <input type="hidden" readonly  class="form-control" value="{{($bal < 0) ? '('.str_replace('-','',$bal).')' : $bal * -1 }}" id="cust_balance_"  >  
+                                <input type="hidden" readonly  class="form-control" value="{{($bal <= 0) ? '('.str_replace('-','',$bal).')' : $bal * -1 }}" id="cust_balance_"  >  
                                 <input type="hidden" readonly  class="form-control" value="{{$bal}}" id="cust_balance"  >   
-                                <input type="text" readonly  class="form-control" value="{{($bal<0)?   str_replace('-','',$bal): '('.str_replace('-','',$bal).')'}}" id=""  >                             
+                                <input type="text" readonly  class="form-control" value="{{($bal<=0)?   str_replace('-','',$bal): '('.str_replace('-','',$bal).')'}}" id=""  >                             
                             </div>
                         </div>
                         <div class="form-group">
@@ -329,10 +329,10 @@ Meter Reading
             $('#charges').val(consumed * area_rates);
             charges = $('#charges').val();
             amount = cust_balance - charges;
-            if (amount < 0) {
-                bal = '(' + amount * -1 + ')';
+            if (amount <= 0) {
+                bal = amount * -1+'.00';
             } else {
-                bal = amount * -1;
+                bal = '(' + amount +'.00)';
             }
             // console.log(bal);
             $('#show_balance').val(bal);

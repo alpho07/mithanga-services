@@ -65,7 +65,7 @@ Transaction
                     <div class="row">
                         <div class="col-md-4"></div>
                         <div class="col-md-4">
-                            <strong><b>SAMDAMTE WATER - HISTORY OF METER READINGS</b></strong>
+                            <strong><b>FIANCIAL WATER - HISTORY OF METER READINGS</b></strong>
                         </div>
                         <div class="col-md-1"></div>
                     </div>

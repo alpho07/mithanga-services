@@ -43,7 +43,7 @@ Transaction
                                 <tr>
 
                                     <td>
-                                        <select name="client_id" class="form-control select2" >
+                                        <select name="client_id" id="client_id" class="form-control select2" >
                                             @foreach($clients as $id => $client)
                                             <option value="{{ $client->id }}">{{'ACCOUNT No. '.$client->id. ' | '.$client->account_name.' | '.$client->area_name  }}</option>
                                             @endforeach
@@ -76,5 +76,9 @@ Transaction
 
     </div>
 </div>
-</div>
+<script>
+    $(function(){
+        $('#client_id').select2();
+    });
+</script>
 @endsection

@@ -41,7 +41,7 @@ class Client extends Model {
      *
      * @var array
      */
-    protected $fillable = ['area', 'account_name', 'phone_no', 'account_open_date', 'meter_number', 'plot_number', 'status', 'connection_date', 'vaccation_date', 'meter_reading_date', 'avatar', 'national_id', 'kra_pin'];
+    protected $fillable = ['id','area', 'account_name', 'phone_no', 'account_open_date', 'meter_number', 'plot_number', 'status', 'connection_date', 'vaccation_date', 'meter_reading_date', 'avatar', 'national_id', 'kra_pin'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

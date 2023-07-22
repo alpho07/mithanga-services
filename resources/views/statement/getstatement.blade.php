@@ -213,6 +213,7 @@ Transaction
 
 <script>
     $(function () {
+        $('#SCLIENTID').select2();
         $('#SCLIENTID').val("{{$client_id}}").trigger('change');
 
 

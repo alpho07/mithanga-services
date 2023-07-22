@@ -23,7 +23,7 @@
             <span class="badge badge-info" id="PREREADING" style="font-weight: bold; color: blue;font-size: 18px;"></span>
             <br>
             <p></p>
-            <input class="form-control" name="prevreading" type="text" id="PREREADINGA" placeholder="Adjusted previous reading"  />
+<!--            <input class="form-control" name="prevreading" type="text" id="PREREADINGA" placeholder="Adjusted previous reading"  />-->
         </div>
         <div class="form-group">
             

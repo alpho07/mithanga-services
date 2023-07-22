@@ -74,7 +74,7 @@ Transaction
                     <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
                         <div class="card">
                             <div class="card-header p-4">
-                                <a class="pt-2 d-inline-block" href="index.html" data-abc="true">SAMDAMTE WATER SERVICES</a>
+                                <a class="pt-2 d-inline-block" href="index.html" data-abc="true">FINANCIAL WATER SERVICES</a>
                                 <div class="float-right">
                                     <h3 class="mb-0">Invoice #{{$ref}}</h3>
                                     Date: {{$invoice[0]->date}}
@@ -84,11 +84,11 @@ Transaction
                                 <div class="row mb-4">
                                     <div class="col-sm-6">
                                         <h5 class="mb-3">From:</h5>
-                                        <h3 class="text-dark mb-1">SAMDAMTE WATER SERVICES</h3>
-                                        <div>P.O. Box 24732 00100, NAIROBI GPO</div>
-                                        <div>Joska, Machakos</div>
-                                        <div>Email: samdamtewaterservices@yahoo.com</div>
-                                        <div>Phone: +254-704-107-724 / +254-788-484-737</div>
+                                        <h3 class="text-dark mb-1">FINANCAL WATER SERVICES</h3>
+                                        <div>P.O. Box 10000</div>
+                                        <div>a,b</div>
+                                        <div>Email: financial@gmail.com</div>
+                                        <div>Phone:0700000000000000000000</div>
                                     </div>
                                     <div class="col-sm-6 ">
                                         <h5 class="mb-3">To:</h5>
@@ -145,7 +145,7 @@ Transaction
                                 </div>
                             </div>
                             <div class="card-footer bg-white">
-                                <p class="mb-0">SAMDAMTE WATER SERVICES, 2020</p>
+                                <p class="mb-0"> {{trans('panel.site_title')}}</p>
                             </div>
                         </div>
                     </div>
@@ -311,8 +311,8 @@ Transaction
 
                     <p style="font-weight: bold;">
                 <center>
-                    SAMDAMTE WATER SERVICES<br>
-                    <small>P.O.Box 24732 - 00100 Nairobi GPO<br>Tel:+254704107724 / +254788484737<br>Email:samdamtewaterservices@yahoo.com</small>
+                    FINANCIAL WATER SERVICES<br>
+                    <small>P.O.Box 0000<br>Tel:0071771<br>Email:financial@gmail.com</small>
                 </center></p>
                 <table class="bill-details" style="margin-top: 10px;">
                     <tbody>

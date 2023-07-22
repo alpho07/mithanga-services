@@ -34,7 +34,7 @@
             {{ Form::text('cheque_number',$transaction->cheque_number, ['class' => 'form-control' . ($errors->has('cheque_number') ? ' is-invalid' : ''), 'placeholder' => 'Cheque Number','id'=>'cheque_number']) }}
             {!! $errors->first('cheque_number', '<div class="invalid-feedback">:message</p>') !!}
             </div>
-            <div class="form-group {{ $errors->has('bank') ? 'has-error' : '' }}">
+            <!--div class="form-group {{ $errors->has('bank') ? 'has-error' : '' }}">
                 <label for="bank">Bank</label>
                 <select name="bank" id="BANK" class="form-control select2">
                     <option value="">--Select Bank--</option> 
@@ -58,7 +58,7 @@
                     {{ $errors->first('branch') }}
                 </em>
                 @endif
-            </div>
+            </div-->
             <input type="hidden" name="staff" value="{{strtoupper(Auth::user()->name)}}"/>
             <div class="form-group">
                 {{ Form::label('description') }}

@@ -17,13 +17,11 @@ Meter Reading
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            <strong>METER READINGS</strong>
+                            <strong>NOTIFICATION MESSAGING SCHEDULER</strong>
                         </span>
 
                         <div class="float-right">
-                            <a href="{{route('meter.reading.m',['id'=>$fc[0]->id,'aid'=>$aid])}}" class="btn btn-primary btn-sm float-right" >
-                                Add New Meter Reading
-                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -36,37 +34,33 @@ Meter Reading
                 <div class="card-body">
                     <div class="row col-md-12">
                         <div class="col-md-3">
-                            <form action="{{ url('meter') }}" method="GET">
-                                <div class="row">
 
-                                    <input type="text" class="form-control monthPicker" required id="selection_date"  name="selection_date" value="{{$criteria}}">
-                                    <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-fw fa-arrow-circle-right"></i> Submit</button> 
-
-                                </div>
-                                @csrf
-                                @method('DELETE')
-
-                            </form>
                         </div>
                         <div class="col-md-6"></div>
                         <div class="col-md-3">
-                            <form action="{{ url('meter') }}" method="GET">
+                            <form action="{{ url('schedule-cns') }}" method="POST">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <select class="form-control" id="area_id_id" name="area" required style="">
+                                    <div class="col-md-5">
+                                        <label>Date</label>
+                                        <input type="text" class="form-control monthPicker" value="{{date('d-m-Y', strtotime(date('d-m-Y') . ' + 1 day'))}}" required id="selection_date"  name="selection_date" >
 
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Area</label>
+                                        <select class="form-control" id="area_id_id" name="area" required style="">
+                                            <option value="All">-All-</option>
                                             @foreach($area as $a)
                                             <option value="{{$a->id}}">{{$a->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
-
-                                        <button type="button" class="btn btn-danger btn-sm SCHEDULER"><i class="fa fa-fw fa-arrow-circle-right"></i> Schedule Notifications</button> 
+                                    <div class="col-md-3">
+                                        <label>-</label>
+                                        <button type="submit" class="btn btn-danger btn-sm SCHEDULER11"><i class="fa fa-fw fa-arrow-circle-right"></i> Schedule </button> 
                                     </div>
                                 </div>
                                 @csrf
-                                @method('DELETE')
+                                @method('POST')
 
                             </form>
                         </div>
@@ -78,15 +72,14 @@ Meter Reading
                                 <tr>
                                     <th>No</th>
                                     <th>Water Service Area</th>
-                                    <th>Reading Date</th>
                                     <th>Account No.</th>
                                     <th>Account Name</th>
-                                    <th>Account Balance</th>
-                                    <th>Previous Reading</th>
-                                    <th>Current Reading</th>                                   
-                                    <th>Consumed Units(cm<sup><small>3</small></sup>)</th>
-                                    <th>Billing Rate(Ksh.)</th>
-                                    <th>Water Charges(Ksh.)</th>
+                                    <th>Phone Number</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Units</th>                                   
+                                    <th>Status</th>
+                                    <th>Message</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -94,23 +87,25 @@ Meter Reading
                                 @foreach ($readings  as $r)
                                 <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $r->area_name }}</td>
-                                    <td>{{ $r->reading_date }}</td>
+                                    <td>{{ $r->c_area }}</td>
                                     <td>{{ $r->client_id }}</td>
                                     <td>{{ $r->account_name }}</td>
-                                    <td style="text-align: right;">{{number_format($r->balance,2)}}</td>
-                                    <td class="number">{{ $r->previous_reading }}</td>
-                                    <td class="number">{{ $r->current_reading }}</td>                                    
-                                    <td class="number">{{ $r->consumed_units }}</td>
-                                    <td class="number">{{ number_format($r->rate,2) }}</td>
-                                    <td class="number"><strong><b>{{ number_format($r->water_charges,2) }}</b></strong></td>
+                                    <td>{{ $r->phone_no }}</td>
+                                    <td>{{ $r->date }}</td>
+                                    <td style="text-align: right;">{{number_format($r->amount,2)}}</td>
+                                    <td class="number">{{ $r->units }}</td>
+                                    <td class="number">{{ $r->sstatus }}</td>                                    
+                                    <td class="number">{{ $r->smessage }}</td>                                
 
                                     <td>
                                         @can('update_readings')
                                         <form action="{{ route('legal-centers.destroy',$r->id) }}" method="POST">
 <!--                                            <a class="btn btn-sm btn-primary " href="{{ route('legal-centers.show',$r->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>-->
-                                            <a class="btn btn-sm btn-success EDITS" data-toggle="modal" data-target="#myModalE" data-id="{{$r->id}}" data-account="{{$r->client_id}}" data-account-name="{{$r->account_name}}" data-area="{{$r->area_name}}" data-date="{{$r->reading_date}}" data-units="{{$r->current_reading}}" href="#edit"><i class="fa fa-fw fa-edit"></i> Adjust Reading</a>
-                                            <a class="btn btn-sm btn-warning" href="{{ url('sendNotification',$r->id) }}"><i class="fa fa-fw fa-edit"></i> Send SMS & Print</a>
+                                            @if($r->sstatus=='pending')
+                                            <a class="btn btn-sm btn-warning" href="{{ url('sendNotification',$r->client_id) }}"><i class="fa fa-fw fa-plane"></i> Send Notification</a>
+                                            @elseif($r->sstatus=='sent')
+                                            <span><i class="fa fa-fw fa-check"></i> Sent</span>
+                                            @endif
                                             @csrf
                                             @method('DELETE')
     <!--                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>-->
@@ -236,8 +231,8 @@ $(function () {
         });
     });
 
-    $('.SCHEDULER').click(function () {
-        window.location.href = "{{url('notification')}}/" + $('#area_id_id').val()+'/'+$('#selection_date').val();
+    $('.SCHEDULER11111111111111111111111').click(function () {
+        window.location.href = "{{url('notification')}}/" + $('#area_id_id').val() + '/' + $('#selection_date').val();
 
     });
 

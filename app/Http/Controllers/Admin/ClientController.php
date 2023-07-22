@@ -56,7 +56,8 @@ class ClientController extends Controller {
         $area = Area::all();
         $status = Status::all();
         $account = DB::select(DB::raw("SELECT MAX(id) id FROM clients"))[0]->id + 1;
-        return view('client.create', ['area' => $area, 'status' => $status, 'account' => $account]);
+        $unusedids = DB::select(DB::raw("SELECT id+1 ids FROM clients WHERE id NOT IN (SELECT id-1 FROM clients ) ORDER BY 1"));
+        return view('client.create', ['area' => $area, 'status' => $status, 'account' => $account, 'unusedids' => $unusedids]);
     }
 
     public function avatar($fileId) {
@@ -92,9 +93,13 @@ class ClientController extends Controller {
      */
     public function store(Request $request) {
         $url = '';
+        $uids = $request->uid;
         request()->validate(Client::$rules);
-
-        $client = Client::create($request->all());
+        if (empty($uids)) {
+            $client = Client::create($request->all());
+        } else {
+            $client = Client::create(array_merge($request->all(), ['id' => $uids]));
+        }
         $id = DB::select(DB::raw("SELECT MAX(id) id FROM clients"));
         $cid = $id[0]->id;
         $amount = $request->application_fee;
@@ -117,6 +122,9 @@ class ClientController extends Controller {
         // $this->sendSampleText($message, $request->phone_no);
         return redirect()->route('client.index')
                         ->with('success', 'Client created successfully.');
+        
+            
+        
     }
 
     /**
@@ -129,8 +137,8 @@ class ClientController extends Controller {
         $client = DB::select(DB::raw("SELECT c.*, a.name area_name,s.status status_name FROM clients c INNER JOIN areas a ON c.area = a.id INNER JOIN statuses s ON c.status = s.id WHERE c.id='$id'"));
         $area = Area::all();
         $status = Status::all();
-        $reding = DB::select(DB::raw("SELECT  `fn_prv_reading`('$id')` reading"));
-        $balance = DB::select(DB::raw("SELECT `fn_get_balance`('$id')` balance"));
+        $reding = DB::select(DB::raw("SELECT  fn_prv_reading($id) reading"));
+        $balance = DB::select(DB::raw("SELECT fn_get_balance($id) balance"));
         $reading_date = DB::select(DB::raw("SELECT reading_date FROM meter_readings WHERE client_id='$id' ORDER BY id DESC LIMIT 1"));
         // $date1 = date_create($reading_date[0]->reading_date);
         //$rrd= date_format($date1, "nS M, Y");

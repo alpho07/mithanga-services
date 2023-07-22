@@ -61,7 +61,7 @@ Area
                         <table class="table table-bordered table-hover areas">
                             <thead class="thead">
                                 <tr>             
-                                    <th colspan="6"><center><b>SAMDAMTE WATER | AREA {{$d['area']}}</b></center></th>                                   
+                                    <th colspan="6"><center><b>FINANCAL WATER | AREA {{$d['area']}}</b></center></th>                                   
                             </tr>
                             <tr>             
                                 <th colspan="6"><center><b>CONSUMPTION DETAILS BY AREA FOR {{$period1}}</b></center></th>                                   
