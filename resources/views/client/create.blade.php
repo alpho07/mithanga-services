@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-Create Client
+Create Customer
 @endsection
 
 @section('content')
@@ -13,10 +13,10 @@ Create Client
 
             <div class="card card-default">
                 <div class="card-header">
-                    <span class="card-title">New Client</span>
+                    <span class="card-title">New Customer</span>
 
                 </div>
-                <div class="card-body" style="background: #E3F2FD">
+                <div class="card-body" style="background: #fff">
 
                     <form method="POST" action="{{ route('client.store') }}"  role="form" enctype="multipart/form-data">
                         {{-- <div class="row">
