@@ -67,9 +67,11 @@ class DashboardController extends Controller {
                         FROM vw_transactions 
                         WHERE description NOT LIKE 'CASH%' AND description NOT LIKE 'BANK%' 
                         AND description IS NOT NULL 
-                        AND description !=' '
+                        AND description !=' ' 
                         AND description NOT LIKE 'PAY%'
                         AND description NOT LIKE 'M-PESA%'
+                        AND description NOT LIKE 'CREDITED%'
+                        AND description NOT LIKE 'FEE%'
                         GROUP BY data_year,data_month ,category
                         ORDER BY amount DESC");
     }

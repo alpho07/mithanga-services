@@ -58,7 +58,7 @@ Route::get('dashboard/', 'Admin\DashboardController@index')->name('dashboard.ind
 Route::get('dashboard/all-consumption', 'Admin\DashboardController@loadConsumptionByMonths')->name('dashboard.allconsumption')->middleware('auth');
 Route::get('dashboard/area-consumption', 'Admin\DashboardController@loadAreaConsumption')->name('dashboard.areaconsumption')->middleware('auth');
 Route::get('dashboard/all-income', 'Admin\DashboardController@loadAllIncome')->name('dashboard.income')->middleware('auth');
-Route::get('dashboard/all-income', 'Admin\DashboardController@loadAllIncome')->name('dashboard.income')->middleware('auth');
+//Route::get('dashboard/all-income', 'Admin\DashboardController@loadAllIncome')->name('dashboard.income')->middleware('auth');
 
 Route::get('dashboard/all-consumption_/{y}/{m}', 'Admin\DashboardController@loadConsumptionByMonths_')->name('dashboard.allconsumption_')->middleware('auth');
 Route::get('dashboard/area-consumption_/{y}/{m}', 'Admin\DashboardController@loadAreaConsumption_')->name('dashboard.areaconsumption_')->middleware('auth');
