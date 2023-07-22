@@ -82,6 +82,7 @@
                                     <thead>
 
                                         <tr>
+                                            <th class="tg-7btt"><input type="checkbox" class="send_message"> All</th>
                                             <th class="tg-7btt">AREA CODE</th>
                                             <th class="">AREA NAME</th>
                                             <th class="">ACC. NO#</th>
@@ -94,6 +95,7 @@
                                         <?php $bal = 0; ?>
                                         @foreach ($data as $b)
                                             <tr>
+                                                <td><input type="checkbox" class="send_message" data-value="{{ $b->meter_number }}"></td>
                                                 <td class="">{{ $b->area }}</td>
                                                 <td class="tg-c3ow" style="text-align: left;">{{ $b->area_name }}</td>
                                                 <td class="tg-c3ow">{{ $b->meter_number }}<br></td>
@@ -108,6 +110,7 @@
                                     </tbody>
 
                                     <tfoot>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td><strong>TOTALS</strong></td>
