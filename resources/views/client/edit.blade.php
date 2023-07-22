@@ -61,17 +61,19 @@ Update Client
                                             <label for="exampleFormControlInput1">ID Number</label>
                                             <input type="number" value="{{$client[0]->national_id}}"  class="form-control" id="national_id" name="national_id" placeholder="ID Number">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlInput1">KRA PIN</label>
-                                            <input type="text" class="form-control" id="kra_pin" value="{{$client[0]->kra_pin}}"  required  name="kra_pin" data-date-format="DD MMMM YYYY" placeholder="KRA PIN">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1">Plot Number</label>
+                                                <input type="text"  value="{{$client[0]->plot_number}}" class="form-control" id="plot_number" name="plot_number" placeholder="Plot Number">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    {{-- <div class="col-6">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Plot Number</label>
                                             <input type="text"  value="{{$client[0]->plot_number}}" class="form-control" id="plot_number" name="plot_number" placeholder="Plot Number">
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
@@ -79,14 +81,15 @@ Update Client
                                             <label for="exampleFormControlInput1">Account Open Date</label>
                                             <input type="text" class="form-control datepicker" value="{{$client[0]->account_open_date}}"  id="account_open_date" name="account_open_date" data-date-format="DD MMMM YYYY" placeholder="Account Open Date">
                                         </div>
-                                    </div>            <div class="col-6">              
+                                    </div>        
+                                    <div class="col-6">              
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Meter Number</label>
                                             <input type="text"  value="{{$client[0]->meter_number}}" class="form-control" id="meter_number" name="meter_number" placeholder="Meter Number">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect2">Account Status</label>
@@ -105,7 +108,7 @@ Update Client
                                             <input type="file" class="form-control" id="avatar" name="avatar" placeholder="Avatar">
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row">
                                     <div class="col-4">
                                         <div class="form-group">

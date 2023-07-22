@@ -38,17 +38,17 @@ Client
                                     <th>Account Name</th>
                                     <th>Area</th>
                                     <th>Phone No</th>
-                                    <th>Comment</th>
+                                    {{-- <th>Comment</th> --}}
                                     <th>National Id</th>
-                                    <th>KRA PIN</th>
+                                    {{-- <th>KRA PIN</th> --}}
                                     <th>Account Open Date</th>
                                     <th>Meter Number</th>
                                     <th>Plot Number</th>
-                                    <th>Status</th>
+                                    {{-- <th>Status</th>
                                     <th>Connection Date</th>
                                     <th>Vaccation Date</th>
                                     <th>Meter Reading Date</th>
-                                    <th>Avatar</th>
+                                    <th>Avatar</th> --}}
 <!--                                    <th>Action</th>-->
 <!--                                    <th>Arreas(Ksh.)</th>
                                     <th>Acc. Bal.(Ksh.)</th>
@@ -64,12 +64,12 @@ Client
                             <th></th>
                             <th></th>
                             <th></th>
+                            {{-- <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th></th>
-                            <th></th>
+                            <th></th> --}}
 
                             </tfoot>
                             <tbody></tbody>
@@ -99,20 +99,20 @@ Client
                 {data: 'account_name', name: 'account_name'},
                 {data: 'area_name', name: 'area_name'},
                 {data: 'phone_no', name: 'phone_no'},
-                {data: 'comment', name: 'comment'},
+                //{data: 'comment', name: 'comment'},
                 {data: 'national_id', name: 'national_id'},                
-                {data: 'kra_pin', name: 'kra_pin'},
+                //{data: 'kra_pin', name: 'kra_pin'},
                 {data: 'account_open_date', name: 'account_open_date'},
                 {data: 'meter_number', name: 'meter_number'},
                 {data: 'plot_number', name: 'plot_number'},
-                {data: 'status_name', name: 'status_name'},
-                {data: 'connection_date', name: 'connection_date'},
-                {data: 'vaccation_date', name: 'vaccation_date'},
-                {data: 'meter_reading_date', name: 'meter_reading_date'},
-                {data: 'avatar', name: 'avatar', "mRender": function (data, type, row) {
+                //{data: 'status_name', name: 'status_name'},
+                //{data: 'connection_date', name: 'connection_date'},
+                //{data: 'vaccation_date', name: 'vaccation_date'},
+                //{data: 'meter_reading_date', name: 'meter_reading_date'},
+                //{data: 'avatar', name: 'avatar', "mRender": function (data, type, row) {
 
-                        return "<img width=50px height=50px alt='No Image' src={{url('avatar')}}/" + row.avatar + "/>";
-                    }},
+                     //   return "<img width=50px height=50px alt='No Image' src={{url('avatar')}}/" + row.avatar + "/>";
+                   // }},
             ],
             initComplete: function () {
                 this.api().columns().every(function () {

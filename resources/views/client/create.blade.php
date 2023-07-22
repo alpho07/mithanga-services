@@ -28,6 +28,12 @@
                             </div>
                         @endif
 
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
 
                         <form method="POST" action="{{ route('client.store') }}" role="form"
                             enctype="multipart/form-data">

@@ -32,7 +32,7 @@ class Client extends Model {
         'area' => 'required',
         'account_name' => 'required',
         'phone_no' => 'required',
-        'status' => 'required',
+        //'status' => 'required',
     ];
     protected $perPage = 20;
 
