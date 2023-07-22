@@ -12,6 +12,9 @@ Transaction
             <div class="card">
                 <div class="card-header">
                     <div class="card">
+                        <div class="card-title">
+                            CLIENTS WITH BALANCES
+                        </div>
 
                         <div class="card-body">
                             <nav class="navbar navbar-expand-lg navbar-light bg-light">
