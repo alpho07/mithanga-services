@@ -12,13 +12,13 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary">Link 1</a>
+                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary"> DETAILED AREA  BALANCES</a>
                             </div>
                             <div class="col">
-                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-secondary">Link 2</a>
+                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-secondary">CLIENTS WITH  BALANCES</a>
                             </div>
                             <div class="col">
-                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">Link
+                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">CLIENTS WITH NO BALANCES
                                     3</a>
                             </div>
                         </div>
