@@ -138,7 +138,7 @@
                 }
             })
 
-            $('#AREA').val(localStorage.getItem('[page]')).change()
+            $('#AREA').val(localStorage.getItem('page')).change()
 
 
 
