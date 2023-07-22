@@ -10,6 +10,18 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary">Link 1</a>
+                            </div>
+                            <div class="col">
+                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-secondary">Link 2</a>
+                            </div>
+                            <div class="col">
+                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">Link
+                                    3</a>
+                            </div>
+                        </div>
                         <div class="card">
 
                             <div class="card-body">
@@ -22,13 +34,19 @@
                                     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
                                         <form method="get" action="{{ route('waterbill') }}">
-                                            <select class="form-input" name="area" style="width:200px !important;"
+                                            <center>
+                                                <div class="card-title mt-3" style="font-weight:bold;">
+                                                    CLIENTS WITH NO BALANCES
+                                                </div>
+                                            </center>
+
+                                            {{-- <select class="form-input" name="area" style="width:200px !important;"
                                                 id="AREA">
                                                 <option value="">-SELECT-</option>
                                                 <option value="AREA">DETAILED AREA BALANCES</option>
                                                 <option value="CWB">CLIENTS WITH BALANCES</option>
                                                 <option value="CWNB">CLIENTS WITH NO BALANCES</option>
-                                            </select>
+                                            </select> --}}
 
 
                                         </form>
@@ -93,7 +111,8 @@
                                             <td></td>
                                             <td><strong>TOTALS</strong></td>
                                             <td style="text-align: right;">
-                                                <strong>{{ number_format($d['balance'], 2) }}</strong></td>
+                                                <strong>{{ number_format($d['balance'], 2) }}</strong>
+                                            </td>
                                         </tfoot>
                                     </table>
 

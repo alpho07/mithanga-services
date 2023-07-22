@@ -12,13 +12,14 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <a href="#" class="btn btn-block btn-primary">Link 1</a>
+                                <a href="{{ route('balances') }}" class="btn btn-block btn-primary">Link 1</a>
                             </div>
                             <div class="col">
-                                <a href="#" class="btn btn-block btn-secondary">Link 2</a>
+                                <a href="{{ route('client.with_balances') }}" class="btn btn-block btn-secondary">Link 2</a>
                             </div>
                             <div class="col">
-                                <a href="#" class="btn btn-block btn-success">Link 3</a>
+                                <a href="{{ route('client.with_no_balances') }}" class="btn btn-block btn-success">Link
+                                    3</a>
                             </div>
                         </div>
                         <div class="card">
@@ -32,18 +33,22 @@
                                     </button>
                                     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
+                                        <center>
+                                            <div class="card-title mt-3" style="font-weight:bold;">
+                                                DETAILED AREA  BALANCES
+                                            </div>
+                                        </center>
+                                        <!--form method="get" action="{{ route('waterbill') }}">
+                                                <select class="form-input" name="area" style="width:200px !important;"
+                                                    id="AREA">
+                                                    <option value="">-SELECT-</option>
+                                                    <option value="AREA">DETAILED AREA BALANCES</option>
+                                                    <option value="CWB">CLIENTS WITH BALANCES</option>
+                                                    <option value="CWNB">CLIENTS WITH NO BALANCES</option>
+                                                </select>
 
-                                        <form method="get" action="{{ route('waterbill') }}">
-                                            <select class="form-input" name="area" style="width:200px !important;"
-                                                id="AREA">
-                                                <option value="">-SELECT-</option>
-                                                <option value="AREA">DETAILED AREA BALANCES</option>
-                                                <option value="CWB">CLIENTS WITH BALANCES</option>
-                                                <option value="CWNB">CLIENTS WITH NO BALANCES</option>
-                                            </select>
 
-
-                                        </form>
+                                            </form-->
                                     </div>
                                 </nav>
                             </div>
