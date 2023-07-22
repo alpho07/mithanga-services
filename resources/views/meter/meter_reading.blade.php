@@ -56,7 +56,7 @@ Meter Reading
                         <form class="form-horizontal" id="MForm" method="post" action="{{route('save.meter.reading',['cid'=>$client[0]->id,'id'=>$n,'aid'=>$aid])}}">
                             @csrf
                             <div class="form-group">
-                                <label class="control-label col-sm-6" for="email">Area:</label>
+                                <label class="control-label col-sm-6" for="email">Location:</label>
                                 <div class="col-sm-12">
                                     <select class="form-control" required id='meterselection' name=''>
                                         <option value="{{$client[0]->area_id}}">{{$client[0]->area_name}}</option>
@@ -152,7 +152,7 @@ Meter Reading
 
 
                         <div class="form-group">
-                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Account Balance (Ksh.)</label>
+                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Arrears (Ksh.)</label>
                             <div class="col-sm-12">
                                 <input type="hidden" readonly  class="form-control" value="{{($bal <= 0) ? '('.str_replace('-','',$bal).')' : $bal * -1 }}" id="cust_balance_"  >  
                                 <input type="hidden" readonly  class="form-control" value="{{$bal}}" id="cust_balance"  >   
