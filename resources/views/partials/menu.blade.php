@@ -110,9 +110,7 @@
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                                 Payments
                             </a>
-                        </li>
-
-                    
+                        </li>                    
                         
 
                         <li class="nav-item">
@@ -120,6 +118,23 @@
                                 class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                                 Balances
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('payment.index') }}"
+                                class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                Customer Reports
+                            </a>
+                        </li>                    
+                        
+
+                        <li class="nav-item">
+                            <a href="{{ route('balances') }}"
+                                class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                Monthly Reports
                             </a>
                         </li>
                     </ul>
