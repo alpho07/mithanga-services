@@ -113,12 +113,29 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('statement.index', ['start' => date('Y-m') . '-01', 'end' => date('Y-m-t', strtotime(date('Y-m-d')))]) }}"
+                            <a href="#"
                                 class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
 
-                                Account Statement
+                                Report
                             </a>
+                            <ul class="nav-dropdown-items">
+
+                                <li class="nav-item">
+                                    <a href="{{ route('statement.index', ['start' => date('Y-m') . '-01', 'end' => date('Y-m-t', strtotime(date('Y-m-d')))]) }}"
+                                        class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
+                                        <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                        Customer 
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('client.index') }}"
+                                        class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
+                                        <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                        Monthly
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="nav-item">

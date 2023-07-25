@@ -59,7 +59,7 @@ Dashboard
                         <div class="container-fluid">
                             <h1 class="mt-4">Dashboard</h1>
 
-                            <div class="col-md-12">
+                            <!--div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="row">
@@ -178,7 +178,7 @@ Dashboard
                                     </div>
                                 </div>
 
-                            </div>
+                            </div-->
 
                             <div class="row mt-3">
                                 <div class="col-xl-6">
