@@ -112,7 +112,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <li class="nav-item nav-dropdown">
                             <a href="#"
                                 class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
