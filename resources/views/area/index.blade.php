@@ -85,15 +85,21 @@
         $(document).ready(function() {
 
 
-            $(document).on('#deleteButton', function() {
+            // Event handler for '#deleteButton'
+            $(document).on('click', '#deleteButton', function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
                 // Show the confirmation alert
                 var confirmDelete = confirm("You are about to delete this record, Continue?");
 
                 // If the user clicks "OK" in the alert, proceed with the delete action
                 if (confirmDelete) {
+                    // Submit the form with ID "DELETE" to perform the delete action
                     $('#DELETE').submit();
+
                     // Add your code here to handle the delete action
-                    // For example, you can submit a form or make an AJAX request to delete the record
+                    // For example, you can make an AJAX request to delete the record
                     // ...
 
                     // For this example, we'll just display a success message after a short delay
@@ -101,6 +107,7 @@
                         alert("Record deleted successfully!");
                     }, 500); // Wait 500 milliseconds (0.5 seconds) before showing the success message
                 } else {
+                    // User clicked "Cancel" in the confirmation dialog, so do nothing
                     return false;
                 }
             });
