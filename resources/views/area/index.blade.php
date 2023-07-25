@@ -51,7 +51,8 @@
                                             <td>{{ $area->rate }}</td>
 
                                             <td>
-                                                <form action="{{ route('areas.destroy', $area->id) }}" method="POST" id="DELETE">
+                                                <form action="{{ route('areas.destroy', $area->id) }}" method="POST"
+                                                    id="DELETE">
                                                     <a class="btn btn-sm btn-primary "
                                                         href="{{ route('reading.sheet', $area->id) }}"><i
                                                             class="fa fa-fw fa-eye"></i> View Clients
@@ -65,8 +66,8 @@
                                                             class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm deleteButton" id="deleteButton"><i
-                                                            class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm deleteButton"
+                                                        id="deleteButton"><i class="fa fa-fw fa-trash"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -84,7 +85,7 @@
         $(document).ready(function() {
 
 
-            $('#deleteButton').click(function() {
+            $(document).on('#deleteButton', function() {
                 // Show the confirmation alert
                 var confirmDelete = confirm("You are about to delete this record, Continue?");
 
@@ -99,7 +100,7 @@
                     setTimeout(function() {
                         alert("Record deleted successfully!");
                     }, 500); // Wait 500 milliseconds (0.5 seconds) before showing the success message
-                }else{
+                } else {
                     return false;
                 }
             });
