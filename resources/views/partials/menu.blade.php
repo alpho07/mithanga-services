@@ -131,7 +131,7 @@
                         
 
                         <li class="nav-item">
-                            <a href="{{ route('balances') }}"
+                            <a href="{{ route('dashboard.monthly') }}"
                                 class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                                 Monthly Reports

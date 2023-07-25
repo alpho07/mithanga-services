@@ -59,6 +59,10 @@ Route::get('home_page', function(){
 })->name('home.index')->middleware('auth');
 
 Route::get('dashboard/', 'Admin\DashboardController@index')->name('dashboard.index')->middleware('auth');
+
+Route::get('dashboard_monthly', 'Admin\DashboardController@index_')->name('dashboard.monthly')->middleware('auth');
+
+
 Route::get('dashboard/all-consumption', 'Admin\DashboardController@loadConsumptionByMonths')->name('dashboard.allconsumption')->middleware('auth');
 Route::get('dashboard/area-consumption', 'Admin\DashboardController@loadAreaConsumption')->name('dashboard.areaconsumption')->middleware('auth');
 Route::get('dashboard/all-income', 'Admin\DashboardController@loadAllIncome')->name('dashboard.income')->middleware('auth');
@@ -323,6 +327,8 @@ Route::get('areas/report', 'Admin\ReportController@area_report')->name('area.rep
 Route::get('meter/changes', 'Admin\ReportController@meter_changes')->name('meter.changes')->middleware('auth');
 Route::get('meter/history', 'Admin\ReportController@history_report')->name('meter.history')->middleware('auth');
 Route::get('income/expenditure', 'Admin\ReportController@income_expenditure')->name('income.expenditure')->middleware('auth');
+
+
 
 Route::get('/logout-user', function() {
     Auth::logout();

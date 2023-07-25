@@ -12,24 +12,38 @@ use DB;
  * Class AreaController
  * @package App\Http\Controllers
  */
-class DashboardController extends Controller {
+class DashboardController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $areas = Area::all();
         $clients = Client::all();
         $date = date('Y-m-d');
         $dmonth = date('Y-m');
         $salestoday = DB::select("SELECT SUM(amount) amount FROM transactions WHERE DATE(date)='$date'")[0]->amount;
         $salesmonthly = DB::select("SELECT SUM(amount) amount FROM transactions WHERE DATE(date) LIKE '%$dmonth%'")[0]->amount;
-        return view('dashboard.index', compact('areas', 'clients', 'salestoday','salesmonthly'));
+        return view('dashboard.index', compact('areas', 'clients', 'salestoday', 'salesmonthly'));
     }
 
-    function loadConsumptionByMonths() {
+    public function index_()
+    {
+        $areas = Area::all();
+        $clients = Client::all();
+        $date = date('Y-m-d');
+        $dmonth = date('Y-m');
+        $salestoday = DB::select("SELECT SUM(amount) amount FROM transactions WHERE DATE(date)='$date'")[0]->amount;
+        $salesmonthly = DB::select("SELECT SUM(amount) amount FROM transactions WHERE DATE(date) LIKE '%$dmonth%'")[0]->amount;
+        return view('dashboard.index_', compact('areas', 'clients', 'salestoday', 'salesmonthly'));
+    }
+
+    function loadConsumptionByMonths()
+    {
         $res['period'] = [];
         $res['consumed'] = [];
 
@@ -38,7 +52,7 @@ class DashboardController extends Controller {
                     GROUP BY data_year,data_month  
                     ORDER BY FIELD(DATE_FORMAT(DATE(date),'%b') ,'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')");
 
-        foreach ($data as $r):
+        foreach ($data as $r) :
             array_push($res['period'], $r->period);
             array_push($res['consumed'], floatval($r->consumption));
         endforeach;
@@ -46,7 +60,8 @@ class DashboardController extends Controller {
         return $res;
     }
 
-    function loadAreaConsumption() {
+    function loadAreaConsumption()
+    {
         $res['period'] = [];
         $res['consumed'] = [];
         $data = DB::select("SELECT area,SUM(units) consumption, CONCAT(DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) period, YEAR(DATE(date)) data_year, DATE_FORMAT(DATE(date),'%b') data_month  
@@ -54,7 +69,7 @@ class DashboardController extends Controller {
                             GROUP BY data_year,data_month ,area 
                             ORDER BY consumption DESC");
 
-        foreach ($data as $r):
+        foreach ($data as $r) :
             array_push($res['period'], $r->area);
             array_push($res['consumed'], floatval($r->consumption));
         endforeach;
@@ -62,7 +77,8 @@ class DashboardController extends Controller {
         return $res;
     }
 
-    function loadAllIncome() {
+    function loadAllIncome()
+    {
         return DB::select("SELECT CONCAT('Total Income - ',DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) category,SUM(amount) amount, CONCAT(DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) period, YEAR(DATE(date)) data_year, DATE_FORMAT(DATE(date),'%b') data_month  
                         FROM vw_transactions 
                         WHERE description NOT LIKE 'CASH%' AND description NOT LIKE 'BANK%' 
@@ -75,7 +91,8 @@ class DashboardController extends Controller {
                         ORDER BY amount DESC");
     }
 
-    function loadConsumptionByMonths_($m, $y) {
+    function loadConsumptionByMonths_($m, $y)
+    {
         $res['period'] = [];
         $res['consumed'] = [];
 
@@ -85,7 +102,7 @@ class DashboardController extends Controller {
                     GROUP BY data_year,data_month  
                     ORDER BY FIELD(DATE_FORMAT(DATE(date),'%b') ,'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')");
 
-        foreach ($data as $r):
+        foreach ($data as $r) :
             array_push($res['period'], $r->period);
             array_push($res['consumed'], floatval($r->consumption));
         endforeach;
@@ -93,7 +110,8 @@ class DashboardController extends Controller {
         return $res;
     }
 
-    function loadAreaConsumption_($m, $y) {
+    function loadAreaConsumption_($m, $y)
+    {
         $res['period'] = [];
         $res['consumed'] = [];
         $data = DB::select("SELECT area,SUM(units) consumption, CONCAT(DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) period, YEAR(DATE(date)) data_year, DATE_FORMAT(DATE(date),'%b') data_month  
@@ -102,7 +120,7 @@ class DashboardController extends Controller {
                             GROUP BY data_year,data_month ,area 
                             ORDER BY FIELD(DATE_FORMAT(DATE(date),'%b') ,'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),consumption DESC");
 
-        foreach ($data as $r):
+        foreach ($data as $r) :
             array_push($res['period'], $r->area);
             array_push($res['consumed'], floatval($r->consumption));
         endforeach;
@@ -110,7 +128,8 @@ class DashboardController extends Controller {
         return $res;
     }
 
-    function loadAllIncome_($m, $y) {
+    function loadAllIncome_($m, $y)
+    {
         return DB::select("SELECT UPPER(description) category,SUM(amount) amount, CONCAT(DATE_FORMAT(DATE(date),'%b'),'-',YEAR(DATE(date))) period, YEAR(DATE(date)) data_year, DATE_FORMAT(DATE(date),'%b') data_month  
                         FROM vw_transactions 
                         WHERE description NOT LIKE 'CASH%' AND description NOT LIKE 'BANK%' 
@@ -122,5 +141,4 @@ class DashboardController extends Controller {
                         GROUP BY data_year,data_month ,category
                         ORDER BY amount DESC");
     }
-
 }
