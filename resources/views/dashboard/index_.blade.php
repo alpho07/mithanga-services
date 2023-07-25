@@ -66,14 +66,14 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div class="container-fluid">
-                                <h1 class="mt-4">Dashboard</h1>
+                                <h1 class="mt-1">Monthly Revenue</h1>
 
 
 
-                                <div class="card mb-4">
+                                <div class="card mb-1">
                                     <div class="card-header">
                                         <i class="fas fa-table mr-1"></i>
-                                        Income Sources
+                                        Income
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
