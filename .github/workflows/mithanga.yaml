@@ -3,12 +3,14 @@ on: push
 jobs:
   Super-lint:
     name: Lint Mithanga
-    runs-on: ububtu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
       - name: Run Super linter
-        uses: github/super-linter@v3
+        uses: github/super-linter@v4
+      - name: Install PHP Dependencies
+        run: composer install --no-scripts --no-interaction
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: '${{secrets.GITHUB_TOKEN}}'
