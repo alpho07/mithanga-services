@@ -3,7 +3,7 @@ on: push
 jobs:
   Super-lint:
     name: Lint Mithanga
-    runs-on: ububtu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
