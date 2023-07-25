@@ -1,0 +1,14 @@
+name: Mithanga-Services
+on: push
+jobs:
+  Super-lint:
+    name: Lint Mithanga
+    runs-on: ububtu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Run Super linter
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: '${{secrets.GITHUB_TOKEN}'
