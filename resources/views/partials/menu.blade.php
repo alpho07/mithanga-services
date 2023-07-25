@@ -122,7 +122,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('payment.index') }}"
+                            <a href="{{ route('statement.index', ['start' => date('Y-m') . '-01', 'end' => date('Y-m-t', strtotime(date('Y-m-d')))]) }}"
                                 class="nav-link {{ request()->is('payment') || request()->is('payment/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
                                 Customer Reports
