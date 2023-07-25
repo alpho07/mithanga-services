@@ -113,60 +113,55 @@
                         </li>
 
                         <li class="nav-item nav-dropdown">
-                            <a href="#"
-                                class="nav-link {{ request()->is('statement') || request()->is('statement/*') ? 'active' : '' }}">
-                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                            <a class="nav-link  nav-dropdown-toggle" href="#">
+                                <i class="fa-fw fas fa-file nav-icon">
 
-                                Report
+                                </i>
+                                BOREHOLE WATER
                             </a>
                             <ul class="nav-dropdown-items">
 
-                                <li class="nav-item">
-                                    <a href="{{ route('statement.index', ['start' => date('Y-m') . '-01', 'end' => date('Y-m-t', strtotime(date('Y-m-d')))]) }}"
-                                        class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
-                                        <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                                        Customer 
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('client.index') }}"
-                                        class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
-                                        <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                                        Monthly
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                @can('client_access')
+                                    <li class="nav-item">
+                                        <a href="{{ route('client.index') }}"
+                                            class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
+                                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                            Customers
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('balances') }}"
-                                class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
-                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                                Balances
-                            </a>
-                        </li>
-                    </ul>
-                @endcan
 
-            <li class="nav-item">
-                <a href="#}" class="nav-link">
-                    <i class="fa-fw fas fa-file nav-icon"></i>
-                    TENANTS
-                </a>
-            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('balances') }}"
+                                    class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                    Balances
+                                </a>
+                            </li>
+                        </ul>
+                    @endcan
 
-            <li class="nav-item">
-                <a href="{{ url('logout-user') }}" class="nav-link">
-                    <i class="nav-icon fas fa-fw fa-sign-out-alt">
+                <li class="nav-item">
+                    <a href="#}" class="nav-link">
+                        <i class="fa-fw fas fa-file nav-icon"></i>
+                        TENANTS
+                    </a>
+                </li>
 
-                    </i>
-                    {{ trans('global.logout') }}
-                </a>
-            </li>
-        </ul>
+                <li class="nav-item">
+                    <a href="{{ url('logout-user') }}" class="nav-link">
+                        <i class="nav-icon fas fa-fw fa-sign-out-alt">
+
+                        </i>
+                        {{ trans('global.logout') }}
+                    </a>
+                </li>
+            </ul>
 
 
 
-    </nav>
-    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-</div>
+        </nav>
+        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+    </div>
