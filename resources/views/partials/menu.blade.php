@@ -112,56 +112,38 @@
                             </a>
                         </li>
 
-                        <li class="nav-item nav-dropdown">
-                            <a class="nav-link  nav-dropdown-toggle" href="#">
-                                <i class="fa-fw fas fa-file nav-icon">
+                    
+                        
 
-                                </i>
-                                BOREHOLE WATER
+                        <li class="nav-item">
+                            <a href="{{ route('balances') }}"
+                                class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
+                                Balances
                             </a>
-                            <ul class="nav-dropdown-items">
+                        </li>
+                    </ul>
+                @endcan
 
-                                @can('client_access')
-                                    <li class="nav-item">
-                                        <a href="{{ route('client.index') }}"
-                                            class="nav-link {{ request()->is('client') || request()->is('client/*') ? 'active' : '' }}">
-                                            <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                                            Customers
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+            <li class="nav-item">
+                <a href="#}" class="nav-link">
+                    <i class="fa-fw fas fa-file nav-icon"></i>
+                    TENANTS
+                </a>
+            </li>
 
+            <li class="nav-item">
+                <a href="{{ url('logout-user') }}" class="nav-link">
+                    <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
-                            <li class="nav-item">
-                                <a href="{{ route('balances') }}"
-                                    class="nav-link {{ request()->is('areas') || request()->is('areas/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
-                                    Balances
-                                </a>
-                            </li>
-                        </ul>
-                    @endcan
-
-                <li class="nav-item">
-                    <a href="#}" class="nav-link">
-                        <i class="fa-fw fas fa-file nav-icon"></i>
-                        TENANTS
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ url('logout-user') }}" class="nav-link">
-                        <i class="nav-icon fas fa-fw fa-sign-out-alt">
-
-                        </i>
-                        {{ trans('global.logout') }}
-                    </a>
-                </li>
-            </ul>
+                    </i>
+                    {{ trans('global.logout') }}
+                </a>
+            </li>
+        </ul>
 
 
 
-        </nav>
-        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-    </div>
+    </nav>
+    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+</div>
