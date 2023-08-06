@@ -1,5 +1,20 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
+// Allow specific HTTP methods
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+// Allow specific HTTP headers
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+// If the request method is OPTIONS, return early with a 200 status (pre-flight request)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -21,7 +36,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +50,7 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once __DIR__ . '/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------

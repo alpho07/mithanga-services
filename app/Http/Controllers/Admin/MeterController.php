@@ -350,22 +350,22 @@ class MeterController extends Controller
     }
 
 
-    function sendSampleText($message, $number)
+    function sendSampleText()
     {
-        $username = 'alpho07'; // use 'sandbox' for development in the test environment
-        $apiKey = 'd2669bdf42533f2ddfb3c86f5c5fd15fd48be27369f1b9714b961a5f7aaaedef'; // use your sandbox app API key for development in the test environment
+        $username = 'postviewhse'; // use 'sandbox' for development in the test environment
+        $apiKey = '9e3ce58521f32e559a13a038082ef5fd9c8f02c2db155bb737823db56309caee'; // use your sandbox app API key for development in the test environment
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
         $sms = $AT->sms();
-        $new = substr($number, 1);
-        $recipients = "+254" . $new;
+        //$new = substr('0715882227', 1);
+        $recipients = "0718430712";// . $new;
 
 
         // Use the service
         $result = $sms->send([
-            'to' => $recipients,
-            'message' => $message
+            'to' => $recipients,//$recipients,
+            'message' => 'Dear Mr. Mithanga, Your current reading is 2701 units and previous 2695 units. Consumption is  6 units. Your account is in arrears of KES.720/- Kindly clear this balance befor the 5th-Aug-2023. By POSTVIEW '//$message
         ]);
 
         return $result;

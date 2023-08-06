@@ -132,9 +132,9 @@ Route::delete('status/delete/{id}', 'Admin\StatusController@destroy')->name('sta
 Route::patch('status/update/{id}', 'Admin\StatusController@update')->name('status.update')->middleware('auth');
 
 
-Route::get('sendText', 'Admin\ClientController@sendSampleText')->name('text.send')->middleware('auth');
+Route::get('sendText', 'Admin\MeterController@sendSampleText')->name('text.send')->middleware('auth');
 Route::post('meter_reading', 'Admin\MeterController@meter_reading')->middleware('auth');
-Route::get('sendNotification/{id}', 'Admin\MeterController@sendNotification')->middleware('auth');
+Route::get('sendNotification/{id}/{number}', 'Admin\MeterController@sendNotification')->middleware('auth');
 Route::post('updateReadings', 'Admin\MeterController@updateReadings')->middleware('auth');
 
 Route::get('meter/', 'Admin\MeterController@index')->name('meter.index')->middleware('auth');
@@ -338,6 +338,8 @@ Route::get('/logout-user', function() {
 
 
 Route::group(['prefix' => 'api/v1'], function () {
+    Route::get('/','Api\ApiController@index');
+    Route::get('clients','Api\ApiController@loadClients');
     Route::get('client/{area}', 'Admin\MeterController@loadClient')->middleware('auth');
 });
 

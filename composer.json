@@ -9,13 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "africastalking/africastalking": "^2.3",
+        "africastalking/africastalking": "^3.0",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
         "laravel/passport": "^7.4",
         "laravel/tinker": "^1.0",
+        "spatie/laravel-html": "^2.30",
         "yajra/laravel-datatables": "1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
