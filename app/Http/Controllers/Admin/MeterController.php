@@ -340,18 +340,54 @@ class MeterController extends Controller
         return redirect()->route('meter.index')->with('success', 'Meter Reading Registered Successfully!');
     }
 
-    function sendNotification($id)
+    function sendNotification(Request $r)
     {
-       // $readings = DB::select(DB::raw("SELECT * FROM vm_meter_readings WHERE client_id='$id' ORDER BY id DESC LIMIT 1"));
-        //$message2 = "Dear " . strtoupper($readings[0]->account_name) . " A/C " . $readings[0]->client_id . " your bill as at 30-" . date('m-Y') . "  Prev Read " . $readings[0]->previous_reading . " Curr Read " . $readings[0]->current_reading . " Consumption " . $readings[0]->consumed_units . " Arrears 0.00 Amount Paid 0.00 Current Bill " . number_format($readings[0]->water_charges) . " Total Amount  " . number_format($readings[0]->water_charges) . "  Due date is 10-Jul-20. Reconnection Fee is 500. Bills payable through Paybill No 234.";
-       // echo $message2;
-        $this->sendSampleText('This is the message', '0715882227');
-        // return redirect()->route('meter.index')->with('success', 'SMS Notification Successfully sent!');
+        $checked = $r->checked;
+
+        foreach ($checked as $ch) :
+            $this->sendSampleText($ch);
+        endforeach;
+
+        return redirect()->route('client.with_balances')->with('success', count($checked).' Messages successfully Dispatched!');
+
+
+       
     }
 
 
-    function sendSampleText()
+
+
+    function sendSampleText($client_id)
     {
+        $reading1 = DB::table('vm_meter_readings')->where('client_id', $client_id)->latest('id')->first();
+        $reading2 = DB::table('vw_balances')->where('meter_number', $client_id)->latest('id')->first();
+        $rate = 120;
+
+        if ($reading2->balance < 0) {
+            $arrears = $reading2->balance * -1;
+        } else {
+            $arrears = 0;
+        }
+
+
+
+        $main_message = 'Dear ' . $reading1->account_name . "\n" .
+            'Your ' . $reading1->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
+            'Curr Read: ' . $reading1->current_reading . ' units' . "\n" .
+            'Prev Read: ' . $reading1->previous_reading . ' units' . "\n" .
+            'Consumption: ' . ($reading1->current_reading - $reading1->previous_reading) . ' units' . "\n" .
+            'Total Due: ksh.' . number_format(($reading1->current_reading - $reading1->previous_reading) * $rate, 2) . "\n" .
+            'ARREARS: ksh. ' .  $arrears . '/-' . "\n" .
+            'Total to pay: ksh.' . number_format((($reading1->current_reading - $reading1->previous_reading) * $rate) + $arrears, 2) . '/-' . "\n" .
+            'Pay via MPESA Only:' . "\n" .
+            'Paybill no: 4085189' . "\n" .
+            'Account number: ' . $client_id . "\n" .
+            'POSTVIEW APARTMENTS.' . "\n" .
+            'James 0723653255.' . "\n" .
+            'Thank you!.';
+
+
+
         $username = 'postviewhse'; // use 'sandbox' for development in the test environment
         $apiKey = '9e3ce58521f32e559a13a038082ef5fd9c8f02c2db155bb737823db56309caee'; // use your sandbox app API key for development in the test environment
         $AT = new AfricasTalking($username, $apiKey);
@@ -359,13 +395,23 @@ class MeterController extends Controller
         // Get one of the services
         $sms = $AT->sms();
         //$new = substr('0715882227', 1);
-        $recipients = "0718430712";// . $new;
-
+        $recipients = "0718430712"; // . $new;
 
         // Use the service
         $result = $sms->send([
-            'to' => $recipients,//$recipients,
-            'message' => 'Dear Mr. Mithanga, Your current reading is 2701 units and previous 2695 units. Consumption is  6 units. Your account is in arrears of KES.720/- Kindly clear this balance befor the 5th-Aug-2023. By POSTVIEW '//$message
+            'to' => $recipients, //$recipients,
+            'message' => $main_message
+        ]);
+
+        DB::table('sms_tracking_table')->insert([
+            'to' => $recipients,
+            'account_name' => $reading1->account_name,
+            'area' => $reading1->area_name,
+            'message' => $main_message,
+            'date_time' => date('Y-m-d H:i:s'),
+            'meter_number' => $client_id,
+            'send_status' =>  $result['status'],
+            'receive_status' => ''
         ]);
 
         return $result;

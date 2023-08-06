@@ -81,46 +81,70 @@
 
                         <div class="row">
                             <div class="col-md-10">
-                                <table class="table table-bordered" style="width:1000px !important;">
-                                    <thead>
+                                <form method="POST" action="{{ route('SendSms') }}" id="FORM_SUBMITTER">
+                                    {{@csrf_field()}}
+                                    <table class="table table-bordered" style="width:1000px !important;">
+                                        <thead>
 
-                                        <tr>
-                                            <th class="tg-7btt"><input type="checkbox" class="send_messageMain"> All</th>
-                                            <th class="tg-7btt">AREA CODE</th>
-                                            <th class="">AREA NAME</th>
-                                            <th class="">ACC. NO#</th>
-                                            <th class="tg-7btt">CLIENT NAME</th>
-                                            <th class="tg-7btt">PHONE NUMBER</th>
-                                            <th class="tg-7btt">BALANCE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $bal = 0; ?>
-                                        @foreach ($data as $b)
                                             <tr>
-                                                <td><input type="checkbox" class="send_message"
-                                                        data-value="{{ $b->meter_number }}"></td>
-                                                <td class="">{{ $b->area }}</td>
-                                                <td class="tg-c3ow" style="text-align: left;">{{ $b->area_name }}</td>
-                                                <td class="tg-c3ow">{{ $b->meter_number }}<br></td>
-                                                <td class="tg-c3ow">{{ $b->account_name }}<br></td>
-                                                <td class="tg-c3ow">{{ $b->phone_no }}<br></td>
-                                                <td class="" style="text-align: right;">
-                                                    {{ str_replace('-', '', number_format($b->balance, 2)) }}</td>
+                                                <th class="tg-7btt"><input type="checkbox" 
+                                                        class="send_messageMain"> All</th>
+                                                <th class="tg-7btt">AREA CODE</th>
+                                                <th class="">AREA NAME</th>
+                                                <th class="">ACC. NO#</th>
+                                                <th class="tg-7btt">CLIENT NAME</th>
+                                                <th class="tg-7btt">PHONE NUMBER</th>
+                                                <th class="tg-7btt">BALANCE</th>
+                                                <th class="tg-7btt">SMS STATUS</th>
+                                                <th class="tg-7btt">SMS TIMEDATE</th>
                                             </tr>
-                                            <?php $bal = $bal + $b->balance; ?>
-                                        @endforeach
+                                        </thead>
+                                        <tbody>
+                                            <?php $bal = 0; ?>
+                                            @foreach ($data as $b)
+                                                @php
+                                                    
+                                                    $sms = \DB::table('sms_tracking_table')
+                                                        ->where('meter_number', $b->meter_number)
+                                                        ->latest('id')
+                                                        ->first();
+                                                    if (!empty($sms)) {
+                                                        $status = 'Sent';
+                                                        $time = $sms->date_time;
+                                                    } else {
+                                                        $status = 'Pending';
+                                                        $time = 'N/A';
+                                                    }
+                                                    
+                                                @endphp
+                                                <tr>
+                                                    <td><input type="checkbox" class="send_message"
+                                                            value="{{ $b->meter_number }}" name="checked[]"></td>
+                                                    <td class="">{{ $b->area }}</td>
+                                                    <td class="tg-c3ow" style="text-align: left;">{{ $b->area_name }}</td>
+                                                    <td class="tg-c3ow">{{ $b->meter_number }}<br></td>
+                                                    <td class="tg-c3ow">{{ $b->account_name }}<br></td>
+                                                    <td class="tg-c3ow">{{ $b->phone_no }}<br></td>
+                                                    <td class="" style="text-align: right;">
+                                                        {{ str_replace('-', '', number_format($b->balance, 2)) }}</td>
+                                                    <td>{{ $status }}</td>
+                                                    <td>{{ $time }}</td>
+                                                </tr>
+                                                <?php $bal = $bal + $b->balance; ?>
+                                            @endforeach
 
-                                    </tbody>
+                                        </tbody>
 
-                                    <tfoot>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><strong>TOTALS</strong></td>
-                                        <td style="text-align: right;"><strong>{{ number_format($bal, 2) }}</strong></td>
-                                    </tfoot>
-                                </table>
+                                        <tfoot>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>TOTALS</strong></td>
+                                            <td style="text-align: right;"><strong>{{ number_format($bal, 2) }}</strong>
+                                            </td>
+                                        </tfoot>
+                                    </table>
+                                </form>
 
                             </div>
 
@@ -158,6 +182,10 @@
                 if (!$(this).prop('checked')) {
                     $('.send_messageMain').prop('checked', false);
                 }
+            });
+
+            $('#SEND').click(function() {
+                $('#FORM_SUBMITTER').submit();
             });
 
 

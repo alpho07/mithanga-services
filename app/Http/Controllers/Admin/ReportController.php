@@ -189,7 +189,8 @@ class ReportController extends Controller
         $data = DB::select("SELECT * FROM temp_balances_clients WHERE balance < 0 GROUP BY client_id ORDER BY balance,id ASC");
         //return $data;
 
-         return view('reports.client_with_balances', compact('data'));
+       
+        return view('reports.client_with_balances', compact('data'));
     }
 
     function clients_with_no_balances()
@@ -197,7 +198,7 @@ class ReportController extends Controller
 
         //$clients = DB::select("SELECT * FROM temp_balances_clients WHERE area='$a->id' ORDER BY id ASC");
         $data = DB::select("SELECT * FROM temp_balances_clients WHERE balance >= 0 GROUP BY client_id ORDER BY balance,id ASC");
-       // return $data;
+        // return $data;
 
         return view('reports.client_with_balances', compact('data'));
     }

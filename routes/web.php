@@ -132,9 +132,9 @@ Route::delete('status/delete/{id}', 'Admin\StatusController@destroy')->name('sta
 Route::patch('status/update/{id}', 'Admin\StatusController@update')->name('status.update')->middleware('auth');
 
 
-Route::get('sendText', 'Admin\MeterController@sendSampleText')->name('text.send')->middleware('auth');
+Route::get('sendText/{client_id}', 'Admin\MeterController@sendSampleText')->name('text.send')->middleware('auth');
 Route::post('meter_reading', 'Admin\MeterController@meter_reading')->middleware('auth');
-Route::get('sendNotification/{id}/{number}', 'Admin\MeterController@sendNotification')->middleware('auth');
+Route::post('sendNotification', 'Admin\MeterController@sendNotification')->middleware('auth')->name('SendSms');
 Route::post('updateReadings', 'Admin\MeterController@updateReadings')->middleware('auth');
 
 Route::get('meter/', 'Admin\MeterController@index')->name('meter.index')->middleware('auth');
