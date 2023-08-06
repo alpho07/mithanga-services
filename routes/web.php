@@ -340,7 +340,7 @@ Route::get('/logout-user', function() {
 Route::group(['prefix' => 'api/v1'], function () {
     Route::get('/','Api\ApiController@index');
     Route::get('clients','Api\ApiController@loadClients');
-    Route::get('client/{area}', 'Admin\MeterController@loadClient')->middleware('auth');
+    Route::get('client/{area}', 'Admin\MeterController@loadClient');
 });
 
 
