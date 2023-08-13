@@ -341,6 +341,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('/','Api\ApiController@index');
     Route::get('clients','Api\ApiController@loadClients');
     Route::get('client/{area}', 'Admin\MeterController@loadClient');
+    Route::post('save_meter', 'Api\ApiController@save_reading');
 });
 
 
