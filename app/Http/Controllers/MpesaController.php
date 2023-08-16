@@ -55,4 +55,8 @@ class MpesaController extends Controller
         // Finish Transaction
         Daraja::getInstance()->finishTransaction(true);
     }
+
+    function simulate1(){
+        echo 'This is the data';
+    }
 }

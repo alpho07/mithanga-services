@@ -348,4 +348,5 @@ Route::group(['prefix' => 'api/mpesa'], function () {
     Route::post('confirm-url', 'MpesaController@c2bConfirmationCallback');
     Route::post('validate-url', 'MpesaController@c2bValidationCallback');
     Route::post('payment-url', 'MpesaController@simulate');
+    Route::post('test-url', 'MpesaController@simulate1');
 });
