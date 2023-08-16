@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0d6055ffe8892a8d429dea5b746993f",
+    "content-hash": "91ee3e858a058ca755eba10e5af2b0bc",
     "packages": [
         {
             "name": "africastalking/africastalking",
@@ -1499,6 +1499,66 @@
                 }
             ],
             "time": "2023-04-17T16:00:37+00:00"
+        },
+        {
+            "name": "jivesh/laravel-slack",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gahlawat/laravel-slack.git",
+                "reference": "5bacf661bbf7a0796b792259b709925454e5ec71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gahlawat/laravel-slack/zipball/5bacf661bbf7a0796b792259b709925454e5ec71",
+                "reference": "5bacf661bbf7a0796b792259b709925454e5ec71",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.6",
+                "phpunit/phpunit": "^7.0",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Gahlawat\\Slack\\SlackServiceProvider"
+                    ],
+                    "aliases": {
+                        "Slack": "Gahlawat\\Slack\\Facade\\Slack"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gahlawat\\Slack\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jivesh Gahlawat",
+                    "email": "jiveshsg@gmail.com"
+                }
+            ],
+            "description": "A minimalist laravel integration for Slack",
+            "homepage": "https://gahlawat.github.io/laravel-slack",
+            "keywords": [
+                "laravel",
+                "slack"
+            ],
+            "support": {
+                "issues": "https://github.com/gahlawat/laravel-slack/issues",
+                "source": "https://github.com/gahlawat/laravel-slack/tree/master"
+            },
+            "time": "2018-04-04T07:50:09+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4158,6 +4218,241 @@
                 "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
             },
             "time": "2021-12-11T13:40:54+00:00"
+        },
+        {
+            "name": "samerior/mobile-money",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/samerior/mobile-money.git",
+                "reference": "c2c77bedc39a7648f26453eef6d54cb91e5f4648"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/samerior/mobile-money/zipball/c2c77bedc39a7648f26453eef6d54cb91e5f4648",
+                "reference": "c2c77bedc39a7648f26453eef6d54cb91e5f4648",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.9",
+                "guzzlehttp/guzzle": "^6.4",
+                "illuminate/cache": "~5.5|~6.0|~7.0",
+                "illuminate/container": "~5.5|~6.0|~7.0",
+                "illuminate/contracts": "~5.5|~6.0|~7.0",
+                "illuminate/routing": "~5.5|~6.0|~7.0",
+                "illuminate/support": "~5.5|~6.0|~7.0",
+                "illuminate/view": "~5.5|~6.0|~7.0",
+                "jivesh/laravel-slack": "^2.1",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.3",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Samerior\\MobileMoney\\MobileMoneyServiceProvider"
+                    ],
+                    "aliases": {
+                        "B2C": "Samerior\\MobileMoney\\Mpesa\\Facades\\B2C",
+                        "Identity": "Samerior\\MobileMoney\\Mpesa\\Facades\\Identity",
+                        "Registrar": "Samerior\\MobileMoney\\Mpesa\\Facades\\Registrar",
+                        "STK": "Samerior\\MobileMoney\\Mpesa\\Facades\\STK"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Samerior\\MobileMoney\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Samuel Dervis",
+                    "email": "opensource@agweria.com",
+                    "homepage": "https://samerior.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Mobile payments API - Kenya",
+            "homepage": "https://github.com/samerior/mobile-money",
+            "keywords": [
+                "agweria",
+                "api",
+                "equitel",
+                "equity",
+                "mobile money",
+                "mpesa",
+                "payments",
+                "pesa",
+                "samerior group",
+                "samueldervis"
+            ],
+            "support": {
+                "issues": "https://github.com/samerior/mobile-money/issues",
+                "source": "https://github.com/samerior/mobile-money/tree/master"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U78JW993UMELA&source=url",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-06-17T16:49:05+00:00"
+        },
+        {
+            "name": "savannabits/daraja",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/savannabits/daraja.git",
+                "reference": "4cc620ea9d3fb387a49c8f69249597db2b134537"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/savannabits/daraja/zipball/4cc620ea9d3fb387a49c8f69249597db2b134537",
+                "reference": "4cc620ea9d3fb387a49c8f69249597db2b134537",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^6.0",
+                "phpunit/phpunit": "^8.5|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Savannabits\\Daraja\\DarajaServiceProvider"
+                    ],
+                    "aliases": {
+                        "Daraja": "Savannabits\\Daraja\\DarajaFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Savannabits\\Daraja\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam Maosa",
+                    "email": "maosa.sam@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Safaricom Mpesa API (Safaricom Daraja) for PHP Laravel . Simple integration with safaricom's MPESA API dubbed { DARAJA } and allow you to make requests in the nice ",
+            "homepage": "https://github.com/savannabits/daraja",
+            "keywords": [
+                "daraja",
+                "daraja api",
+                "daraja mpesa",
+                "laravel daraja",
+                "laravel mpesa",
+                "laravel mpesa api",
+                "laravel safaricom",
+                "mpesa",
+                "php daraja",
+                "php mpesa",
+                "safaricom",
+                "safaricom api",
+                "safaricom mpesa",
+                "safaricom php mpesa",
+                "savannabits"
+            ],
+            "support": {
+                "issues": "https://github.com/savannabits/daraja/issues",
+                "source": "https://github.com/savannabits/daraja/tree/v0.2.0"
+            },
+            "time": "2021-06-10T11:49:09+00:00"
+        },
+        {
+            "name": "smodav/mpesa",
+            "version": "v6.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SmoDav/mpesa.git",
+                "reference": "fffe6b399ef6df8acbbf48a05c87f79c9fea8497"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SmoDav/mpesa/zipball/fffe6b399ef6df8acbbf48a05c87f79c9fea8497",
+                "reference": "fffe6b399ef6df8acbbf48a05c87f79c9fea8497",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.2|^7.0.1",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "nesbot/carbon": "^1.0 || ^2.0",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master|^1.3.1",
+                "phpunit/phpunit": "~5.7|~6.2|~8.5|^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SmoDav\\Mpesa\\Laravel\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "STK": "SmoDav\\Mpesa\\Laravel\\Facades\\STK",
+                        "Simulate": "SmoDav\\Mpesa\\Laravel\\Facades\\Simulate",
+                        "Registrar": "SmoDav\\Mpesa\\Laravel\\Facades\\Registrar",
+                        "Identity": "SmoDav\\Mpesa\\Laravel\\Facades\\Identity"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Mpesa/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "SmoDav\\Mpesa\\": "src/Mpesa/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SmoDav",
+                    "email": "smodavprivate@gmail.com"
+                }
+            ],
+            "description": "M-Pesa API implementation",
+            "keywords": [
+                "api",
+                "laravel",
+                "mpesa",
+                "safaricom",
+                "transactions"
+            ],
+            "support": {
+                "issues": "https://github.com/SmoDav/mpesa/issues",
+                "source": "https://github.com/SmoDav/mpesa/tree/v6.3.0"
+            },
+            "time": "2023-07-17T07:53:59+00:00"
         },
         {
             "name": "spatie/laravel-html",

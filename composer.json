@@ -16,6 +16,9 @@
         "laravel/framework": "^6.0",
         "laravel/passport": "^7.4",
         "laravel/tinker": "^1.0",
+        "samerior/mobile-money": "^2.2",
+        "savannabits/daraja": "^0.2.0",
+        "smodav/mpesa": "^6.3",
         "spatie/laravel-html": "^2.30",
         "yajra/laravel-datatables": "1.5",
         "yajra/laravel-datatables-oracle": "~9.0"

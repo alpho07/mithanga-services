@@ -6,7 +6,7 @@ Auth::routes();
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     //Route::redirect('/', 'client');
-    
+
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -52,10 +52,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
 
 
-Route::get('home_page', function(){
-    
-    return redirect()->route('dashboard.index');
+Route::get('home_page', function () {
 
+    return redirect()->route('dashboard.index');
 })->name('home.index')->middleware('auth');
 
 Route::get('dashboard/', 'Admin\DashboardController@index')->name('dashboard.index')->middleware('auth');
@@ -330,7 +329,7 @@ Route::get('income/expenditure', 'Admin\ReportController@income_expenditure')->n
 
 
 
-Route::get('/logout-user', function() {
+Route::get('/logout-user', function () {
     Auth::logout();
     return Redirect::to('login');
 })->middleware('auth');
@@ -338,11 +337,15 @@ Route::get('/logout-user', function() {
 
 
 Route::group(['prefix' => 'api/v1'], function () {
-    Route::get('/','Api\ApiController@index');
-    Route::get('clients','Api\ApiController@loadClients');
+    Route::get('/', 'Api\ApiController@index');
+    Route::get('clients', 'Api\ApiController@loadClients');
     Route::get('client/{area}', 'Admin\MeterController@loadClient');
     Route::post('save_meter', 'Api\ApiController@save_reading');
 });
 
-
-
+Route::group(['prefix' => 'api/mpesa'], function () {
+    Route::post('register-urls', 'MpesaController@registerURLs');
+    Route::post('confirm-url', 'MpesaController@c2bConfirmationCallback');
+    Route::post('validate-url', 'MpesaController@c2bValidationCallback');
+    Route::post('payment-url', 'MpesaController@simulate');
+});
