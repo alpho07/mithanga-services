@@ -359,7 +359,7 @@ class MeterController extends Controller
 
     function sendSampleText($client_id)
     {
-        $reading1 = DB::table('vm_meter_readings')->where('client_id', $client_id)->latest('id')->first();
+        $reading1 = DB::table('vm_meter_readings')->where('client_id', $client_id)->orderBy('id','desc')->limit(2)->get();
         $reading2 = DB::table('vw_balances')->where('meter_number', $client_id)->latest('id')->first();
         $rate = 120;
 
@@ -371,14 +371,14 @@ class MeterController extends Controller
 
 
 
-        $main_message = 'Dear ' . $reading1->account_name . "\n" .
-            'Your ' . $reading1->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
-            'Curr Read: ' . $reading1->current_reading . ' units' . "\n" .
-            'Prev Read: ' . $reading1->previous_reading . ' units' . "\n" .
-            'Consumption: ' . ($reading1->current_reading - $reading1->previous_reading) . ' units' . "\n" .
-            'Total Due: ksh.' . number_format(($reading1->current_reading - $reading1->previous_reading) * $rate, 2) . "\n" .
+        $main_message = 'Dear ' . $reading1[0]->account_name . "\n" .
+            'Your ' . $reading1[0]->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
+            'Curr Read: ' . $reading1[0]->current_reading . ' units' . "\n" .
+            'Prev Read: ' . $reading1[1]->previous_reading . ' units' . "\n" .
+            'Consumption: ' . ($reading1[0]->current_reading - $reading1[1]->previous_reading) . ' units' . "\n" .
+            'Total Due: ksh.' . number_format(($reading1[0]->current_reading - $reading1[1]->previous_reading) * $rate, 2) . "\n" .
             'ARREARS: ksh. ' .  $arrears . '/-' . "\n" .
-            'Total to pay: ksh.' . number_format((($reading1->current_reading - $reading1->previous_reading) * $rate) + $arrears, 2) . '/-' . "\n" .
+            'Total to pay: ksh.' . number_format((($reading1[0]->current_reading - $reading1[1]->previous_reading) * $rate) + $arrears, 2) . '/-' . "\n" .
             'Pay via MPESA Only:' . "\n" .
             'Paybill no: 4085189' . "\n" .
             'Account number: ' . $client_id . "\n" .
