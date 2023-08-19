@@ -366,7 +366,7 @@ class MeterController extends Controller
         if ($reading2->balance < 0) {
             $arrears = ($reading2->balance * -1);
         } else {
-            $arrears = $reading2->balance;
+            $arrears =0;
         }
 
 
