@@ -28,7 +28,7 @@ class ApiController extends Controller
         $clients =  DB::table('vw_clients as c')
             ->leftJoin('meter_readings as m', function ($join) {
                 $join->on('c.id', '=', 'm.client_id')
-                    ->where(DB::raw("DATE_FORMAT(m.reading_date, '%Y-%m')"), '=', '2023-08');
+                    ->where(DB::raw("DATE_FORMAT(m.reading_date, '%Y-%m')"), '=', date('Y-m'));
             })
             ->select('c.id', 'c.area_id', 'c.account_name', 'c.phone_no', 'c.area_name', 'c.rate', 'c.previous_reading', 'c.balance')
             ->selectRaw('IF(m.client_id IS NOT NULL, 1, 0) as status')
