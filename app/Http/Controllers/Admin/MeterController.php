@@ -369,7 +369,7 @@ class MeterController extends Controller
             $arrears =0;
         }
 
-        if (isset($array[$reading1[1]])) {
+        if (isset($reading1[1])) {
             // The index exists in the array
             $previous = $reading1[1]->current_reading;
         } else {
