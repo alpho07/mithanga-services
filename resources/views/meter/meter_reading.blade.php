@@ -43,7 +43,7 @@
                             <!--                        <form class="" action="" method="post" id='SearchForm'>-->
                             <div class="row col-12">
                                 <div class="col-10">
-                                    {{-- <input type="number" style="width:100%;" id='clientID' class="form-control" placeholder="Enter Client Account Number & Press Enter"/> --}}
+                                    <input type="number" style="width:100%;" id='clientID' class="form-control" placeholder="Enter Client Account Number & Press Enter"/>
 
                                 </div>
                                 <!--                                <div class="col-2">
@@ -79,14 +79,14 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="control-label col-sm-6" for="pwd">Account Name</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id=""
                                             value="{{ $client[0]->account_name }}" readonly placeholder="Account Name">
 
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-6" for="pwd">Reading Date</label>
