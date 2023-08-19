@@ -376,8 +376,8 @@ class MeterController extends Controller
             'Curr Read: ' . $reading1[0]->current_reading . ' units' . "\n" .
             'Prev Read: ' . $reading1[1]->current_reading . ' units' . "\n" .
             'Consumption: ' . ($reading1[0]->current_reading - $reading1[1]->current_reading) . ' units' . "\n" .
-            'Total Due: ksh.' . number_format(($reading1[0]->current_reading - $reading1[1]->current_reading) * $rate, 2) . "\n" .
-            'ARREARS: ksh. ' .  number_format(( $arrears - $reading1[0]->water_charges),2) . '/-' . "\n" .
+            'Total Due: ksh.' . number_format((($reading1[0]->current_reading - $reading1[1]->current_reading) * $rate), 2) . "\n" .
+            'ARREARS: ksh. ' .  number_format(( $arrears - (($reading1[0]->current_reading - $reading1[1]->current_reading) * $rate)),2) . '/-' . "\n" .
             'Total to pay: ksh.' . number_format($arrears, 2) . '/-' . "\n" .
             'Pay via MPESA Only:' . "\n" .
             'Paybill no: 4085189' . "\n" .
