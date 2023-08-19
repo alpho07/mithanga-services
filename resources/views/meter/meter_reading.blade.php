@@ -47,9 +47,9 @@
 
                                 </div>
                                 <!--                                <div class="col-2">
-                                                                            <input type="button" value="Find" id="FINDER" class="btn btn-md btn-danger"><br>
-                                        
-                                                                        </div>-->
+                                                                                <input type="button" value="Find" id="FINDER" class="btn btn-md btn-danger"><br>
+                                            
+                                                                            </div>-->
                             </div>
 
                             </form>
@@ -79,13 +79,14 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="form-group">
-                                <label class="control-label col-sm-6" for="pwd">Account Name</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control"  id="" value="{{$client[0]->account_name}}" readonly placeholder="Account Name" >
+                                <div class="form-group">
+                                    <label class="control-label col-sm-6" for="pwd">Account Name</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id=""
+                                            value="{{ $client[0]->account_name }}" readonly placeholder="Account Name">
 
+                                    </div>
                                 </div>
-                            </div> --}}
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-6" for="pwd">Reading Date</label>
@@ -193,11 +194,11 @@
                                 </div>
                             </div>
                             <!--div class="form-group">
-                                        <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Current Balance (Ksh.)</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" readonly class="form-control"    id="show_balance" placeholder="Current Balance" >
-                                        </div>
-                                    </div-->
+                                            <label class="control-label col-sm-6" for="pwd" style="font-weight: bold;">Current Balance (Ksh.)</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" readonly class="form-control"    id="show_balance" placeholder="Current Balance" >
+                                            </div>
+                                        </div-->
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
