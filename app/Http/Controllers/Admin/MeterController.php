@@ -382,7 +382,7 @@ class MeterController extends Controller
         $main_message = 'Dear ' . $reading1[0]->account_name . "\n" .
             'Your ' . $reading1[0]->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
             'Curr Read: ' . $reading1[0]->current_reading . ' units' . "\n" .
-            'Prev Read: ' . $reading1[1]->current_reading . ' units' . "\n" .
+            'Prev Read: ' . $previous . ' units' . "\n" .
             'Consumption: ' . ($reading1[0]->current_reading - $previous) . ' units' . "\n" .
             'Total Due: ksh.' . number_format((($reading1[0]->current_reading - $previous) * $rate), 2) . "\n" .
             'ARREARS: ksh. ' .  number_format(( $arrears - (($reading1[0]->current_reading - $previous) * $rate)),2) . '/-' . "\n" .
