@@ -49,57 +49,34 @@ class ApiController extends Controller
 
     function save_reading(Request $r)
     {
-      
-        $cid = $r->id;
-        $aid = $r->area_id;
-        $previous_reading = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$cid' ORDER BY id DESC LIMIT 1");
-        if (count($previous_reading) <= 0) {
-            $pr = $previous_reading = 0;
-        } else {
-            $pr = $previous_reading[0]->current_reading;
-        }
-        $rate = Area::find($aid)['rate'];
+
+        $previous_reading = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$r->id' ORDER BY id DESC LIMIT 1");
+        $pr = $previous_reading[0]->current_reading;
+
+        $rate = Area::find($r->area_id)['rate'];
         $current_reading = $r->current_reading;
         $consumed = $current_reading - $pr;
         $total_cost = $consumed * $rate;
         $date =  date('Y-m-d H:i:s');
-        DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','$r->current_reading')");
-        //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,bill_run) VALUES ('$cid','Water Bill','$date','debit','$total_cost','$consumed','1')");
+        DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading,previous_reading) VALUES ('$r->id','$date','$r->current_reading',$pr)");        
+        $date = date('Y-m-d H:i:s');
+        $date1 = date_create($date);
+        $date2 = date_format($date1, "M - Y");
+     
+        $total_cost = $consumed * 120;
 
-        // if ($pr == $r->current_reading) {
-        //     $description = "WATER - " . date('M Y');
-        //     DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference,sc) VALUES ('$cid','$description','$date','debit','100','0',$current_reading,'$this->ref','yes')");
-        //     $tid_ = DB::select(DB::raw("SELECT MAX(id) id FROM transactions"))[0]->id;
-        //     DB::update("UPDATE meter_readings SET standing_charge='1' WHERE id = '$tid_';");
-        // } else {
-        //     DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading) VALUES ('$cid','$date','$r->current_reading')");
-        // }
-        //DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,'bill_run') VALUES ('$cid','Water Bill','$date','debit','$total_cost','$consumed','1')");
+        $description = "WATER - $date2";
+        $ref='REF'.date('Ymd-His');
 
-        $query = DB::select(DB::raw("SELECT * FROM vm_meter_readings  WHERE bill_run='0'"));
+        DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,previous_read,reference) VALUES ('$r->id','$description','$date','debit','$total_cost','$consumed','$current_reading','$pr','$ref')");
+        DB::update("UPDATE meter_readings SET bill_run='1' WHERE client_id = '$r->id';");
 
-        // dd($query);
-        $total = count($query);
-        //$message = $total > 0 ? $total . ' Bill(s) Sucessfully run and generated' : 'No pending bill(s) to process';
-        foreach ($query as $q) :
+        return ['success' => 'Meter Reading Registered Successfully for account ' . $r->id];
+    }
 
-            $id = $q->id;
-            $cid = $q->client_id;
-            $date = $q->reading_date;
-            $date1 = date_create($date);
-            $date2 = date_format($date1, "M - Y");
-            $consumed = ($q->consumed_units) ? $q->consumed_units : 0;
-            $current_reading = ($q->current_reading) ? $q->current_reading : 0;
-            $total_cost = ($q->water_charges) ? $q->water_charges : 0;
-            if ($q->discon == 'd') {
-                $description = 'DISCONNECTION UNITS';
-            } else {
-                $description = "WATER - $date2";
-            }
-            DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,reference) VALUES ('$cid','$description','$date','debit','$total_cost','$consumed','$current_reading','xyxyxyx')");
-            DB::update("UPDATE meter_readings SET bill_run='1' WHERE id = '$id';");
-        endforeach;
 
-        return ['success' => 'Meter Reading Registered Successfully for account ' . $cid];
+    function loadClientsByArea($aid)
+    {
+        return Client::select('id', 'account_name')->where('area', $aid)->get();
     }
 }
