@@ -364,7 +364,7 @@ class MeterController extends Controller
         $rate = 120;
 
         if ($reading2->balance < 0) {
-            $arrears = $reading2->balance * -1;
+            $arrears = (($reading2->balance) - ( $reading1[0]->water_charges) * -1);
         } else {
             $arrears = 0;
         }
