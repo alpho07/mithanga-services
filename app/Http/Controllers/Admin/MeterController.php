@@ -403,7 +403,7 @@ class MeterController extends Controller
         // Get one of the services
         $sms = $AT->sms();
         //$new = substr('0715882227', 1);
-        $recipients = "0718430712"; // . $new;
+        $recipients = DB::table('demo_phone')->latest('id')->first()->phone; // . $new;
 
         // Use the service
         $result = $sms->send([
