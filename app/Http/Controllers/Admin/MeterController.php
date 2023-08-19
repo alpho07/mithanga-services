@@ -405,8 +405,8 @@ class MeterController extends Controller
 
         DB::table('sms_tracking_table')->insert([
             'to' => $recipients,
-            'account_name' => $reading1->account_name,
-            'area' => $reading1->area_name,
+            'account_name' => $reading1[0]->account_name,
+            'area' => $reading1[0]->area_name,
             'message' => $main_message,
             'date_time' => date('Y-m-d H:i:s'),
             'meter_number' => $client_id,
