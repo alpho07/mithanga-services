@@ -51,6 +51,9 @@ class MpesaController extends Controller
 
     public function c2bConfirmationCallback(Request $request)
     {
+
+        echo 1;
+        die;
         //Get Response data
         $response = Daraja::getInstance()->getDataFromCallback();
         //return response()->json($response);
