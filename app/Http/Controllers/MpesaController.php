@@ -23,7 +23,7 @@ class MpesaController extends Controller
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->registerCallbacks($shortcode, $confirmationURL, $validationURL, $responseType);
 
-        return $response;
+        return 'Done';
     }
 
     function simulate()
