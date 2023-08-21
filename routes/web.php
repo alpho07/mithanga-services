@@ -345,6 +345,9 @@ Route::group(['prefix' => 'api/v1'], function () {
 });
 
 Route::group(['prefix' => 'api/mpesa'], function () {
+    Route::get('test',function(){
+        echo phpinfo();
+    });
     Route::get('register-urls', 'MpesaController@registerURLs');
     Route::get('confirm-url', 'MpesaController@c2bConfirmationCallback');
     Route::get('validate-url', 'MpesaController@c2bValidationCallback');
