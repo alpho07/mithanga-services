@@ -414,7 +414,8 @@ class MeterController extends Controller
         // Use the service
         $result = $sms->send([
             'to' => $recipients, //$recipients,
-            'message' => $main_message
+            'message' => $main_message,
+            'from'=>'POSTVIEW'
         ]); 
 
         DB::table('sms_tracking_table')->insert([
