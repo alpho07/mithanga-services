@@ -345,12 +345,15 @@ Route::group(['prefix' => 'api/v1'], function () {
 });
 
 Route::group(['prefix' => 'api/payment'], function () {
-    Route::get('test',function(){
+    Route::get('test', function () {
         echo phpinfo();
     });
     Route::get('register-urls', 'MpesaController@registerURLs');
-    Route::post('confirm-url', 'MpesaController@c2bConfirmationCallback');
-    Route::post('validate-url', 'MpesaController@c2bValidationCallback');
+
     Route::get('payment-url', 'MpesaController@simulate');
     Route::get('test-url', 'MpesaController@simulate1');
 });
+
+
+Route::post('confirmation', 'MpesaController@c2bConfirmationCallback');
+Route::post('validation', 'MpesaController@c2bValidationCallback');
