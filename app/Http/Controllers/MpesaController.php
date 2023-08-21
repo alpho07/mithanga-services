@@ -52,13 +52,12 @@ class MpesaController extends Controller
     public function c2bConfirmationCallback()
     {
 
-        echo 1;
-        die;
+        
         //Get Response data
-        // $response = Daraja::getInstance()->getDataFromCallback();
-        //  DB::table('payment_dump')->insert([
-        //      'response'=>$response->all()
-        //  ]);
+         $response = Daraja::getInstance()->getDataFromCallback();
+          DB::table('payment_dump')->insert([
+              'response'=>$response->all()
+          ]);
 
         // $response = $request->all(); //Alternatively...
         // Do what you want with the data
