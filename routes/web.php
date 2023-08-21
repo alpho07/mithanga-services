@@ -344,7 +344,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('area_clients/{area_id}', 'Api\ApiController@loadClientsByArea');
 });
 
-Route::group(['prefix' => 'api/mpesa'], function () {
+Route::group(['prefix' => 'api/payment'], function () {
     Route::get('test',function(){
         echo phpinfo();
     });

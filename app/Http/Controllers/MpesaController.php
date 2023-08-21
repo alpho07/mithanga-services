@@ -32,8 +32,8 @@ class MpesaController extends Controller
         $commandID = "CustomerPayBillOnline";
         $amount = 100;
         $environment = "sandbox"; // or "live"
-        $msisdn = "0715882227"; // See safaricom daraja documentation and check your credentials for the specific number given for testing.
-        $billRefNumber = "THE PAYBILL ACCOUNT NO."; // e.g "MAMA MBOGA 212"
+        $msisdn = "0715892221"; // See safaricom daraja documentation and check your credentials for the specific number given for testing.
+        $billRefNumber = "4287"; // e.g "MAMA MBOGA 212"
         $response = Daraja::getInstance()
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->c2b($shortcode, $commandID, $amount, $msisdn, $billRefNumber);
@@ -51,12 +51,15 @@ class MpesaController extends Controller
     {
         //Get Response data
         $response = Daraja::getInstance()->getDataFromCallback();
+        DB::table('payment_dump')->insert([
+            'response'=>$request->all()
+        ])
 
         // $response = $request->all(); //Alternatively...
         // Do what you want with the data
         // ...
         // Finish Transaction
-        Daraja::getInstance()->finishTransaction(true);
+        //Daraja::getInstance()->finishTransaction(true);
     }
 
     function simulate1()
