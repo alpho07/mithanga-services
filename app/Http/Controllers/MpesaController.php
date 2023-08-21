@@ -63,7 +63,7 @@ class MpesaController extends Controller
         // Do what you want with the data
         // ...
         // Finish Transaction
-        //Daraja::getInstance()->finishTransaction(true);
+        Daraja::getInstance()->finishTransaction(true);
     }
 
     function simulate1()
