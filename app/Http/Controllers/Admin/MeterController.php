@@ -395,10 +395,14 @@ class MeterController extends Controller
             'Thank you!.';
 
 
-        $username = 'boreholeh2o';
-        //$username = 'postviewhse'; // use 'sandbox' for development in the test environment
-        //$apiKey = '9e3ce58521f32e559a13a038082ef5fd9c8f02c2db155bb737823db56309caee'; // use your sandbox app API key for development in the test environment
-        $apiKey = '4613d345882869887031e7091f828fe3dd848a7b6cb68035fd788c5dc4ecc56e';
+        
+        $username = 'postviewhse'; // use 'sandbox' for development in the test environment
+        $apiKey = '9e3ce58521f32e559a13a038082ef5fd9c8f02c2db155bb737823db56309caee'; // use your sandbox app API key for development in the test environment
+
+        
+        //$username = 'boreholeh2o';
+        //$apiKey = '4613d345882869887031e7091f828fe3dd848a7b6cb68035fd788c5dc4ecc56e';
+        
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
