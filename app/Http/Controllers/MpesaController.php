@@ -51,9 +51,10 @@ class MpesaController extends Controller
     {
         //Get Response data
         $response = Daraja::getInstance()->getDataFromCallback();
-        DB::table('payment_dump')->insert([
-            'response'=>$request->all()
-        ])
+        return response()->json($response);
+        // DB::table('payment_dump')->insert([
+        //     'response'=>$request->all()
+        // ])
 
         // $response = $request->all(); //Alternatively...
         // Do what you want with the data
