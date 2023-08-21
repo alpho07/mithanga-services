@@ -372,22 +372,21 @@ class MeterController extends Controller
         if (isset($reading1[1])) {
             // The index exists in the array
             $previous = $reading1[1]->current_reading;
-            $current = $reading1[1]->current_reading;
+            
         } else {
             // The index doesn't exist in the array
-            $previous = $reading1[0]->current_reading;
-            $current = $reading1[0]->current_reading;
+            $previous =  $reading1[0]->current_reading;
         }
 
 
 
         $main_message = 'Dear ' . $reading1[0]->account_name . "\n" .
             'Your ' . $reading1[0]->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
-            'Curr Read: ' .  $current  . ' units' . "\n" .
+            'Curr Read: ' . $reading1[0]->current_reading . ' units' . "\n" .
             'Prev Read: ' . $previous . ' units' . "\n" .
-            'Consumption: ' . ( $current  - $previous) . ' units' . "\n" .
-            'Total Due: ksh.' . number_format((( $current - $previous) * $rate), 2) . "\n" .
-            'ARREARS: ksh. ' .  number_format(( $arrears - (( $current  - $previous) * $rate)),2) . '/-' . "\n" .
+            'Consumption: ' . ($reading1[0]->current_reading - $previous) . ' units' . "\n" .
+            'Total Due: ksh.' . number_format((($reading1[0]->current_reading - $previous) * $rate), 2) . "\n" .
+            'ARREARS: ksh. ' .  number_format(( $arrears - (($reading1[0]->current_reading - $previous) * $rate)),2) . '/-' . "\n" .
             'Total to pay: ksh.' . number_format($arrears, 2) . '/-' . "\n" .
             'Pay via MPESA Only:' . "\n" .
             'Paybill no: 4085189' . "\n" .
