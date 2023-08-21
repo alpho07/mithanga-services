@@ -15,7 +15,7 @@ class MpesaController extends Controller
     function registerURLs()
     {
         
-        $shortcode = "600737"; //Your Paybill or till number here
+        $shortcode = "600986"; //Your Paybill or till number here
         $confirmationURL = "http://44.203.161.99/api/payment/confirm-url";
         $validationURL = "http://44.203.161.99/api/payment/validate-url"; // Optional. Leave null if you don't want validation
         $environment = "sandbox"; // or "live"
@@ -29,7 +29,7 @@ class MpesaController extends Controller
 
     function simulate()
     {
-        $shortcode = "600737"; //Your Paybill or till number here
+        $shortcode = "600986"; //Your Paybill or till number here
         $commandID = "CustomerPayBillOnline";
         $amount = 100;
         $environment = "sandbox"; // or "live"
@@ -42,14 +42,14 @@ class MpesaController extends Controller
     }
 
 
-    public function c2bValidationCallback()
+    public function c2bValidationCallback(Request $r)
     {
         // Perform your validations here and set the status
         $status = true; // Or false based on whether you want to accept or reject the transaction.
         Daraja::getInstance()->finishTransaction($status);
     }
 
-    public function c2bConfirmationCallback()
+    public function c2bConfirmationCallback(Request $r)
     {
 
         
