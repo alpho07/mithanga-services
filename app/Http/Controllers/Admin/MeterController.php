@@ -414,7 +414,7 @@ class MeterController extends Controller
         $result = $sms->send([
             'to' => $recipients, //$recipients,
             'message' => $main_message
-        ]);
+        ]); 
 
         DB::table('sms_tracking_table')->insert([
             'to' => $recipients,
