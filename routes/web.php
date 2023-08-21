@@ -349,7 +349,7 @@ Route::group(['prefix' => 'api/payment'], function () {
         echo phpinfo();
     });
     Route::get('register-urls', 'MpesaController@registerURLs');
-    Route::get('confirm-url', 'MpesaController@c2bConfirmationCallback');
+    Route::post('confirm-url', 'MpesaController@c2bConfirmationCallback');
     Route::get('validate-url', 'MpesaController@c2bValidationCallback');
     Route::get('payment-url', 'MpesaController@simulate');
     Route::get('test-url', 'MpesaController@simulate1');

@@ -54,7 +54,7 @@ class MpesaController extends Controller
         $response = Daraja::getInstance()->getDataFromCallback();
         //return response()->json($response);
          DB::table('payment_dump')->insert([
-             'response'=>$request->all()
+             'response'=>$response->all()
          ]);
 
         // $response = $request->all(); //Alternatively...
