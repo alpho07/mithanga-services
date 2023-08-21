@@ -15,8 +15,8 @@ class MpesaController extends Controller
     {
         
         $shortcode = "600737"; //Your Paybill or till number here
-        $confirmationURL = "http://44.203.161.99/api/mpesa/confirm-url";
-        $validationURL = "http://44.203.161.99/api/mpesa/validate-url"; // Optional. Leave null if you don't want validation
+        $confirmationURL = "http://44.203.161.99/api/payment/confirm-url";
+        $validationURL = "http://44.203.161.99/api/payment/validate-url"; // Optional. Leave null if you don't want validation
         $environment = "sandbox"; // or "live"
         $responseType = "Completed"; //Default Response type in case the validation URL is unreachable or is undefined. Either Cancelled or Completed as per the safaricom documentation
         $response = Daraja::getInstance()
