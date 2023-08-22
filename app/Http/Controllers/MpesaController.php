@@ -31,14 +31,14 @@ class MpesaController extends Controller
     {
         $shortcode = "600986"; //Your Paybill or till number here
         $commandID = "CustomerPayBillOnline";
-        $amount = 100;
+        $amount = 1;
         $environment = "sandbox"; // or "live"
         $msisdn = "254708374149"; // See safaricom daraja documentation and check your credentials for the specific number given for testing.
         $billRefNumber = "4287"; // e.g "MAMA MBOGA 212"
         $response = Daraja::getInstance()
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->c2b($shortcode, $commandID, $amount, $msisdn, $billRefNumber);
-        return json_encode($response,JSON_PRETTY_PRINT);
+        //return json_encode($response,JSON_PRETTY_PRINT);
     }
 
 
