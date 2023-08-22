@@ -15,7 +15,7 @@ class MpesaController extends Controller
     function registerURLs()
     {
         
-        $shortcode = "600998"; //Your Paybill or till number here
+        $shortcode = "600986"; //Your Paybill or till number here
         $confirmationURL = "http://44.203.161.99/confirmation";
         $validationURL = "http://44.203.161.99/validation"; // Optional. Leave null if you don't want validation
         $environment = "sandbox"; // or "live"
@@ -29,11 +29,11 @@ class MpesaController extends Controller
 
     function simulate()
     {
-        $shortcode = "600998"; //Your Paybill or till number here
+        $shortcode = "600986"; //Your Paybill or till number here
         $commandID = "CustomerPayBillOnline";
         $amount = 100;
         $environment = "sandbox"; // or "live"
-        $msisdn = "0715892221"; // See safaricom daraja documentation and check your credentials for the specific number given for testing.
+        $msisdn = "254708374149"; // See safaricom daraja documentation and check your credentials for the specific number given for testing.
         $billRefNumber = "4287"; // e.g "MAMA MBOGA 212"
         $response = Daraja::getInstance()
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
