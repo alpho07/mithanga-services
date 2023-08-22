@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Savannabits\Daraja\Daraja;
+use Illuminate\Support\Facades\Log;
 use DB;
 
 class MpesaController extends Controller
@@ -56,9 +57,9 @@ class MpesaController extends Controller
         //Get Response data
          $response = Daraja::getInstance()->getDataFromCallback();
          Log::info('Formatted JSON:', ['json' =>  $response]);
-        //   DB::table('payment_dump')->insert([
-        //       'response'=>$response
-        //   ]);
+           DB::table('payment_dump')->insert([
+               'response'=>$response
+           ]);
 
         // $response = $request->all(); //Alternatively...
         // Do what you want with the data
