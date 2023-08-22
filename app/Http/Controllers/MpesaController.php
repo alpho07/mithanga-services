@@ -38,7 +38,7 @@ class MpesaController extends Controller
         $response = Daraja::getInstance()
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->c2b($shortcode, $commandID, $amount, $msisdn, $billRefNumber);
-        return response()->json($response);
+        return json_encode($response,JSON_PRETTY_PRINT);
     }
 
 
@@ -63,7 +63,7 @@ class MpesaController extends Controller
         // Do what you want with the data
         // ...
         // Finish Transaction
-        Daraja::getInstance()->finishTransaction(true);
+        //Daraja::getInstance()->finishTransaction(true);
     }
 
     function simulate1()
