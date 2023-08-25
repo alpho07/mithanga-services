@@ -40,7 +40,7 @@ class MpesaController extends Controller
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->c2b($shortcode, $commandID, $amount, $msisdn, $billRefNumber);
             Log::info('Formatted JSON:', ['json' =>   'I hit here']);
-        return response()->json($response);
+        return stripslashes(trim($response, '"'));
     }
 
 
