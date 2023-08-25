@@ -46,7 +46,7 @@ class MpesaController extends Controller
 
     public function c2bValidationCallback(Request $r)
     {
-        Log::info('Formatted JSON:', ['json' =>   'I hit here']);
+        Log::info('Formatted JSON:', ['json' =>   'I hit here 2']);
         Log::info('Formatted JSON:', ['json' =>   $r->all()]);
     
         $status=true;
