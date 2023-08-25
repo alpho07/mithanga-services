@@ -48,7 +48,7 @@ class MpesaController extends Controller
     {
         Log::info('Formatted JSON:', ['json' =>   'I hit here']);
         Log::info('Formatted JSON:', ['json' =>   $r->all()]);
-        die;
+    
         $status=true;
         if ($status === true) {
             $resultArray = [
