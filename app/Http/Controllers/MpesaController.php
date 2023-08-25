@@ -15,7 +15,7 @@ class MpesaController extends Controller
 
     function registerURLs()
     {
-        
+
         $shortcode = "600988"; //Your Paybill or till number here
         $confirmationURL = "http://44.203.161.99/confirmation";
         $validationURL = "http://44.203.161.99/validation"; // Optional. Leave null if you don't want validation
@@ -25,7 +25,7 @@ class MpesaController extends Controller
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->registerCallbacks($shortcode, $confirmationURL, $validationURL, $responseType);
 
-         return response()->json($response);
+        return response()->json($response);
     }
 
     function simulate()
@@ -39,8 +39,12 @@ class MpesaController extends Controller
         $response = Daraja::getInstance()
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->c2b($shortcode, $commandID, $amount, $msisdn, $billRefNumber);
-            Log::info('Formatted JSON:', ['json' =>   'I hit here']);
-        return stripslashes(trim($response, '"'));
+        Log::info('Formatted JSON:', ['json' =>   'I hit here']);
+
+        $jsonString = str_replace('\\n', "\n",  $response);
+
+        // Remove extra quotes
+        return trim($jsonString, '"');
     }
 
 
@@ -48,8 +52,8 @@ class MpesaController extends Controller
     {
         Log::info('Formatted JSON:', ['json' =>   'I hit here 2']);
         Log::info('Formatted JSON:', ['json' =>   $r->all()]);
-    
-        $status=true;
+
+        $status = true;
         if ($status === true) {
             $resultArray = [
                 "ResultDesc" => "Accepted",
@@ -62,7 +66,7 @@ class MpesaController extends Controller
             ];
         }
 
-       
+
 
         header('Content-Type: application/json');
         echo json_encode($resultArray);
@@ -71,15 +75,15 @@ class MpesaController extends Controller
     public function c2bConfirmationCallback(Request $r)
     {
 
-        $callbackJSONData=file_get_contents('php://input');
+        $callbackJSONData = file_get_contents('php://input');
 
         //return $callbackJSONData;
 
-        
+
         //Get Response data
         //  $response = Daraja::getInstance()->getDataFromCallback();
-          Log::info('Formatted JSON:', ['json' =>   $callbackJSONData]);
-          Log::debug('Formatted JSON:', ['json' =>   $callbackJSONData]);
+        Log::info('Formatted JSON:', ['json' =>   $callbackJSONData]);
+        Log::debug('Formatted JSON:', ['json' =>   $callbackJSONData]);
         //    DB::table('payment_dump')->insert([
         //        'response'=>$response
         //    ]);
