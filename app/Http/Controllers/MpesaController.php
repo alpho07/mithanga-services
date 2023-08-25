@@ -39,7 +39,7 @@ class MpesaController extends Controller
         $response = Daraja::getInstance()
             ->setCredentials("pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn", "iXMm01elw0YqPhtA", $environment)
             ->c2b($shortcode, $commandID, $amount, $msisdn, $billRefNumber);
-        //return json_encode($response,JSON_PRETTY_PRINT);
+        return json_encode($response,JSON_PRETTY_PRINT);
     }
 
 
@@ -53,13 +53,17 @@ class MpesaController extends Controller
     public function c2bConfirmationCallback(Request $r)
     {
 
+        $callbackJSONData=file_get_contents('php://input');
+
+        //return $callbackJSONData;
+
         
         //Get Response data
-         $response = Daraja::getInstance()->getDataFromCallback();
-         Log::info('Formatted JSON:', ['json' =>  $response]);
-           DB::table('payment_dump')->insert([
-               'response'=>$response
-           ]);
+        //  $response = Daraja::getInstance()->getDataFromCallback();
+        //  Log::info('Formatted JSON:', ['json' =>  $response]);
+        //    DB::table('payment_dump')->insert([
+        //        'response'=>$response
+        //    ]);
 
         // $response = $request->all(); //Alternatively...
         // Do what you want with the data
