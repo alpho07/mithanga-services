@@ -43,11 +43,23 @@ class MpesaController extends Controller
     }
 
 
-    public function c2bValidationCallback(Request $r)
+    public function c2bValidationCallback()
     {
-        // Perform your validations here and set the status
-        $status = true; // Or false based on whether you want to accept or reject the transaction.
-        Daraja::getInstance()->finishTransaction($status);
+        $status=true;
+        if ($status === true) {
+            $resultArray = [
+                "ResultDesc" => "Accepted",
+                "ResultCode" => "0"
+            ];
+        } else {
+            $resultArray = [
+                "ResultDesc" => "Rejected",
+                "ResultCode" => "C2B00011"
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($resultArray);
     }
 
     public function c2bConfirmationCallback(Request $r)
