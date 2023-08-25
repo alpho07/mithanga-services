@@ -355,5 +355,5 @@ Route::group(['prefix' => 'api/payment'], function () {
 });
 
 
-Route::post('confirmation', 'MpesaController@c2bConfirmationCallback');
-Route::post('validation', 'MpesaController@c2bValidationCallback');
+Route::get('confirmation', 'MpesaController@c2bConfirmationCallback');
+Route::get('validation', 'MpesaController@c2bValidationCallback');
