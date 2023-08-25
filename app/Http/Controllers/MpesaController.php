@@ -58,6 +58,8 @@ class MpesaController extends Controller
             ];
         }
 
+        Log::info('Formatted JSON:', ['json' =>   'I hit here']);
+
         header('Content-Type: application/json');
         echo json_encode($resultArray);
     }
