@@ -16,7 +16,7 @@ class MpesaController extends Controller
     function registerURLs()
     {
         
-        $shortcode = "600986"; //Your Paybill or till number here
+        $shortcode = "600988"; //Your Paybill or till number here
         $confirmationURL = "http://44.203.161.99/confirmation";
         $validationURL = "http://44.203.161.99/validation"; // Optional. Leave null if you don't want validation
         $environment = "sandbox"; // or "live"
@@ -30,7 +30,7 @@ class MpesaController extends Controller
 
     function simulate()
     {
-        $shortcode = "600986"; //Your Paybill or till number here
+        $shortcode = "600988"; //Your Paybill or till number here
         $commandID = "CustomerPayBillOnline";
         $amount = 1;
         $environment = "sandbox"; // or "live"
@@ -43,8 +43,11 @@ class MpesaController extends Controller
     }
 
 
-    public function c2bValidationCallback()
+    public function c2bValidationCallback(Request $r)
     {
+        Log::info('Formatted JSON:', ['json' =>   'I hit here']);
+        Log::info('Formatted JSON:', ['json' =>   $r->all()]);
+        die;
         $status=true;
         if ($status === true) {
             $resultArray = [
@@ -58,7 +61,7 @@ class MpesaController extends Controller
             ];
         }
 
-        Log::info('Formatted JSON:', ['json' =>   'I hit here']);
+       
 
         header('Content-Type: application/json');
         echo json_encode($resultArray);
