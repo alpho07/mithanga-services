@@ -56,16 +56,49 @@ SELECT
  
  
  
-insert into transactions 
+insert into transactions
 SELECT 
 LAST_INSERT_ID() id,
 account client_id,
 'Account Credit Adjustment' description,
 now() date,
 'credit' type,
+curr_reading last_read,
+prev_reading previous_read,
+total amount ,
+total amount_received,
+units,
+DATE_FORMAT(now(),'%Y%m%d%h%i%s') reference,
+now() created_at,
+now() updated_at,
+ 2 mop,
+ 0 bank,
+ 0 branch,
+ null staff,
+ null comments,
+ 0 lc,
+ 0 dnp,
+ 0 scheduler,
+ 'pending' sstatus,
+ null smessage,
+ 'no' sc
+FROM source_table
+WHERE `period` = '2023-06-30' 
+AND `arrears` = '0'
+
+
+
+insert into transactions
+SELECT 
+LAST_INSERT_ID() id,
+account_no client_id,
+'Account Credit-Debit Adjustment' description,
+now() date,
+type,
 0 last_read,
-CAST(REPLACE(PAID,',','') AS INT)  amount,
-0.0 amount_received,
+0 previous_read,
+abs_amount amount ,
+abs_amount amount_received,
 0 units,
 DATE_FORMAT(now(),'%Y%m%d%h%i%s') reference,
 now() created_at,
@@ -81,6 +114,5 @@ now() updated_at,
  'pending' sstatus,
  null smessage,
  'no' sc
-FROM readings
-WHERE `date_` = '2023-05-30 23:59:00' 
-AND `PAID` != '0.00'
+FROM final_table_2
+

@@ -58,10 +58,10 @@ class ApiController extends Controller
             $pr = 0;
         }
 
-        $rate = Area::find($r->area_id)['rate'];
+        //$rate = Area::find($r->area_id)['rate'];
         $current_reading = $r->current_reading;
         $consumed = $current_reading - $pr;
-        $total_cost = $consumed * $rate;
+        $total_cost = $consumed * 120;
         $date =  date('Y-m-d H:i:s');
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading,previous_reading) VALUES ('$r->id','$date','$r->current_reading',$pr)");
         $date = date('Y-m-d H:i:s');
