@@ -106,7 +106,7 @@ class ApiController extends Controller
 
 
         $main_message = 'Dear ' . $reading1[0]->account_name . "\n" .
-            'Your ' . $reading1[0]->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
+            'Your ' . $reading1[0]->area_name . ' borehole water bill as at ' . date('d/m/Y') . "\n" .
             'Curr Read: ' . $reading1[0]->current_reading . ' units' . "\n" .
             'Prev Read: ' . $previous . ' units' . "\n" .
             'Consumption: ' . ($reading1[0]->current_reading - $previous) . ' units' . "\n" .
@@ -143,18 +143,18 @@ class ApiController extends Controller
             'from'=>'POSTVIEW'
         ]); 
 
-        DB::table('sms_tracking_table')->insert([
-            'to' => $recipients,
-            'account_name' => $reading1[0]->account_name,
-            'area' => $reading1[0]->area_name,
-            'message' => $main_message,
-            'date_time' => date('Y-m-d H:i:s'),
-            'meter_number' => $client_id,
-            'send_status' =>  $result['status'],
-            'receive_status' => ''
-        ]);
+        // DB::table('sms_tracking_table')->insert([
+        //     'to' => $recipients,
+        //     'account_name' => $reading1[0]->account_name,
+        //     'area' => $reading1[0]->area_name,
+        //     'message' => $main_message,
+        //     'date_time' => date('Y-m-d H:i:s'),
+        //     'meter_number' => $client_id,
+        //     'send_status' =>  $result['status'],
+        //     'receive_status' => ''
+        // ]);
 
-        //return $result;
+        return $result;
     }
 
 
