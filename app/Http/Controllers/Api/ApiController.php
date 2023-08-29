@@ -154,7 +154,7 @@ class ApiController extends Controller
             'receive_status' => ''
         ]);
 
-        return $result;
+        //return $result;
     }
 
 
