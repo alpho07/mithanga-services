@@ -35,9 +35,9 @@ Transaction
                 @endif
 
                 <div class="card-body">
-                                       <a href="{{ route('run.bill') }}" class="btn btn-warning btn-lg float-left"  data-placement="left">
+                    <!--                    <a href="{{ route('run.bill') }}" class="btn btn-warning btn-lg float-left"  data-placement="left">
                                             Run Bills <i class="fa fa-rocket" aria-hidden="true"></i>
-                                        </a>
+                                        </a>-->
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead class="thead">
