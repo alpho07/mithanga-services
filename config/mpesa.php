@@ -41,14 +41,14 @@ return [
     'accounts' => [
         'staging' => [
             'sandbox' => true,
-            'key' => 'your development consumer key',
-            'secret' => 'your development consumer secret',
-            'initiator' => 'your development username',
+            'key' => 'pUa9b2FKxxys2MEigOEQVfXmsfPNt7Kn',
+            'secret' => 'yiXMm01elw0YqPhtA',
+            'initiator' => 'testapi',
             'id_validation_callback' => 'http://example.com/callback?secret=some_secret_hash_key',
             'lnmo' => [
-                'paybill' => 'your development paybill number',
-                'shortcode' => 'your development business code',
-                'passkey' => 'your development passkey',
+                'paybill' => '600997',
+                'shortcode' => '600997',
+                'passkey' => 'ybfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
                 'callback' => 'http://example.com/callback?secret=some_secret_hash_key',
             ]
         ],

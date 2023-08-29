@@ -87,7 +87,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('meter_reading_/0000/48') }}"
+                            <a href="{{ url('meter_reading_/4013/1') }}"
                                 class="nav-link {{ request()->is('meter') || request()->is('meter/*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-arrow-circle-right nav-icon"></i>
 

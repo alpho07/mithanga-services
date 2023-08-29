@@ -20,6 +20,7 @@
         "savannabits/daraja": "^0.2.0",
         "smodav/mpesa": "^6.3",
         "spatie/laravel-html": "^2.30",
+        "symfony/mailer": "^5.4",
         "yajra/laravel-datatables": "1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
     },

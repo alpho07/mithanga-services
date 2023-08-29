@@ -40,6 +40,22 @@ SELECT
  FROM readings;
  
  
+ 
+ drop table if exists meter_readings;
+create table meter_readings as
+SELECT
+  null id,
+  account client_id,
+  period reading_date,
+  CASE WHEN period='2023-06-30' THEN prev_reading ELSE curr_reading END AS current_reading,
+  CASE WHEN period='2023-06-30' THEN 1 ELSE 0 END bill_run,
+  1 standing_charge,
+  'c' discon,
+  null calc
+ FROM source_table;
+ 
+ 
+ 
 insert into transactions 
 SELECT 
 LAST_INSERT_ID() id,

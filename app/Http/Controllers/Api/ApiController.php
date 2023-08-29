@@ -9,7 +9,7 @@ use App\Models\Status;
 use Illuminate\Http\Request;
 use DB;
 use AfricasTalking\SDK\AfricasTalking;
-use PDF;
+
 
 /**
  * Class ClientController
@@ -76,7 +76,84 @@ class ApiController extends Controller
         DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,previous_read,reference) VALUES ('$r->id','$description','$date','debit','$total_cost','$consumed','$current_reading','$pr','$ref')");
         DB::update("UPDATE meter_readings SET bill_run='1' WHERE client_id = '$r->id';");
 
+
+
         return ['success' => 'Meter Reading Registered Successfully for account ' . $r->id];
+    }
+
+    function sendSampleText($client_id)
+    {
+        $reading1 = DB::table('vm_meter_readings')->where('client_id', $client_id)->orderBy('id','desc')->limit(2)->get();
+        $reading2 = DB::table('vw_balances')->where('meter_number', $client_id)->latest('id')->first();
+        $rate = 120;
+
+        if ($reading2->balance < 0) {
+            $arrears = ($reading2->balance * -1);
+        } else {
+            $arrears =0;
+        }
+
+        if (isset($reading1[1])) {
+            // The index exists in the array
+            $previous = $reading1[1]->current_reading;
+            
+        } else {
+            // The index doesn't exist in the array
+            $previous =  $reading1[0]->current_reading;
+        }
+
+
+
+        $main_message = 'Dear ' . $reading1[0]->account_name . "\n" .
+            'Your ' . $reading1[0]->area_name . ' borehole water bill as at ' . date('t/m/Y') . "\n" .
+            'Curr Read: ' . $reading1[0]->current_reading . ' units' . "\n" .
+            'Prev Read: ' . $previous . ' units' . "\n" .
+            'Consumption: ' . ($reading1[0]->current_reading - $previous) . ' units' . "\n" .
+            'Total Due: ksh.' . number_format((($reading1[0]->current_reading - $previous) * $rate), 2) . "\n" .
+            'ARREARS: ksh. ' .  number_format(( $arrears - (($reading1[0]->current_reading - $previous) * $rate)),2) . '/-' . "\n" .
+            'Total to pay: ksh.' . number_format($arrears, 2) . '/-' . "\n" .
+            'Pay via MPESA Only:' . "\n" .
+            'Paybill no: 4085189' . "\n" .
+            'Account number: ' . $client_id . "\n" .
+            'POSTVIEW APARTMENTS.' . "\n" .
+            'James 0723653255.' . "\n" .
+            'Thank you!.';
+
+
+        
+        $username = 'postviewhse'; // use 'sandbox' for development in the test environment
+        $apiKey = '9e3ce58521f32e559a13a038082ef5fd9c8f02c2db155bb737823db56309caee'; // use your sandbox app API key for development in the test environment
+
+        
+        //$username = 'boreholeh2o';
+        //$apiKey = '4613d345882869887031e7091f828fe3dd848a7b6cb68035fd788c5dc4ecc56e';
+        
+        $AT = new AfricasTalking($username, $apiKey);
+
+        // Get one of the services
+        $sms = $AT->sms();
+        //$new = substr('0715882227', 1);
+        $recipients = //DB::table('demo_phone')->latest('id')->first()->phone; // . $new;
+
+        // Use the service
+        $result = $sms->send([
+            'to' => $reading1[0]->phone_no, //$recipients,
+            'message' => $main_message,
+            'from'=>'POSTVIEW'
+        ]); 
+
+        DB::table('sms_tracking_table')->insert([
+            'to' => $recipients,
+            'account_name' => $reading1[0]->account_name,
+            'area' => $reading1[0]->area_name,
+            'message' => $main_message,
+            'date_time' => date('Y-m-d H:i:s'),
+            'meter_number' => $client_id,
+            'send_status' =>  $result['status'],
+            'receive_status' => ''
+        ]);
+
+        return $result;
     }
 
 
