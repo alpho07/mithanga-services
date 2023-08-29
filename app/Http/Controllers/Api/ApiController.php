@@ -75,7 +75,8 @@ class ApiController extends Controller
 
         DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,previous_read,reference) VALUES ('$r->id','$description','$date','debit','$total_cost','$consumed','$current_reading','$pr','$ref')");
         DB::update("UPDATE meter_readings SET bill_run='1' WHERE client_id = '$r->id';");
-
+       
+        $this->sendSampleText($r->id);
 
 
         return ['success' => 'Meter Reading Registered Successfully for account ' . $r->id];
