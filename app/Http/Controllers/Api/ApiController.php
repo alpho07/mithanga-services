@@ -50,7 +50,7 @@ class ApiController extends Controller
     function save_reading(Request $r)
     {
 
-        $previous_reading = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$r->id' ORDER BY id DESC LIMIT 1");
+        /*$previous_reading = DB::select("SELECT current_reading FROM meter_readings WHERE client_id='$r->id' ORDER BY id DESC LIMIT 1");
         
         if (!empty($previous_reading)) {           
             $pr = $previous_reading[0]->current_reading;
@@ -74,7 +74,7 @@ class ApiController extends Controller
         $ref = 'REF' . date('Ymd-His');
 
         DB::insert("INSERT INTO transactions (client_id,description,date,type,amount,units,last_read,previous_read,reference) VALUES ('$r->id','$description','$date','debit','$total_cost','$consumed','$current_reading','$pr','$ref')");
-        DB::update("UPDATE meter_readings SET bill_run='1' WHERE client_id = '$r->id';");
+        DB::update("UPDATE meter_readings SET bill_run='1' WHERE client_id = '$r->id';");*/
        
         $this->sendSampleText($r->id);
 
@@ -138,21 +138,21 @@ class ApiController extends Controller
 
         // Use the service
         $result = $sms->send([
-            'to' => $reading1[0]->phone_no, //$recipients,
+            'to' => 254715882227,// $reading1[0]->phone_no, //$recipients,
             'message' => $main_message,
             'from'=>'POSTVIEW'
         ]); 
 
-        // DB::table('sms_tracking_table')->insert([
-        //     'to' => $recipients,
-        //     'account_name' => $reading1[0]->account_name,
-        //     'area' => $reading1[0]->area_name,
-        //     'message' => $main_message,
-        //     'date_time' => date('Y-m-d H:i:s'),
-        //     'meter_number' => $client_id,
-        //     'send_status' =>  $result['status'],
-        //     'receive_status' => ''
-        // ]);
+        DB::table('sms_tracking_table')->insert([
+            'to' => $recipients,
+            'account_name' => $reading1[0]->account_name,
+            'area' => $reading1[0]->area_name,
+            'message' => $main_message,
+            'date_time' => date('Y-m-d H:i:s'),
+            'meter_number' => $client_id,
+            'send_status' =>  $result['status'],
+            'receive_status' => ''
+        ]);
 
         return $result;
     }
