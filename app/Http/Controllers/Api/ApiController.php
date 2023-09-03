@@ -138,7 +138,7 @@ class ApiController extends Controller
 
         // Use the service
         $result = $sms->send([
-            'to' => $reading1[0]->phone_no, //$recipients,
+            'to' => '254718430712',//$reading1[0]->phone_no, //$recipients,
             'message' => $main_message,
             'from'=>'POSTVIEW'
         ]); 
