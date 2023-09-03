@@ -62,7 +62,7 @@ class ApiController extends Controller
         $current_reading = $r->current_reading;
         $consumed = $current_reading - $pr;
         $total_cost = $consumed * 120;
-        $date =  '2023-08-31 H:i:s';//date('Y-m-d H:i:s');
+        $date =  date('2023-08-31 H:i:s');//date('Y-m-d H:i:s');
         DB::insert("INSERT INTO meter_readings (client_id,reading_date,current_reading,previous_reading) VALUES ('$r->id','$date','$r->current_reading',$pr)");
         //$date = date('Y-m-d H:i:s');
         $date1 = date_create($date);
